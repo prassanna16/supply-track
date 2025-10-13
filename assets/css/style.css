@@ -1,0 +1,113 @@
+/* Base Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  background-color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 🎯 Scaled background image */
+.background-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%;
+  z-index: -1;
+  overflow: visible;
+}
+
+.bg-image {
+  width: 100%;
+  height: auto;
+  opacity: 0.2;
+   transform: rotate(-40deg); /* 🎯 Tilt the image by 40 degrees */
+  transform-origin: center center;
+  display: block;
+}
+
+/* 🔺 Logo and Tagline */
+header {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.logo {
+  width: 320px;
+  height: auto;
+}
+
+.tagline {
+  font-size: 14px;
+  color: gray;
+  margin-top: 5px;
+}
+
+/* 🔘 Navigation Buttons */
+.button-group {
+  position: absolute;
+  top: 20px;
+  left: 60%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.nav-button {
+  background-color: #FF0000;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+}
+
+.nav-button:hover {
+  background-color: #b71c1c;
+}
+
+/* 📱 Responsive Styles */
+@media (max-width: 768px) {
+  .background-container {
+    width: 90%;
+  }
+
+  header {
+    top: 10px;
+    left: 10px;
+  }
+
+  .logo {
+    width: 60px;
+  }
+
+  .tagline {
+    font-size: 12px;
+  }
+
+  .button-group {
+    bottom: 20px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav-button {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+}
