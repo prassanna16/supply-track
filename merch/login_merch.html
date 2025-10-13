@@ -1,12 +1,115 @@
 <!DOCTYPE html>
-<html>
-<head><title>Merch Login</title></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-panel {
+  width: 320px;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
+  text-align: center;
+  background-color: #fff;
+}
+
+.login-panel h2 {
+  margin-bottom: 25px;
+  color: #d32f2f;
+  font-size: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px 5px;
+  border: none;
+  border-bottom: 2px solid #4caf50;
+  outline: none;
+  font-size: 16px;
+  background: transparent;
+}
+
+.input-group label {
+  position: absolute;
+  top: 10px;
+  left: 5px;
+  font-size: 14px;
+  color: #888;
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+  top: -10px;
+  font-size: 12px;
+  color: #4caf50;
+}
+
+button {
+  padding: 10px;
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #b71c1c;
+}
+
+.forgot-link {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #d32f2f;
+  text-decoration: none;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
+</style>
 <body>
-  <h2>Merch Login</h2>
-  <form action="merch-auth.php" method="POST">
-    <input type="text" name="username" required placeholder="Username">
-    <input type="password" name="password" required placeholder="Password">
-    <button type="submit">Login</button>
-  </form>
+  <div class="login-panel">
+    <h2>MERCH LOGIN PANEL</h2>
+    <form action="merch\merch-auth.php" method="POST">
+      <div class="input-group">
+        <input type="text" name="username" required placeholder=" ">
+        <label>Username</label>
+      </div>
+      <div class="input-group">
+        <input type="password" name="password" required placeholder=" ">
+        <label>Password</label>
+      </div>
+      <button type="submit">Login</button>
+      <a href="forgot-password.php" class="forgot-link">Forgot password?</a>
+    </form>
+  </div>
 </body>
 </html>
