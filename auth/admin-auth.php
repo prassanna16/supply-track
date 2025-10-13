@@ -1,9 +1,9 @@
 <?php
 session_start();
-require_once '../db_connect.php'; // adjust path if needed
+require_once 'db_connect.php';
 
-$username = $_POST['username'];
-$password = $_POST['password'];
+$username = $_POST['username'] ?? '';
+$password = $_POST['password'] ?? '';
 
 $sql = "SELECT password_hash FROM admin_users WHERE username = ?";
 $stmt = $conn->prepare($sql);
@@ -17,7 +17,7 @@ if ($stmt->num_rows === 1) {
 
     if (password_verify($password, $hash)) {
         $_SESSION['admin_logged_in'] = true;
-        header("Location: auth/dashboard.php");
+        header("Location: dashboard.php");
         exit;
     }
 }
