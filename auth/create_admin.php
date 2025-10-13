@@ -1,5 +1,5 @@
 <?php
-require_once 'db_connect.php'; // adjust path if needed
+require_once '../includes/db_connect.php'; // adjust path if needed
 
 $username = 'admin';
 $password = 'Admin@123';
