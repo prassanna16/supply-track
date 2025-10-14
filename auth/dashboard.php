@@ -1,10 +1,14 @@
 <?php
 session_start();
-/ Access control
+
+// Access control
 if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
     header("Location: auth/login_admin.html");
     exit;
 }
+// ✅ Place this line here
+$username = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Admin';
+
 // Get the logged-in username
 $username = htmlspecialchars($_SESSION['username']);
 ?>
