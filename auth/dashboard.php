@@ -19,7 +19,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
       background-color: #f5f5f5;
     }
     .top-bar {
-      background-color: #c62828;
+      background-color: #FF0000;
       color: white;
       padding: 10px 20px;
       display: flex;
