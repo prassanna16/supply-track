@@ -95,7 +95,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
 <body>
 
   <div class="top-bar">
-    <div><strong>ADMIN PANEL</strong></div>
+    <div><strong>Admin Panel</strong></div>
     <div class="username-dropdown">
       <button class="username-btn">admin_user ▼</button>
       <div class="dropdown-content">
