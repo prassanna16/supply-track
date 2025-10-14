@@ -1,9 +1,12 @@
 <?php
 session_start();
-if (!isset($_SESSION['admin_logged_in'])) {
+/ Access control
+if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
     header("Location: auth/login_admin.html");
     exit;
 }
+// Get the logged-in username
+$username = htmlspecialchars($_SESSION['username']);
 ?>
 
 <!DOCTYPE html>
@@ -95,9 +98,9 @@ if (!isset($_SESSION['admin_logged_in'])) {
 <body>
 
   <div class="top-bar">
-    <div><strong>Admin Panel</strong></div>
+    <div><strong>Admin Panel </strong></div>
     <div class="username-dropdown">
-      <button class="username-btn">admin_user ▼</button>
+      <button class="username-btn"><?php echo $username; ?> ▼</button>
       <div class="dropdown-content">
         <a href="logout.php">Logout</a>
       </div>
