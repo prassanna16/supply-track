@@ -3,14 +3,11 @@ session_start();
 
 // Access control
 if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
-    header("Location: auth/login_admin.html");
+    header("Location: login_admin.html");
     exit;
 }
-// ✅ Place this line here
-$username = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Admin';
 
-// Get the logged-in username
-$username = htmlspecialchars($_SESSION['username']);
+$username = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Admin';
 ?>
 
 <!DOCTYPE html>
@@ -19,6 +16,7 @@ $username = htmlspecialchars($_SESSION['username']);
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Panel - SupplyTrack</title>
+  <link rel="stylesheet" href="../assets/css/admin-login.css" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -102,7 +100,7 @@ $username = htmlspecialchars($_SESSION['username']);
 <body>
 
   <div class="top-bar">
-    <div><strong>Admin Panel </strong></div>
+    <div><strong>Admin Panel</strong></div>
     <div class="username-dropdown">
       <button class="username-btn"><?php echo $username; ?> ▼</button>
       <div class="dropdown-content">
@@ -114,24 +112,24 @@ $username = htmlspecialchars($_SESSION['username']);
   <div class="section">
     <h2>INQUIRIES</h2>
     <div class="btn-group">
-      <a href="inquiries_new.php" class="btn">New Entry</a>
-      <a href="inquiries_details.php" class="btn">Details</a>
+      <a href="../components/inquiries_new.php" class="btn">New Entry</a>
+      <a href="../components/inquiries_details.php" class="btn">Details</a>
     </div>
   </div>
 
   <div class="section">
     <h2>ORDERS</h2>
     <div class="btn-group">
-      <a href="orders_new.php" class="btn">New Entry</a>
-      <a href="orders_details.php" class="btn">Details</a>
+      <a href="../orders/orders_new.php" class="btn">New Entry</a>
+      <a href="../orders/orders_details.php" class="btn">Details</a>
     </div>
   </div>
 
   <div class="section">
     <h2>SUPPLIERS</h2>
     <div class="btn-group">
-      <a href="suppliers_new.php" class="btn">New Entry</a>
-      <a href="suppliers_data.php" class="btn">DATA</a>
+      <a href="../suppliers/suppliers_new.php" class="btn">New Entry</a>
+      <a href="../suppliers/suppliers_data.php" class="btn">DATA</a>
     </div>
   </div>
 
