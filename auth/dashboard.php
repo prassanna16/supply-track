@@ -23,6 +23,7 @@ $username = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username'
       margin: 0;
       background-color: #f5f5f5;
     }
+
     .top-bar {
       background-color: #FF0000;
       color: white;
@@ -31,10 +32,12 @@ $username = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username'
       justify-content: space-between;
       align-items: center;
     }
+
     .username-dropdown {
       position: relative;
       display: inline-block;
     }
+
     .username-btn {
       background: none;
       border: none;
@@ -42,6 +45,7 @@ $username = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username'
       font-weight: bold;
       cursor: pointer;
     }
+
     .dropdown-content {
       display: none;
       position: absolute;
@@ -51,37 +55,55 @@ $username = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username'
       box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
       z-index: 1;
     }
+
     .dropdown-content a {
       color: black;
       padding: 8px 12px;
       text-decoration: none;
       display: block;
     }
+
     .dropdown-content a:hover {
       background-color: #ddd;
     }
+
     .username-dropdown:hover .dropdown-content {
       display: block;
     }
 
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding: 30px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
     .section {
-      margin: 30px auto;
-      width: 90%;
-      max-width: 600px;
       background-color: white;
       border-radius: 10px;
       padding: 20px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
     }
+
     .section h2 {
       margin-top: 0;
       color: #333;
+      border: 1px solid #aaa;
+      padding: 8px;
+      background-color: #fff;
     }
+
     .btn-group {
       display: flex;
+      justify-content: center;
       gap: 15px;
       margin-top: 10px;
+      flex-wrap: wrap;
     }
+
     .btn {
       background-color: #00bcd4;
       color: white;
@@ -92,8 +114,15 @@ $username = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username'
       text-decoration: none;
       font-weight: bold;
     }
+
     .btn:hover {
       background-color: #0097a7;
+    }
+
+    @media (max-width: 768px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -109,27 +138,29 @@ $username = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username'
     </div>
   </div>
 
-  <div class="section">
-    <h2>INQUIRIES</h2>
-    <div class="btn-group">
-      <a href="../components/inquiries_new.php" class="btn">New Entry</a>
-      <a href="../components/inquiries_details.php" class="btn">Details</a>
+  <div class="grid-container">
+    <div class="section">
+      <h2>INQUIRIES</h2>
+      <div class="btn-group">
+        <a href="../components/inquiries_new.php" class="btn">New Entry</a>
+        <a href="../components/inquiries_details.php" class="btn">Details</a>
+      </div>
     </div>
-  </div>
 
-  <div class="section">
-    <h2>ORDERS</h2>
-    <div class="btn-group">
-      <a href="../orders/orders_new.php" class="btn">New Entry</a>
-      <a href="../orders/orders_details.php" class="btn">Details</a>
+    <div class="section">
+      <h2>ORDERS</h2>
+      <div class="btn-group">
+        <a href="../orders/orders_new.php" class="btn">New Entry</a>
+        <a href="../orders/orders_details.php" class="btn">Details</a>
+      </div>
     </div>
-  </div>
 
-  <div class="section">
-    <h2>SUPPLIERS</h2>
-    <div class="btn-group">
-      <a href="../suppliers/suppliers_new.php" class="btn">New Entry</a>
-      <a href="../suppliers/suppliers_data.php" class="btn">DATA</a>
+    <div class="section">
+      <h2>SUPPLIERS</h2>
+      <div class="btn-group">
+        <a href="../suppliers/suppliers_new.php" class="btn">New Entry</a>
+        <a href="../suppliers/suppliers_data.php" class="btn">DATA</a>
+      </div>
     </div>
   </div>
 
