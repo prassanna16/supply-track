@@ -55,7 +55,6 @@
   </style>
 </head>
 <body>
-<h4> PRESS SPACEBAR / UP-ARROW TO MOVE THE DINO </H4>
 
   <iframe id="dinoFrame" src="dino/index.html" class="iframe-fullscreen" allowfullscreen></iframe>
 
