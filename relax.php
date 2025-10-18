@@ -57,7 +57,7 @@
   <h1>Take a Break 🦖</h1>
 
   <div class="iframe-container">
-    <iframe src="supply-track/dino/index.html" allowfullscreen></iframe>
+    <iframe src="supply-track\dino\index.html" allowfullscreen></iframe>
   </div>
 
   <button id="quitBtn" onclick="window.close()">Quit</button>
