@@ -6,58 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="assets/css/style.css">
 
-  <style>
-    #relaxBtn, #quitBtn {
-      padding: 10px 20px;
-      font-weight: bold;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      width: 100%;
-      max-width: 300px;
-      margin: 10px auto;
-      display: block;
-      font-size: 16px;
-    }
-
-    #relaxBtn {
-      background-color: #4CAF50;
-      color: white;
-    }
-
-    #quitBtn {
-      background-color: #f44336;
-      color: white;
-    }
-
-    #dinoWrapper {
-      display: none;
-      margin-top: 20px;
-      text-align: center;
-    }
-
-    .iframe-container {
-      position: relative;
-      width: 100%;
-      max-width: 600px;
-      margin: 0 auto;
-      padding-bottom: 25%;
-      height: 0;
-      overflow: hidden;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    }
-
-    .iframe-container iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-  </style>
-</head>
+  </head>
 <body>
   <!-- 🎯 Scaled background image -->
   <div class="background-container">
@@ -73,31 +22,10 @@
     <div class="button-group">
       <a href="auth/login_admin.html" target="_blank" class="nav-button">...admin</a>
       <a href="merch/login_merch.html" target="_blank" class="nav-button">...merch login</a>
-      <a href="relax.php" target="_blank" class="nav-button">...relax</a>
+      <a href="supply-track/relax.php" target="_blank" class="nav-button">...relax</a>
       <a href="news.php" target="_blank" class="nav-button">...news</a>
     </div>
   </main>
 
-  <!-- Relax Button -->
-  <button id="relaxBtn">Relax</button>
-
-  <!-- Dino Game Container -->
-  <div id="dinoWrapper">
-    <div class="iframe-container">
-      <iframe src="supply-track/dino/index.html" allowfullscreen></iframe>
-    </div>
-    <button id="quitBtn">Quit</button>
-  </div>
-
-  <!-- JavaScript -->
-  <script>
-    document.getElementById('relaxBtn').addEventListener('click', function() {
-      document.getElementById('dinoWrapper').style.display = 'block';
-    });
-
-    document.getElementById('quitBtn').addEventListener('click', function() {
-      document.getElementById('dinoWrapper').style.display = 'none';
-    });
-  </script>
-</body>
+  </body>
 </html>
