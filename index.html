@@ -25,5 +25,28 @@
       <a href="news.php" target="_blank" class="nav-button">...news</a>
     </div>
   </main>
+  
+  <!-- Relax Button -->
+  <button id="relaxBtn">Relax</button>
+
+  <!-- Dino Game Container -->
+  <div id="dinoWrapper">
+    <div class="iframe-container">
+      <iframe src="dino/index.html" allowfullscreen></iframe>
+    </div>
+    <button id="quitBtn">Quit</button>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    document.getElementById('relaxBtn').addEventListener('click', function() {
+      document.getElementById('dinoWrapper').style.display = 'block';
+    });
+
+    document.getElementById('quitBtn').addEventListener('click', function() {
+      document.getElementById('dinoWrapper').style.display = 'none';
+    });
+  </script>
+
 </body>
 </html>
