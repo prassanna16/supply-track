@@ -199,6 +199,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+function addSupplier(button) {
+  const cell = button.closest('td');
+  const group = cell.querySelector('.supplier-group');
+  const entryIndex = [...document.querySelectorAll('.product-entry')].indexOf(button.closest('tr'));
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.name = `suppliers[${entryIndex}][]`;
+  input.placeholder = 'Supplier Name';
+  group.appendChild(input);
+}
+
+function removeSupplier(button) {
+  const cell = button.closest('td');
+  const group = cell.querySelector('.supplier-group');
+  if (group.children.length > 1) {
+    group.removeChild(group.lastChild);
+  }
+}
 </script>
 
 </body>
