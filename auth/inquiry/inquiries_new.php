@@ -143,13 +143,15 @@
           </select>
         </td>
         <td><input type="number" name="target[]" min="0.01" step="0.01" required></td>
-        <td>
-  <div class="supplier-group">
-    <input type="text" name="suppliers[0][]" placeholder="Supplier Name">
+        <!-- Supplier input group -->
+<td>
+  <div class="supplier-group" id="supplierGroup">
+    <input type="text" name="suppliers[]" placeholder="Supplier Name" onblur="checkDuplicate(this)">
   </div>
+  <div id="supplierError" style="color:red; font-size:0.9em;"></div>
   <div class="supplier-buttons">
-    <button type="button" onclick="addSupplier(this)">Add</button>
-    <button type="button" onclick="removeSupplier(this)">Less</button>
+    <button type="button" onclick="addSupplier()">Add</button>
+    <button type="button" onclick="removeSupplier()">Less</button>
   </div>
 </td>
       </tr>
@@ -183,6 +185,32 @@ function addProductRow() {
   });
 
   group.appendChild(clone);
+}
+ const supplierSet = new Set();
+
+function checkDuplicate(input) {
+  const value = input.value.trim().toLowerCase();
+  const errorBox = document.getElementById('supplierError');
+
+  // Clear previous error
+  errorBox.textContent = '';
+
+  // Skip empty input
+  if (!value) return;
+
+  // Count how many inputs match this value
+  const allInputs = document.querySelectorAll('#supplierGroup input');
+  let count = 0;
+  allInputs.forEach(i => {
+    if (i.value.trim().toLowerCase() === value) count++;
+  });
+
+  if (count > 1) {
+    errorBox.textContent = `❌ Supplier "${value}" already entered.`;
+    input.style.borderColor = 'red';
+  } else {
+    input.style.borderColor = '';
+  }
 }
 
 function previewImage(event, input) {
