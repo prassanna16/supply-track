@@ -148,6 +148,15 @@
             <input type="text" name="suppliers[0][]" placeholder="Supplier Name">
           </div>
         </td>
+        <td>
+  <div class="supplier-group">
+    <input type="text" name="suppliers[0][]" placeholder="Supplier Name">
+  </div>
+  <div class="supplier-buttons">
+    <button type="button" onclick="addSupplier(this)">Add</button>
+    <button type="button" onclick="removeSupplier(this)">Less</button>
+  </div>
+</td>
       </tr>
     </tbody>
   </table>
