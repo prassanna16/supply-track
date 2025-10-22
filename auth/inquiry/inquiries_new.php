@@ -145,10 +145,10 @@
         <td><input type="number" name="target[]" min="0.01" step="0.01" required></td>
         <!-- Supplier input group -->
 <td>
-  <div class="supplier-group" id="supplierGroup">
-    <input type="text" name="suppliers[]" placeholder="Supplier Name" onblur="checkDuplicate(this)">
-  </div>
-  <div id="supplierError" style="color:red; font-size:0.9em;"></div>
+ <div class="supplier-group">
+  <input type="text" name="suppliers[0][]" placeholder="Supplier Name" onblur="checkDuplicate(this)">
+</div>
+<div class="supplier-error" style="color:red; font-size:0.9em;"></div>
   <div class="supplier-buttons">
     <button type="button" onclick="addSupplier()">Add</button>
     <button type="button" onclick="removeSupplier()">Less</button>
@@ -190,16 +190,13 @@ function addProductRow() {
 
 function checkDuplicate(input) {
   const value = input.value.trim().toLowerCase();
-  const errorBox = document.getElementById('supplierError');
-
-  // Clear previous error
+  const cell = input.closest('td');
+  const errorBox = cell.querySelector('.supplier-error');
   errorBox.textContent = '';
 
-  // Skip empty input
   if (!value) return;
 
-  // Count how many inputs match this value
-  const allInputs = document.querySelectorAll('#supplierGroup input');
+  const allInputs = cell.querySelectorAll('.supplier-group input');
   let count = 0;
   allInputs.forEach(i => {
     if (i.value.trim().toLowerCase() === value) count++;
