@@ -59,8 +59,12 @@
       width: 100%;
       border-radius: 6px;
     }
+    .supplier-buttons {
+      display: flex;
+      gap: 6px;
+      margin-top: 5px;
+    }
     .supplier-buttons button {
-      margin-right: 5px;
       padding: 6px 12px;
       border-radius: 6px;
       border: none;
@@ -70,6 +74,11 @@
     }
     .supplier-buttons button:hover {
       background-color: #0097a7;
+    }
+    .supplier-error {
+      color: red;
+      font-size: 0.9em;
+      margin-top: 4px;
     }
     button[type="submit"],
     button[type="button"] {
@@ -143,17 +152,16 @@
           </select>
         </td>
         <td><input type="number" name="target[]" min="0.01" step="0.01" required></td>
-        <!-- Supplier input group -->
-<td>
- <div class="supplier-group">
-  <input type="text" name="suppliers[0][]" placeholder="Supplier Name" onblur="checkDuplicate(this)">
-</div>
-<div class="supplier-error" style="color:red; font-size:0.9em;"></div>
-  <div class="supplier-buttons">
-    <button type="button" onclick="addSupplier()">Add</button>
-    <button type="button" onclick="removeSupplier()">Less</button>
-  </div>
-</td>
+        <td>
+          <div class="supplier-group">
+            <input type="text" name="suppliers[0][]" placeholder="Supplier Name" onblur="checkDuplicate(this)">
+          </div>
+          <div class="supplier-buttons">
+            <button type="button" onclick="addSupplier(this)">+</button>
+            <button type="button" onclick="removeSupplier(this)">−</button>
+          </div>
+          <div class="supplier-error"></div>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -178,15 +186,38 @@ function addProductRow() {
     if (el.classList.contains('image-preview')) el.style.display = 'none';
   });
 
-  // Update supplier name array index
-  const supplierInputs = clone.querySelectorAll('.supplier-group input');
-  supplierInputs.forEach(input => {
-    input.name = `suppliers[${entries.length}][]`;
+  // Update supplier input names
+  const entryIndex = entries.length;
+  clone.querySelectorAll('.supplier-group input').forEach(input => {
+    input.name = `suppliers[${entryIndex}][]`;
   });
 
   group.appendChild(clone);
 }
- const supplierSet = new Set();
+
+function addSupplier(button) {
+  const cell = button.closest('td');
+  const group = cell.querySelector('.supplier-group');
+  const entryIndex = [...document.querySelectorAll('.product-entry')].indexOf(button.closest('tr'));
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.name = `suppliers[${entryIndex}][]`;
+  input.placeholder = 'Supplier Name';
+  input.onblur = function () {
+    checkDuplicate(this);
+  };
+  group.appendChild(input);
+}
+
+function removeSupplier(button) {
+  const cell = button.closest('td');
+  const group = cell.querySelector('.supplier-group');
+  if (group.children.length > 1) {
+    group.removeChild(group.lastChild);
+  }
+  const errorBox = cell.querySelector('.supplier-error');
+  errorBox.textContent = '';
+}
 
 function checkDuplicate(input) {
   const value = input.value.trim().toLowerCase();
@@ -224,25 +255,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
-
-function addSupplier(button) {
-  const cell = button.closest('td');
-  const group = cell.querySelector('.supplier-group');
-  const entryIndex = [...document.querySelectorAll('.product-entry')].indexOf(button.closest('tr'));
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.name = `suppliers[${entryIndex}][]`;
-  input.placeholder = 'Supplier Name';
-  group.appendChild(input);
-}
-
-function removeSupplier(button) {
-  const cell = button.closest('td');
-  const group = cell.querySelector('.supplier-group');
-  if (group.children.length > 1) {
-    group.removeChild(group.lastChild);
-  }
-}
 </script>
 
 </body>
