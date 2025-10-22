@@ -90,68 +90,52 @@
 
 <h2>Product Input Sheet</h2>
 <form action="save_data.php" method="POST" enctype="multipart/form-data">
-  <table>
-    <tr>
-      <th>S.No</th>
-      <th>Buyer</th>
-      <th>Image</th>
-      <th>Style Model#</th>
-      <th>Descp.</th>
-      <th>Department</th>
-      <th>Size Range</th>
-      <th>Intake</th>
-      <th>Season</th>
-      <th>Fabric</th>
-      <th>GSM</th>
-      <th>Composition</th>
-      <th>QTY</th>
-      <th>Currency</th>
-      <th>Target</th>
-      <th>Suppliers</th>
-    </tr>
-    <tr>
-      <td><input type="number" name="sno" required></td>
-      <td><input type="text" name="buyer" required></td>
-      <td>
-        <input type="file" name="image" accept="image/*" onchange="previewImage(event)">
-        <img id="preview" class="image-preview" src="#" alt="Preview" style="display:none;">
-      </td>
-      <td><input type="text" name="style"></td>
-      <td><input type="text" name="description"></td>
-      <td><input type="text" name="department"></td>
-      <td><input type="text" name="size_range"></td>
-      <td><input type="text" name="intake"></td>
-      <td><input type="text" name="season"></td>
-      <td><input type="text" name="fabric"></td>
-      <td><input type="text" name="gsm"></td>
-      <td><input type="text" name="composition"></td>
-      <td><input type="number" name="qty" min="0" required></td>
-      <td>
-        <select name="currency" required>
-          <option value="" disabled selected>Select Currency</option>
-          <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-          <option value="INR">INR</option>
-          <option value="GBP">GBP</option>
-          <option value="JPY">JPY</option>
-          <option value="CNY">CNY</option>
-        </select>
-      </td>
-      <td><input type="number" name="target" min="0.01" step="0.01" required></td>
-      <td>
-        <div class="supplier-group" id="supplierGroup">
-          <input type="text" name="suppliers[]" placeholder="Supplier Name" onblur="checkDuplicate(this)">
-        </div>
-        <div id="supplierError" style="color:red; font-size:0.9em;"></div>
-        <div class="supplier-buttons">
-          <button type="button" onclick="addSupplier()">Add</button>
-          <button type="button" onclick="removeSupplier()">Less</button>
-        </div>
-      </td>
-    </tr>
-  </table>
-  <br>
-  <button type="submit" name="save">Save</button>
+  <div id="productGroup">
+    <div class="product-entry">
+      <table>
+        <tr>
+          <td><input type="number" name="sno[]" required></td>
+          <td><input type="text" name="buyer[]" required></td>
+          <td>
+            <input type="file" name="image[]" accept="image/*" onchange="previewImage(event, this)">
+            <img class="image-preview" src="#" alt="Preview" style="display:none;">
+          </td>
+          <td><input type="text" name="style[]"></td>
+          <td><input type="text" name="description[]"></td>
+          <td><input type="text" name="department[]"></td>
+          <td><input type="text" name="size_range[]"></td>
+          <td><input type="text" name="intake[]"></td>
+          <td><input type="text" name="season[]"></td>
+          <td><input type="text" name="fabric[]"></td>
+          <td><input type="text" name="gsm[]"></td>
+          <td><input type="text" name="composition[]"></td>
+          <td><input type="number" name="qty[]" min="0" required></td>
+          <td>
+            <select name="currency[]" required>
+              <option value="" disabled selected>Select Currency</option>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="INR">INR</option>
+              <option value="GBP">GBP</option>
+              <option value="JPY">JPY</option>
+              <option value="CNY">CNY</option>
+            </select>
+          </td>
+          <td><input type="number" name="target[]" min="0.01" step="0.01" required></td>
+          <td>
+            <div class="supplier-group">
+              <input type="text" name="suppliers[0][]" placeholder="Supplier Name">
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <button type="button" onclick="addProductRow()">➕ Add Row</button>
+    <button type="submit" name="save">💾 Save All</button>
+  </div>
 </form>
 
 <script>
@@ -209,6 +193,34 @@
       });
     });
   });
+
+function addProductRow() {
+  const group = document.getElementById('productGroup');
+  const entries = group.querySelectorAll('.product-entry');
+  const lastEntry = entries[entries.length - 1];
+  const clone = lastEntry.cloneNode(true);
+
+  // Reset input values
+  clone.querySelectorAll('input, select').forEach(el => {
+    if (el.type !== 'file') el.value = '';
+    if (el.tagName === 'SELECT') el.selectedIndex = 0;
+    if (el.classList.contains('image-preview')) el.style.display = 'none';
+  });
+
+  // Update supplier name array index
+  const supplierInputs = clone.querySelectorAll('.supplier-group input');
+  supplierInputs.forEach(input => {
+    input.name = `suppliers[${entries.length}][]`;
+  });
+
+  group.appendChild(clone);
+}
+
+function previewImage(event, input) {
+  const preview = input.nextElementSibling;
+  preview.src = URL.createObjectURL(event.target.files[0]);
+  preview.style.display = 'block';
+}
 </script>
 
 </body>
