@@ -1,0 +1,94 @@
+body {
+  font-family: sans-serif;
+  background-color: #f9f9f9;
+  padding: 20px;
+}
+h2 {
+  text-align: center;
+  color: #00796b;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+th, td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  vertical-align: top;
+}
+.sno {
+  width: 50px;
+  text-align: center;
+}
+.collapsible {
+  position: relative;
+}
+.toggle-btn {
+  background-color: #00bcd4;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.content {
+  display: block;
+}
+.image-preview {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-top: 5px;
+  display: none;
+}
+label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+input, select {
+  width: 100%;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #c8f3ed;
+}
+.supplier-group input {
+  margin-bottom: 5px;
+}
+.supplier-buttons button {
+  margin-right: 5px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  background-color: #00bcd4;
+  color: white;
+  cursor: pointer;
+}
+.supplier-error {
+  color: red;
+  font-size: 0.9em;
+}
+.actions {
+  text-align: center;
+}
+.actions button {
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  background-color: #00796b;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0 10px;
+}
+@media (max-width: 768px) {
+  .content {
+    display: none;
+  }
+  .collapsible.active .content {
+    display: block;
+  }
+}
