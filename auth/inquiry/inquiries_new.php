@@ -144,11 +144,6 @@
         </td>
         <td><input type="number" name="target[]" min="0.01" step="0.01" required></td>
         <td>
-          <div class="supplier-group">
-            <input type="text" name="suppliers[0][]" placeholder="Supplier Name">
-          </div>
-        </td>
-        <td>
   <div class="supplier-group">
     <input type="text" name="suppliers[0][]" placeholder="Supplier Name">
   </div>
