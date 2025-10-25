@@ -133,10 +133,10 @@
         <td class="sno">1</td>
         <td>
           <label>Buyer</label><input type="text" name="buyer[]" required>
-          <label>Image</label><input type="file" name="image[]" accept="image/*" onchange="previewImage(event, this)">
           <label>Style</label><input type="text" name="style[]">
           <label>Description</label><input type="text" name="description[]">
           <label>Department</label><input type="text" name="department[]">
+          <label>Image</label><input type="file" name="image[]" accept="image/*" onchange="previewImage(event, this)">
           <img class="image-preview" src="#" alt="Preview">
         </td>
         <td>
