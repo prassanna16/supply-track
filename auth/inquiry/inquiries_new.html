@@ -4,152 +4,149 @@
   <meta charset="UTF-8">
   <title>Product Entry Form</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <style>
- body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to bottom right, #d0f0f7, #eafde4);
-  padding: 40px;
-}
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #d0f0f7, #eafde4);
+      padding: 40px;
+    }
 
-.form-container {
-  background-color: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  max-width: 1100px;
-  margin: auto;
-}
+    .form-container {
+      background-color: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      max-width: 1100px;
+      margin: auto;
+    }
 
-h2 {
-  text-align: center;
-  color: #00796b;
-  margin-bottom: 30px;
-}
+    h2 {
+      text-align: center;
+      color: #00796b;
+      margin-bottom: 30px;
+    }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-  table-layout: fixed; /* keep this here */
-}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      table-layout: fixed;
+    }
 
+    th {
+      background-color: #00bcd4;
+      color: white;
+      padding: 12px;
+      text-align: left;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
 
-th {
-  background-color: #00bcd4;
-  color: white;
-  padding: 12px;
-  text-align: left;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
+    td {
+      padding: 15px;
+      vertical-align: top;
+      background-color: #f0fdfc;
+      border-bottom: 1px solid #ddd;
+    }
 
-td {
-  padding: 15px;
-  vertical-align: top;
-  background-color: #f0fdfc;
-  border-bottom: 1px solid #ddd;
-}
+    .sno {
+      width: 30px;
+      min-width: 30px;
+      text-align: center;
+      font-weight: bold;
+    }
 
-.sno {
-  width: 05px;
-  text-align: center;
-  font-weight: bold;
-}
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #00796b;
+    }
 
-label {
-  display: block;
-  margin-top: 10px;
-  font-weight: bold;
-  color: #00796b;
-}
+    input, select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #b2dfdb;
+      background-color: #e0f2f1;
+      margin-top: 5px;
+    }
 
-input, select {
-  width: 100%;
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid #b2dfdb;
-  background-color: #e0f2f1;
-  margin-top: 5px;
-}
+    input:focus, select:focus {
+      border-color: #00796b;
+      outline: none;
+    }
 
-input:focus, select:focus {
-  border-color: #00796b;
-  outline: none;
-}
+    .image-preview {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      display: none;
+    }
 
-.image-preview {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  margin-top: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  display: none;
-}
+    td.supplier-cell {
+      width: 220px;
+      max-width: 220px;
+      vertical-align: top;
+      word-wrap: break-word;
+    }
 
-.supplier-group input {
-  margin-bottom: 5px;
-}
+    .supplier-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      max-height: 150px;
+      overflow-y: auto;
+    }
 
-/* Lock supplier column width */
-td.supplier-cell {
-  width: 220px;
-  max-width: 220px;
-  vertical-align: top;
-  word-wrap: break-word;
-}
+    .supplier-buttons button {
+      margin-right: 5px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: none;
+      background-color: #00bcd4;
+      color: white;
+      cursor: pointer;
+    }
 
-.supplier-group {
-  max-height: 150px;
-  overflow-y: auto;
-}
+    .supplier-error {
+      color: red;
+      font-size: 0.9em;
+    }
 
-.supplier-buttons button {
-  margin-right: 5px;
-  padding: 6px 12px;
-  border-radius: 6px;
-  border: none;
-  background-color: #00bcd4;
-  color: white;
-  cursor: pointer;
-}
+    .actions {
+      text-align: center;
+      margin-top: 20px;
+    }
 
-.supplier-error {
-  color: red;
-  font-size: 0.9em;
-}
+    .actions button {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      background-color: #00796b;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 0 10px;
+    }
 
-.actions {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.actions button {
-  padding: 10px 20px;
-  border-radius: 8px;
-  border: none;
-  background-color: #00796b;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  margin: 0 10px;
-}
-
-@media (max-width: 768px) {
-  td, th {
-    display: block;
-    width: 100%;
-  }
-  .actions {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-}
-</style>
+    @media (max-width: 768px) {
+      td, th {
+        display: block;
+        width: 100%;
+      }
+      .actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
 <div class="form-container">
@@ -172,10 +169,10 @@ td.supplier-cell {
             <label>Style</label><input type="text" name="style[]">
             <label>Description</label><input type="text" name="description[]">
             <label>Department</label><input type="text" name="department[]">
-            <label>Image</label><input type="file" name="image[]" accept="image/*" onchange="previewImage(event, this)">
-            <img class="image-preview" src="#" alt="Preview">
+            <label>Image</label><input type="file" name="image[]" accept="image/*" onchange="previewImage(event)">
+            <img id="preview" class="image-preview" src="#" alt="Preview">
           </td>
-          <td>
+          <td class="supplier-cell">
             <label>Size Range</label><input type="text" name="size_range[]">
             <label>Intake</label><input type="text" name="intake[]">
             <label>Season</label><input type="text" name="season[]">
@@ -192,17 +189,14 @@ td.supplier-cell {
               <option value="EUR">EUR</option>
             </select>
             <label>Suppliers</label>
-           <td class="supplier-cell">
-  <div class="supplier-group" id="supplierGroup">
-    <input type="text" name="suppliers[]" placeholder="Supplier Name" onblur="checkDuplicate(this)">
-  </div>
-  <div id="supplierError" class="supplier-error"></div>
-  <div class="supplier-buttons">
-    <button type="button" onclick="addSupplier()">+</button>
-    <button type="button" onclick="removeSupplier()">−</button>
-  </div>
-</td>
-            <div class="supplier-error"></div>
+            <div class="supplier-group" id="supplierGroup">
+              <input type="text" name="suppliers[]" placeholder="Supplier Name" onblur="checkDuplicate(this)">
+            </div>
+            <div id="supplierError" class="supplier-error"></div>
+            <div class="supplier-buttons">
+              <button type="button" onclick="addSupplier()">+</button>
+              <button type="button" onclick="removeSupplier()">−</button>
+            </div>
           </td>
           <td><button type="button" onclick="deleteRow(this)">🗑️</button></td>
         </tr>
@@ -218,7 +212,6 @@ td.supplier-cell {
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  // ✅ Image preview
   window.previewImage = function (event) {
     const preview = document.getElementById('preview');
     if (preview && event.target.files[0]) {
@@ -227,7 +220,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // ✅ Check for duplicate supplier names
   window.checkDuplicate = function (input) {
     const value = input.value.trim().toLowerCase();
     const errorBox = document.getElementById('supplierError');
@@ -248,7 +240,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // ✅ Add supplier input
   window.addSupplier = function () {
     const group = document.getElementById('supplierGroup');
     if (!group) return;
@@ -263,17 +254,76 @@ document.addEventListener("DOMContentLoaded", () => {
     group.appendChild(input);
   };
 
-  // ✅ Remove supplier input
   window.removeSupplier = function () {
     const group = document.getElementById('supplierGroup');
     if (group && group.children.length > 1) {
       group.removeChild(group.lastChild);
       const errorBox = document.getElementById('supplierError');
-      if (errorBox) errorBox.textContent = '';
+           if (errorBox) errorBox.textContent = '';
     }
   };
 
-  // ✅ Change background when filled
+  // ✅ Delete product row
+  window.deleteRow = function (button) {
+    const row = button.closest('tr');
+    if (row) row.remove();
+    updateSno();
+  };
+
+  // ✅ Add new product row
+  window.addProductRow = function () {
+    const group = document.getElementById('productGroup');
+    const firstRow = document.querySelector('.product-entry');
+    if (!group || !firstRow) return;
+
+    const newRow = firstRow.cloneNode(true);
+
+    // Clear input values
+    newRow.querySelectorAll('input, select').forEach(el => {
+      if (el.type === 'file') return;
+      el.value = '';
+      el.classList.remove('filled');
+    });
+
+    // Reset image preview
+    const preview = newRow.querySelector('.image-preview');
+    if (preview) {
+      preview.src = '#';
+      preview.style.display = 'none';
+    }
+
+    // Reset supplier group
+    const supplierGroup = newRow.querySelector('.supplier-group');
+    if (supplierGroup) {
+      supplierGroup.innerHTML = '';
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.name = 'suppliers[]';
+      input.placeholder = 'Supplier Name';
+      input.onblur = function () {
+        checkDuplicate(this);
+      };
+      supplierGroup.appendChild(input);
+    }
+
+    // Reset supplier error
+    const supplierError = newRow.querySelector('.supplier-error');
+    if (supplierError) supplierError.textContent = '';
+
+    group.appendChild(newRow);
+    updateSno();
+  };
+
+  // ✅ Update S.No values
+  function updateSno() {
+    const rows = document.querySelectorAll('.product-entry');
+    rows.forEach((row, index) => {
+      const snoCell = row.querySelector('.sno');
+      if (snoCell) snoCell.textContent = index + 1;
+    });
+  }
+
+  // ✅ Background fill effect
   const inputs = document.querySelectorAll("input[type='text'], input[type='number'], select");
   inputs.forEach(input => {
     input.addEventListener("input", () => {
