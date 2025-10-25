@@ -1,89 +1,83 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to bottom right, #d0f0f7, #eafde4);
+  background-color: #f9f9f9;
   padding: 40px;
 }
 
-.form-container {
+.product-form {
   background-color: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
   padding: 30px;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: auto;
 }
 
-h2 {
+.product-form h2 {
   text-align: center;
   color: #00796b;
   margin-bottom: 30px;
 }
 
-table {
+.product-form table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 20px;
 }
 
-th {
-  background-color: #00bcd4;
-  color: white;
-  padding: 12px;
+.product-form th {
+  background-color: #c8f3ed;
   text-align: left;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  padding: 12px;
+  font-weight: bold;
 }
 
-td {
-  padding: 15px;
+.product-form td {
+  padding: 10px;
   vertical-align: top;
-  background-color: #f0fdfc;
-  border-bottom: 1px solid #ddd;
 }
 
-.sno {
-  width: 50px;
-  text-align: center;
-  font-weight: bold;
-}
-
-label {
-  display: block;
-  margin-top: 10px;
-  font-weight: bold;
-  color: #00796b;
-}
-
-input, select {
+.product-form input[type="text"],
+.product-form input[type="number"],
+.product-form select,
+.product-form input[type="file"] {
   width: 100%;
   padding: 8px;
-  border-radius: 8px;
-  border: 1px solid #b2dfdb;
-  background-color: #e0f2f1;
-  margin-top: 5px;
-}
-
-input:focus, select:focus {
-  border-color: #00796b;
-  outline: none;
-}
-
-.image-preview {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  margin-top: 10px;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 6px;
+  background-color: #c8f3ed;
+  transition: background-color 0.3s ease;
+}
+
+.product-form input:focus,
+.product-form select:focus {
+  outline: none;
+  border-color: #00bcd4;
+}
+
+.product-form input.filled,
+.product-form select.filled {
+  background-color: #ffffff !important;
+}
+
+.product-form .image-preview {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 5px;
   display: none;
 }
 
-.supplier-group input {
+.product-form .supplier-group input {
   margin-bottom: 5px;
+  display: block;
+  width: 100%;
+  border-radius: 6px;
 }
 
-.supplier-buttons button {
+.product-form .supplier-buttons button {
   margin-right: 5px;
   padding: 6px 12px;
   border-radius: 6px;
@@ -93,35 +87,30 @@ input:focus, select:focus {
   cursor: pointer;
 }
 
-.supplier-error {
+.product-form .supplier-buttons button:hover {
+  background-color: #0097a7;
+}
+
+.product-form .supplier-error {
   color: red;
   font-size: 0.9em;
 }
 
-.actions {
+.product-form .form-actions {
   text-align: center;
   margin-top: 20px;
 }
 
-.actions button {
+.product-form button[type="submit"] {
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: 6px;
   border: none;
   background-color: #00796b;
   color: white;
   font-weight: bold;
   cursor: pointer;
-  margin: 0 10px;
 }
 
-@media (max-width: 768px) {
-  td, th {
-    display: block;
-    width: 100%;
-  }
-  .actions {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+.product-form button[type="submit"]:hover {
+  background-color: #004d40;
 }

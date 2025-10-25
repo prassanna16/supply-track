@@ -1,57 +1,58 @@
-function previewImage(event, input) {
-  const preview = input.nextElementSibling;
-  const file = event.target.files[0];
-  if (file) {
-    preview.src = URL.createObjectURL(file);
-    preview.style.display = 'block';
-  }
-}
-
-function deleteRow(btn) {
-  const row = btn.closest('tr');
-  row.remove();
-}
-
-function addProductRow() {
-  const tbody = document.getElementById('productGroup');
-  const newRow = tbody.rows[0].cloneNode(true);
-  newRow.querySelector('.sno').textContent = tbody.rows.length + 1;
-  newRow.querySelectorAll('input').forEach(input => input.value = '');
-  newRow.querySelectorAll('img').forEach(img => img.style.display = 'none');
-  newRow.querySelector('.supplier-error').textContent = '';
-  tbody.appendChild(newRow);
-}
-
-function addSupplier(btn) {
-  const group = btn.closest('td').querySelector('.supplier-group');
-  const newInput = document.createElement('input');
-  newInput.type = 'text';
-  newInput.name = 'suppliers[0][]';
-  newInput.placeholder = 'Supplier Name';
-  newInput.onblur = function () { checkDuplicate(this); };
-  group.appendChild(newInput);
-  checkDuplicate(newInput);
-}
-
-function removeSupplier(btn) {
-  const group = btn.closest('td').querySelector('.supplier-group');
-  if (group.children.length > 1) {
-    group.removeChild(group.lastChild);
-  }
-  const errorDiv = btn.closest('td').querySelector('.supplier-error');
-  errorDiv.textContent = '';
+function previewImage(event) {
+  const preview = document.getElementById('preview');
+  preview.src = URL.createObjectURL(event.target.files[0]);
+  preview.style.display = 'block';
 }
 
 function checkDuplicate(input) {
-  const group = input.closest('.supplier-group');
-  const inputs = group.querySelectorAll('input');
-  const values = Array.from(inputs).map(i => i.value.trim().toLowerCase());
-  const duplicates = values.filter((v, i, arr) => v && arr.indexOf(v) !== i);
+  const value = input.value.trim().toLowerCase();
+  const errorBox = document.getElementById('supplierError');
+  errorBox.textContent = '';
+  if (!value) return;
 
-  const errorDiv = input.closest('td').querySelector('.supplier-error');
-  if (duplicates.length > 0) {
-    errorDiv.textContent = `Duplicate supplier name: "${duplicates[0]}"`;
+  const allInputs = document.querySelectorAll('#supplierGroup input');
+  let count = 0;
+  allInputs.forEach(i => {
+    if (i.value.trim().toLowerCase() === value) count++;
+  });
+
+  if (count > 1) {
+    errorBox.textContent = `❌ Supplier "${value}" already entered.`;
+    input.style.borderColor = 'red';
   } else {
-    errorDiv.textContent = '';
+    input.style.borderColor = '';
   }
 }
+
+function addSupplier() {
+  const group = document.getElementById('supplierGroup');
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.name = 'suppliers[]';
+  input.placeholder = 'Supplier Name';
+  input.onblur = function () {
+    checkDuplicate(this);
+  };
+  group.appendChild(input);
+}
+
+function removeSupplier() {
+  const group = document.getElementById('supplierGroup');
+  if (group.children.length > 1) {
+    group.removeChild(group.lastChild);
+    document.getElementById('supplierError').textContent = '';
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const inputs = document.querySelectorAll(".product-form input[type='text'], .product-form input[type='number'], .product-form select");
+  inputs.forEach(input => {
+    input.addEventListener("input", () => {
+      if (input.value.trim() !== "") {
+        input.classList.add("filled");
+      } else {
+        input.classList.remove("filled");
+      }
+    });
+  });
+});
