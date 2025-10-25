@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Product Entry Form</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="auth\inquiry\style_inquiry.css">
+  <link rel="stylesheet" href="style_inquiry.css">
 </head>
 <body>
 
