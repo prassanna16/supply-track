@@ -39,8 +39,6 @@
       color: white;
       padding: 12px;
       text-align: left;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
     }
 
     td {
@@ -86,13 +84,6 @@
       border: 1px solid #ccc;
       border-radius: 8px;
       display: none;
-    }
-
-    td.supplier-cell {
-      width: 220px;
-      max-width: 220px;
-      vertical-align: top;
-      word-wrap: break-word;
     }
 
     .supplier-group {
@@ -169,10 +160,10 @@
             <label>Style</label><input type="text" name="style[]">
             <label>Description</label><input type="text" name="description[]">
             <label>Department</label><input type="text" name="department[]">
-            <label>Image</label><input type="file" name="image[]" accept="image/*" onchange="previewImage(event)">
-            <img id="preview" class="image-preview" src="#" alt="Preview">
+            <label>Image</label><input type="file" name="image[]" accept="image/*" onchange="previewImage(event, this)">
+            <img class="image-preview" src="#" alt="Preview">
           </td>
-          <td class="supplier-cell">
+          <td>
             <label>Size Range</label><input type="text" name="size_range[]">
             <label>Intake</label><input type="text" name="intake[]">
             <label>Season</label><input type="text" name="season[]">
@@ -189,13 +180,13 @@
               <option value="EUR">EUR</option>
             </select>
             <label>Suppliers</label>
-            <div class="supplier-group" id="supplierGroup">
+            <div class="supplier-group">
               <input type="text" name="suppliers[]" placeholder="Supplier Name" onblur="checkDuplicate(this)">
             </div>
-            <div id="supplierError" class="supplier-error"></div>
+            <div class="supplier-error"></div>
             <div class="supplier-buttons">
-              <button type="button" onclick="addSupplier()">+</button>
-              <button type="button" onclick="removeSupplier()">−</button>
+              <button type="button" onclick="addSupplier(this)">+</button>
+              <button type="button" onclick="removeSupplier(this)">−</button>
             </div>
           </td>
           <td><button type="button" onclick="deleteRow(this)">🗑️</button></td>
@@ -212,8 +203,8 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  window.previewImage = function (event) {
-    const preview = document.getElementById('preview');
+  window.previewImage = function (event, input) {
+    const preview = input.nextElementSibling;
     if (preview && event.target.files[0]) {
       preview.src = URL.createObjectURL(event.target.files[0]);
       preview.style.display = 'block';
@@ -221,12 +212,13 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   window.checkDuplicate = function (input) {
+    const group = input.closest('.supplier-group');
+    const errorBox = input.closest('td').querySelector('.supplier-error');
     const value = input.value.trim().toLowerCase();
-    const errorBox = document.getElementById('supplierError');
-    if (!value || !errorBox) return;
+    if (!value || !group || !errorBox) return;
 
     errorBox.textContent = '';
-    const allInputs = document.querySelectorAll('#supplierGroup input');
+    const allInputs = group.querySelectorAll('input');
     let count = 0;
     allInputs.forEach(i => {
       if (i.value.trim().toLowerCase() === value) count++;
@@ -240,8 +232,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  window.addSupplier = function () {
-    const group = document.getElementById('supplierGroup');
+  window.addSupplier = function (button) {
+    const group = button.closest('td').querySelector('.supplier-group');
     if (!group) return;
 
     const input = document.createElement('input');
@@ -254,23 +246,21 @@ document.addEventListener("DOMContentLoaded", () => {
     group.appendChild(input);
   };
 
-  window.removeSupplier = function () {
-    const group = document.getElementById('supplierGroup');
+  window.removeSupplier = function (button) {
+    const group = button.closest('td').querySelector('.supplier-group');
+    const errorBox = button.closest('td').querySelector('.supplier-error');
     if (group && group.children.length > 1) {
       group.removeChild(group.lastChild);
-      const errorBox = document.getElementById('supplierError');
-           if (errorBox) errorBox.textContent = '';
+      if (errorBox) errorBox.textContent = '';
     }
   };
 
-  // ✅ Delete product row
   window.deleteRow = function (button) {
     const row = button.closest('tr');
     if (row) row.remove();
     updateSno();
   };
 
-  // ✅ Add new product row
   window.addProductRow = function () {
     const group = document.getElementById('productGroup');
     const firstRow = document.querySelector('.product-entry');
@@ -278,8 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const newRow = firstRow.cloneNode(true);
 
-    // Clear input values
-    newRow.querySelectorAll('input, select').forEach(el => {
+       newRow.querySelectorAll('input, select').forEach(el => {
       if (el.type === 'file') return;
       el.value = '';
       el.classList.remove('filled');
@@ -324,8 +313,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ✅ Background fill effect
-  const inputs = document.querySelectorAll("input[type='text'], input[type='number'], select");
-  inputs.forEach(input => {
+  document.querySelectorAll("input[type='text'], input[type='number'], select").forEach(input => {
     input.addEventListener("input", () => {
       if (input.value.trim() !== "") {
         input.classList.add("filled");
