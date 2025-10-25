@@ -1,97 +1,57 @@
-function addProductRow() {
-  const group = document.getElementById('productGroup');
-  const entries = group.querySelectorAll('.product-entry');
-  const lastEntry = entries[entries.length - 1];
-  const clone = lastEntry.cloneNode(true);
-
-  // Reset values
-  clone.querySelectorAll('input, select').forEach(el => {
-    if (el.type !== 'file') el.value = '';
-    if (el.tagName === 'SELECT') el.selectedIndex = 0;
-    if (el.classList.contains('image-preview')) el.style.display = 'none';
-  });
-
-  // Update supplier input names
-  const entryIndex = entries.length;
-  clone.querySelectorAll('.supplier-group input').forEach(input => {
-    input.name = `suppliers[${entryIndex}][]`;
-  });
-
-  group.appendChild(clone);
-  updateSno();
-}
-
-function deleteRow(button) {
-  const row = button.closest('tr');
-  const group = document.getElementById('productGroup');
-  if (group.children.length > 1) {
-    group.removeChild(row);
-    updateSno();
-  }
-}
-
-function updateSno() {
-  document.querySelectorAll('.product-entry').forEach((row, index) => {
-    row.querySelector('.sno').textContent = index + 1;
-    row.querySelectorAll('.supplier-group input').forEach(input => {
-      input.name = `suppliers[${index}][]`;
-    });
-  });
-}
-
-function toggleRow(button) {
-  const collapsible = button.closest('.collapsible');
-  collapsible.classList.toggle('active');
-}
-
 function previewImage(event, input) {
   const preview = input.nextElementSibling;
-  preview.src = URL.createObjectURL(event.target.files[0]);
-  preview.style.display = 'block';
+  const file = event.target.files[0];
+  if (file) {
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = 'block';
+  }
 }
 
-function addSupplier(button) {
-  const cell = button.closest('td');
-  const group = cell.querySelector('.supplier-group');
-  const row = button.closest('.product-entry');
-  const index = [...document.querySelectorAll('.product-entry')].indexOf(row);
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.name = `suppliers[${index}][]`;
-  input.placeholder = 'Supplier Name';
-  input.onblur = function () {
-    checkDuplicate(this);
-  };
-  group.appendChild(input);
+function deleteRow(btn) {
+  const row = btn.closest('tr');
+  row.remove();
 }
 
-function removeSupplier(button) {
-  const cell = button.closest('td');
-  const group = cell.querySelector('.supplier-group');
+function addProductRow() {
+  const tbody = document.getElementById('productGroup');
+  const newRow = tbody.rows[0].cloneNode(true);
+  newRow.querySelector('.sno').textContent = tbody.rows.length + 1;
+  newRow.querySelectorAll('input').forEach(input => input.value = '');
+  newRow.querySelectorAll('img').forEach(img => img.style.display = 'none');
+  newRow.querySelector('.supplier-error').textContent = '';
+  tbody.appendChild(newRow);
+}
+
+function addSupplier(btn) {
+  const group = btn.closest('td').querySelector('.supplier-group');
+  const newInput = document.createElement('input');
+  newInput.type = 'text';
+  newInput.name = 'suppliers[0][]';
+  newInput.placeholder = 'Supplier Name';
+  newInput.onblur = function () { checkDuplicate(this); };
+  group.appendChild(newInput);
+  checkDuplicate(newInput);
+}
+
+function removeSupplier(btn) {
+  const group = btn.closest('td').querySelector('.supplier-group');
   if (group.children.length > 1) {
     group.removeChild(group.lastChild);
-    cell.querySelector('.supplier-error').textContent = '';
   }
+  const errorDiv = btn.closest('td').querySelector('.supplier-error');
+  errorDiv.textContent = '';
 }
 
 function checkDuplicate(input) {
-  const value = input.value.trim().toLowerCase();
-  const cell = input.closest('td');
-  const errorBox = cell.querySelector('.supplier-error');
-  errorBox.textContent = '';
+  const group = input.closest('.supplier-group');
+  const inputs = group.querySelectorAll('input');
+  const values = Array.from(inputs).map(i => i.value.trim().toLowerCase());
+  const duplicates = values.filter((v, i, arr) => v && arr.indexOf(v) !== i);
 
-  if (!value) return;
-
-  const allInputs = cell.querySelectorAll('.supplier-group input');
-  let count = 0;
-  allInputs.forEach(i => {
-    if (i.value.trim().toLowerCase() === value) count++;
-  });
-
-  if (count > 1) {
-    errorBox.textContent = `❌ Supplier "${value}" already entered.`;
-    input.style.borderColor = 'red';
+  const errorDiv = input.closest('td').querySelector('.supplier-error');
+  if (duplicates.length > 0) {
+    errorDiv.textContent = `Duplicate supplier name: "${duplicates[0]}"`;
   } else {
-    input.style.borderColor = '';
+    errorDiv.textContent = '';
   }
 }
