@@ -134,10 +134,10 @@
         <td>
           <label>Buyer</label><input type="text" name="buyer[]" required>
           <label>Image</label><input type="file" name="image[]" accept="image/*" onchange="previewImage(event, this)">
-          <img class="image-preview" src="#" alt="Preview">
           <label>Style</label><input type="text" name="style[]">
           <label>Description</label><input type="text" name="description[]">
           <label>Department</label><input type="text" name="department[]">
+          <img class="image-preview" src="#" alt="Preview">
         </td>
         <td>
           <label>Size Range</label><input type="text" name="size_range[]">
