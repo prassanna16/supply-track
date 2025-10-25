@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <title>Product Entry Form</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <style>body {
+ <style>
+ body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(to bottom right, #d0f0f7, #eafde4);
@@ -30,7 +31,9 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
+  table-layout: fixed; /* keep this here */
 }
+
 
 th {
   background-color: #00bcd4;
@@ -88,6 +91,21 @@ input:focus, select:focus {
 .supplier-group input {
   margin-bottom: 5px;
 }
+
+/* Lock supplier column width */
+td.supplier-cell {
+  width: 220px;
+  max-width: 220px;
+  vertical-align: top;
+  word-wrap: break-word;
+}
+
+.supplier-group {
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+
 
 .supplier-buttons button {
   margin-right: 5px;
@@ -176,13 +194,16 @@ input:focus, select:focus {
               <option value="EUR">EUR</option>
             </select>
             <label>Suppliers</label>
-            <div class="supplier-group">
-              <input type="text" name="suppliers[0][]" placeholder="Supplier Name" onblur="checkDuplicate(this)">
-            </div>
-            <div class="supplier-buttons">
-              <button type="button" onclick="addSupplier(this)">+</button>
-              <button type="button" onclick="removeSupplier(this)">−</button>
-            </div>
+           <td class="supplier-cell">
+  <div class="supplier-group" id="supplierGroup">
+    <input type="text" name="suppliers[]" placeholder="Supplier Name" onblur="checkDuplicate(this)">
+  </div>
+  <div id="supplierError" class="supplier-error"></div>
+  <div class="supplier-buttons">
+    <button type="button" onclick="addSupplier()">+</button>
+    <button type="button" onclick="removeSupplier()">−</button>
+  </div>
+</td>
             <div class="supplier-error"></div>
           </td>
           <td><button type="button" onclick="deleteRow(this)">🗑️</button></td>
