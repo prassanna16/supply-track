@@ -147,6 +147,9 @@
             <label>Department</label><input type="text" name="department[]">
             <label>Image</label><input type="file" name="image[]" accept="image/*" onchange="previewImage(event, this)">
             <img class="image-preview" src="#" alt="Preview">
+            <label>PDF Document</label>
+<input type="file" name="pdf[]" accept="application/pdf">
+<span style="font-size:12px; color:#555;">(Max 2MB, PDF only)</span>
           </td>
           <td>
             <label>Size Range</label><input type="text" name="size_range[]">
@@ -308,6 +311,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+function showPDFName(input) {
+  if (input.files.length > 0) {
+    const fileName = input.files[0].name;
+    alert("Selected PDF: " + fileName);
+  }
+}
+
 </script>
+<input type="file" name="pdf[]" accept="application/pdf" onchange="showPDFName(this)">
 </body>
 </html>
