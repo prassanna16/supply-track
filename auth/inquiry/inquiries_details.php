@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
-require_once '../../includes/db_connect.php';
+require_once '../../includes/db_connect.php'; // ✅ Adjusted path
 
 // Optional search by buyer
 $buyer = isset($_GET['buyer']) ? trim($_GET['buyer']) : '';
@@ -13,15 +13,30 @@ if (!empty($buyer)) {
   $searchClause = "WHERE buyer LIKE '%$safeBuyer%'";
 }
 
+// Fetch products
 $sql = "SELECT * FROM products $searchClause ORDER BY id DESC";
 $result = $conn->query($sql);
+
+// Fetch suppliers grouped by product_id
+$supplierMap = [];
+$supplierQuery = "SELECT product_id, supplier_name FROM suppliers";
+$supplierResult = $conn->query($supplierQuery);
+if ($supplierResult && $supplierResult->num_rows > 0) {
+  while ($row = $supplierResult->fetch_assoc()) {
+    $pid = $row['product_id'];
+    if (!isset($supplierMap[$pid])) {
+      $supplierMap[$pid] = [];
+    }
+    $supplierMap[$pid][] = $row['supplier_name'];
+  }
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Inquiry Details</title>
+  <title>Product Details</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -72,7 +87,7 @@ $result = $conn->query($sql);
 </head>
 <body>
 
-<h2>Inquiry Details</h2>
+<h2>Product Details</h2>
 
 <form method="GET" action="">
   <input type="text" name="buyer" placeholder="Search by Buyer" value="<?php echo htmlspecialchars($buyer); ?>">
@@ -104,12 +119,21 @@ $result = $conn->query($sql);
         <td><?php echo htmlspecialchars($row['qty']); ?></td>
         <td><?php echo htmlspecialchars($row['currency']); ?></td>
         <td><?php echo htmlspecialchars($row['target']); ?></td>
-        <td><?php echo htmlspecialchars($row['suppliers']); ?></td>
+        <td>
+          <?php
+            $pid = $row['id'];
+            if (isset($supplierMap[$pid])) {
+              echo implode(', ', array_map('htmlspecialchars', $supplierMap[$pid]));
+            } else {
+              echo '—';
+            }
+          ?>
+        </td>
       </tr>
     <?php endwhile; ?>
   </table>
 <?php else: ?>
-  <p style="text-align:center;">No inquiry records found.</p>
+  <p style="text-align:center;">No product records found.</p>
 <?php endif; ?>
 
 <?php $conn->close(); ?>
