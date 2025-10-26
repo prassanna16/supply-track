@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $currency = $_POST['currency'][$i] ?? '';
     $imagePath = '';
 
-    // Handle image upload
+    // ✅ Handle image upload
     if (isset($_FILES['image']['name'][$i]) && $_FILES['image']['error'][$i] === UPLOAD_ERR_OK) {
       $imageName = basename($_FILES['image']['name'][$i]);
       $targetDir = __DIR__ . '/uploads/';
@@ -32,12 +32,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       }
       $uniqueName = time() . '_' . preg_replace("/[^a-zA-Z0-9.\-_]/", "", $imageName);
       $fullPath = $targetDir . $uniqueName;
-      if (move_uploaded_file($_FILES['image']['tmp_name'][$i], $fullPath)) {
-        $imagePath = 'uploads/' . $uniqueName;
+
+      if (is_uploaded_file($_FILES['image']['tmp_name'][$i])) {
+        if (move_uploaded_file($_FILES['image']['tmp_name'][$i], $fullPath)) {
+          $imagePath = $uniqueName; // ✅ Store only filename
+        }
       }
     }
 
-    // Insert product
+    // ✅ Insert product
     $stmt = $conn->prepare("INSERT INTO products (
       buyer, style, description, department, size_range, intake, season, fabric, gsm, composition, qty, target, currency, image_path
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -46,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $product_id = $stmt->insert_id;
     $stmt->close();
 
-    // Insert suppliers
+    // ✅ Insert suppliers
     if (isset($_POST['suppliers'][$i]) && is_array($_POST['suppliers'][$i])) {
       foreach ($_POST['suppliers'][$i] as $supplier) {
         $supplier = trim($supplier);
