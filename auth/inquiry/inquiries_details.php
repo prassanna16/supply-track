@@ -1,3 +1,20 @@
+<?php
+session_start();
+require_once '../includes/db_connect.php'; // Your reusable DB connection
+
+// Handle optional search by buyer
+$buyer = isset($_GET['buyer']) ? trim($_GET['buyer']) : '';
+$searchClause = '';
+if (!empty($buyer)) {
+  $safeBuyer = $conn->real_escape_string($buyer);
+  $searchClause = "WHERE buyer LIKE '%$safeBuyer%'";
+}
+
+// Fetch product records
+$sql = "SELECT * FROM products $searchClause ORDER BY id DESC";
+$result = $conn->query($sql);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +29,25 @@
     h2 {
       text-align: center;
       color: #00796b;
+    }
+    form {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      padding: 8px;
+      width: 200px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 8px 16px;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-left: 10px;
     }
     table {
       width: 100%;
@@ -36,7 +72,12 @@
 
 <h2>Product Details</h2>
 
-<?php if ($result->num_rows > 0): ?>
+<form method="GET" action="">
+  <input type="text" name="buyer" placeholder="Search by Buyer" value="<?php echo htmlspecialchars($buyer); ?>">
+  <button type="submit">Search</button>
+</form>
+
+<?php if ($result && $result->num_rows > 0): ?>
   <table>
     <tr>
       <th>S.No</th>
@@ -66,7 +107,7 @@
     <?php endwhile; ?>
   </table>
 <?php else: ?>
-  <p>No product records found.</p>
+  <p style="text-align:center;">No product records found.</p>
 <?php endif; ?>
 
 <?php $conn->close(); ?>
