@@ -4,6 +4,8 @@ ini_set('display_errors', 1);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   require_once __DIR__ . '/../../includes/db_connect.php';
+  require_once __DIR__ . '/../../vendor/autoload.php';
+  use Ilovepdf\Ilovepdf;
 
   $total = count($_POST['buyer']);
 
@@ -41,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       }
     }
 
-    // ✅ Handle PDF upload + compression
+    // ✅ Handle PDF upload + compression using iLovePDF
     if (isset($_FILES['pdf']['name'][$i]) && $_FILES['pdf']['error'][$i] === UPLOAD_ERR_OK) {
       $pdfName = basename($_FILES['pdf']['name'][$i]);
       $targetDir = __DIR__ . '/doc/';
@@ -53,22 +55,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       if (is_uploaded_file($_FILES['pdf']['tmp_name'][$i])) {
         if (move_uploaded_file($_FILES['pdf']['tmp_name'][$i], $fullPDFPath)) {
-          // Compress PDF using Ghostscript (Windows)
-          $compressedPath = $targetDir . 'compressed_' . $uniquePDF;
-          $gsCommand = "gswin64c -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=" . escapeshellarg($compressedPath) . " " . escapeshellarg($fullPDFPath);
-          exec($gsCommand);
+          try {
+            $ilovepdf = new Ilovepdf('project_public_91ffdeeb6179bd368e518196704713c3_51BdU8098a700c4b2d0623f85c0449a5a6a0c', 'secret_key_d0f0b1ab038531be6c8c29b73c3bb598_a0vrafc94b846085760789a2a7342f2de4869'); // Replace with your actual keys
+            $task = $ilovepdf->newTask('compress');
+            $task->addFile($fullPDFPath);
+            $task->execute();
+            $task->download($targetDir);
 
-          // Replace original only if compressed file is smaller and under 1MB
-          if (file_exists($compressedPath)) {
-            if (filesize($compressedPath) < filesize($fullPDFPath) && filesize($compressedPath) <= 1024 * 1024) {
-              unlink($fullPDFPath);
-              rename($compressedPath, $fullPDFPath);
-            } else {
-              unlink($compressedPath); // discard if not smaller
+            $compressedPath = $targetDir . $uniquePDF;
+            if (file_exists($compressedPath)) {
+              if (filesize($compressedPath) <= 1024 * 1024) {
+                $pdfPath = $uniquePDF;
+              } else {
+                unlink($compressedPath); // discard if too large
+              }
             }
+          } catch (Exception $e) {
+            error_log("PDF compression failed: " . $e->getMessage());
+            $pdfPath = $uniquePDF; // fallback to original
           }
-
-          $pdfPath = $uniquePDF;
         }
       }
     }
