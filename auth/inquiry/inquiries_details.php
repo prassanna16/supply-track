@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
-require_once '../../includes/db_connect.php'; // ✅ Adjusted path
+require_once '../../includes/db_connect.php'; // Adjusted path from /auth/inquiry/
 
 // Optional search by buyer
 $buyer = isset($_GET['buyer']) ? trim($_GET['buyer']) : '';
@@ -75,6 +75,7 @@ if ($supplierResult && $supplierResult->num_rows > 0) {
       padding: 12px;
       border: 1px solid #ccc;
       text-align: left;
+      vertical-align: top;
     }
     th {
       background-color: #00bcd4;
@@ -82,6 +83,12 @@ if ($supplierResult && $supplierResult->num_rows > 0) {
     }
     tr:nth-child(even) {
       background-color: #e0f2f1;
+    }
+    img.product-image {
+      width: 80px;
+      height: auto;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
@@ -107,6 +114,7 @@ if ($supplierResult && $supplierResult->num_rows > 0) {
       <th>Currency</th>
       <th>Target</th>
       <th>Suppliers</th>
+      <th>Image</th>
     </tr>
     <?php $sno = 1; while($row = $result->fetch_assoc()): ?>
       <tr>
@@ -126,6 +134,17 @@ if ($supplierResult && $supplierResult->num_rows > 0) {
               echo implode(', ', array_map('htmlspecialchars', $supplierMap[$pid]));
             } else {
               echo '—';
+            }
+          ?>
+        </td>
+        <td>
+          <?php
+            $imageFile = htmlspecialchars($row['image']); // assuming column name is 'image'
+            $imagePath = "uploads/" . $imageFile;
+            if (!empty($imageFile) && file_exists($imagePath)) {
+              echo "<img src='$imagePath' class='product-image' alt='Product Image'>";
+            } else {
+              echo 'No image';
             }
           ?>
         </td>
