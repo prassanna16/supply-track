@@ -143,7 +143,7 @@ $username = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username'
       <h2>INQUIRIES</h2>
       <div class="btn-group">
         <a href="inquiry/inquiries_new.html" class="btn">New Entry</a>
-        <a href="../components/inquiries_details.php" class="btn">Details</a>
+        <a href="inquiry/inquiries_details.php" class="btn">Details</a>
       </div>
     </div>
 
