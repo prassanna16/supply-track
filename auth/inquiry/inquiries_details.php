@@ -1,12 +1,3 @@
-<?php
-session_start();
-require_once '../includes/db_connect.php'; // ✅ Your reusable connection file
-
-// Fetch product records
-$sql = "SELECT * FROM products ORDER BY id DESC";
-$result = $conn->query($sql);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
