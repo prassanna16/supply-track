@@ -1,8 +1,11 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start();
-require_once '../includes/db_connect.php'; // Your reusable DB connection
+require_once '../includes/db_connect.php';
 
-// Handle optional search by buyer
+// Optional search by buyer
 $buyer = isset($_GET['buyer']) ? trim($_GET['buyer']) : '';
 $searchClause = '';
 if (!empty($buyer)) {
@@ -10,8 +13,7 @@ if (!empty($buyer)) {
   $searchClause = "WHERE buyer LIKE '%$safeBuyer%'";
 }
 
-// Fetch product records
-$sql = "SELECT * FROM products $searchClause ORDER BY id DESC";
+$sql = "SELECT * FROM inquiries $searchClause ORDER BY id DESC";
 $result = $conn->query($sql);
 ?>
 
@@ -19,7 +21,7 @@ $result = $conn->query($sql);
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Product Details</title>
+  <title>Inquiry Details</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -70,7 +72,7 @@ $result = $conn->query($sql);
 </head>
 <body>
 
-<h2>Product Details</h2>
+<h2>Inquiry Details</h2>
 
 <form method="GET" action="">
   <input type="text" name="buyer" placeholder="Search by Buyer" value="<?php echo htmlspecialchars($buyer); ?>">
@@ -107,7 +109,7 @@ $result = $conn->query($sql);
     <?php endwhile; ?>
   </table>
 <?php else: ?>
-  <p style="text-align:center;">No product records found.</p>
+  <p style="text-align:center;">No inquiry records found.</p>
 <?php endif; ?>
 
 <?php $conn->close(); ?>
