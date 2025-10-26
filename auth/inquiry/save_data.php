@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $target = $_POST['target'][$i] ?? 0.0;
     $currency = $_POST['currency'][$i] ?? '';
     $imagePath = '';
+    $pdfPath = '';
 
     // ✅ Handle image upload
     if (isset($_FILES['image']['name'][$i]) && $_FILES['image']['error'][$i] === UPLOAD_ERR_OK) {
@@ -35,16 +36,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       if (is_uploaded_file($_FILES['image']['tmp_name'][$i])) {
         if (move_uploaded_file($_FILES['image']['tmp_name'][$i], $fullPath)) {
-          $imagePath = $uniqueName; // ✅ Store only filename
+          $imagePath = $uniqueName;
+        }
+      }
+    }
+
+    // ✅ Handle PDF upload + compression
+    if (isset($_FILES['pdf']['name'][$i]) && $_FILES['pdf']['error'][$i] === UPLOAD_ERR_OK) {
+      $pdfName = basename($_FILES['pdf']['name'][$i]);
+      $targetDir = __DIR__ . '/doc/';
+      if (!is_dir($targetDir)) {
+        mkdir($targetDir, 0755, true);
+      }
+      $uniquePDF = time() . '_' . preg_replace("/[^a-zA-Z0-9.\-_]/", "", $pdfName);
+      $fullPDFPath = $targetDir . $uniquePDF;
+
+      if (is_uploaded_file($_FILES['pdf']['tmp_name'][$i])) {
+        if (move_uploaded_file($_FILES['pdf']['tmp_name'][$i], $fullPDFPath)) {
+          // Compress PDF using Ghostscript (Windows)
+          $compressedPath = $targetDir . 'compressed_' . $uniquePDF;
+          $gsCommand = "gswin64c -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=" . escapeshellarg($compressedPath) . " " . escapeshellarg($fullPDFPath);
+          exec($gsCommand);
+
+          // Replace original only if compressed file is smaller and under 1MB
+          if (file_exists($compressedPath)) {
+            if (filesize($compressedPath) < filesize($fullPDFPath) && filesize($compressedPath) <= 1024 * 1024) {
+              unlink($fullPDFPath);
+              rename($compressedPath, $fullPDFPath);
+            } else {
+              unlink($compressedPath); // discard if not smaller
+            }
+          }
+
+          $pdfPath = $uniquePDF;
         }
       }
     }
 
     // ✅ Insert product
     $stmt = $conn->prepare("INSERT INTO products (
-      buyer, style, description, department, size_range, intake, season, fabric, gsm, composition, qty, target, currency, image_path
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssssssdiis", $buyer, $style, $description, $department, $size_range, $intake, $season, $fabric, $gsm, $composition, $qty, $target, $currency, $imagePath);
+      buyer, style, description, department, size_range, intake, season, fabric, gsm, composition, qty, target, currency, image_path, pdf_path
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssssssssdiisss", $buyer, $style, $description, $department, $size_range, $intake, $season, $fabric, $gsm, $composition, $qty, $target, $currency, $imagePath, $pdfPath);
     $stmt->execute();
     $product_id = $stmt->insert_id;
     $stmt->close();
@@ -66,7 +99,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $conn->close();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
