@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $currency = $_POST['currency'][$i] ?? '';
     $imagePath = '';
 
-    // Handle image upload
+    // ✅ Handle image upload
     if (isset($_FILES['image']['name'][$i]) && $_FILES['image']['error'][$i] === UPLOAD_ERR_OK) {
       $imageName = basename($_FILES['image']['name'][$i]);
       $targetDir = __DIR__ . '/uploads/';
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       }
     }
 
-    // Insert product
+    // ✅ Insert product
     $stmt = $conn->prepare("INSERT INTO products (
       buyer, style, description, department, size_range, intake, season, fabric, gsm, composition, qty, target, currency, image_path
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $product_id = $stmt->insert_id;
     $stmt->close();
 
-    // Insert suppliers
+    // ✅ Insert suppliers
     if (isset($_POST['suppliers'][$i]) && is_array($_POST['suppliers'][$i])) {
       foreach ($_POST['suppliers'][$i] as $supplier) {
         $supplier = trim($supplier);
@@ -86,14 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       font-size: 18px;
       animation: fadein 0.5s, fadeout 0.5s 2.5s;
     }
-    @keyframes fadein {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
-    @keyframes fadeout {
-      from {opacity: 1;}
-      to {opacity: 0;}
-    }
+    @keyframes fadein { from {opacity: 0;} to {opacity: 1;} }
+    @keyframes fadeout { from {opacity: 1;} to {opacity: 0;} }
     .btn {
       margin-top: 40px;
       padding: 12px 24px;
@@ -113,14 +107,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 
   <div class="toast">✅ All entries saved successfully!</div>
-
   <br><br>
   <a href="dashboard.php" class="btn">Go to Dashboard</a>
 
   <script>
-    // Refresh the input page after 3 seconds
     setTimeout(function() {
-      window.location.href = "inquiries_new.html"; // Adjust if your input form has a different name
+      window.location.href = "inquiries_new.html"; // Adjust if needed
     }, 3000);
   </script>
 
