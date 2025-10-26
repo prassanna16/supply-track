@@ -110,6 +110,31 @@
       cursor: pointer;
       margin: 0 10px;
     }
+    .pdf-drop-zone {
+  border: 2px dashed #00796b;
+  padding: 20px;
+  text-align: center;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  margin-top: 10px;
+  position: relative;
+}
+.pdf-drop-zone:hover {
+  background-color: #e0f2f1;
+}
+.pdf-drop-zone p {
+  margin: 0;
+  color: #00796b;
+  font-weight: bold;
+}
+.pdf-filename {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
     @media (max-width: 768px) {
       td, th {
         display: block;
@@ -147,9 +172,11 @@
             <label>Department</label><input type="text" name="department[]">
             <label>Image</label><input type="file" name="image[]" accept="image/*" onchange="previewImage(event, this)">
             <img class="image-preview" src="#" alt="Preview">
-            <label>PDF Document</label>
-<input type="file" name="pdf[]" accept="application/pdf">
-<span style="font-size:12px; color:#555;">(Max 2MB, PDF only)</span>
+            <div class="pdf-drop-zone" ondragover="event.preventDefault()" ondrop="handlePDFDrop(event, this)">
+            <p>📄 Drag & drop PDF here or click to upload</p>
+            <input type="file" name="pdf[]" accept="application/pdf" onchange="handlePDFSelect(this)" hidden>
+            <span class="pdf-filename" style="font-size:12px; color:#555;">(Max 2MB, PDF only)</span>
+          </div>
           </td>
           <td>
             <label>Size Range</label><input type="text" name="size_range[]">
@@ -312,14 +339,34 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-function showPDFName(input) {
-  if (input.files.length > 0) {
-    const fileName = input.files[0].name;
-    alert("Selected PDF: " + fileName);
+function handlePDFDrop(event, dropZone) {
+  event.preventDefault();
+  const input = dropZone.querySelector('input[type="file"]');
+  const file = event.dataTransfer.files[0];
+  if (file && file.type === 'application/pdf') {
+    input.files = event.dataTransfer.files;
+    dropZone.querySelector('.pdf-filename').textContent = file.name;
+  } else {
+    alert("Please drop a valid PDF file.");
   }
 }
 
+function handlePDFSelect(input) {
+  const dropZone = input.closest('.pdf-drop-zone');
+  if (input.files.length > 0) {
+    dropZone.querySelector('.pdf-filename').textContent = input.files[0].name;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.pdf-drop-zone').forEach(zone => {
+    zone.addEventListener('click', () => {
+      const input = zone.querySelector('input[type="file"]');
+      input.click();
+    });
+  });
+});
+
 </script>
-<input type="file" name="pdf[]" accept="application/pdf" onchange="showPDFName(this)">
 </body>
 </html>
