@@ -2,10 +2,13 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+require_once __DIR__ . '/../../includes/db_connect.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
+use Ilovepdf\Ilovepdf;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  require_once __DIR__ . '/../../includes/db_connect.php';
-  require_once __DIR__ . '/../../vendor/autoload.php';
-  use Ilovepdf\Ilovepdf;
+  // your logic here...
+
 
   $total = count($_POST['buyer']);
 
