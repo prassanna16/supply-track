@@ -82,10 +82,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // ✅ Insert product
-    $stmt = $conn->prepare("INSERT INTO products (
-      buyer, style, description, department, size_range, intake, season, fabric, gsm, composition, qty, target, currency, image_path, pdf_path
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssssssdiisss", $buyer, $style, $description, $department, $size_range, $intake, $season, $fabric, $gsm, $composition, $qty, $target, $currency, $imagePath, $pdfPath);
+   $stmt = $conn->prepare("INSERT INTO products (
+  buyer, style, description, department, size_range, intake, season, fabric, gsm, composition, qty, target, currency, image_path, pdf_path
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+$stmt->bind_param(
+  "ssssssssssddsss", // ✅ 15 characters matching 15 variables
+  $buyer,         // s
+  $style,         // s
+  $description,   // s
+  $department,    // s
+  $size_range,    // s
+  $intake,        // s
+  $season,        // s
+  $fabric,        // s
+  $gsm,           // s
+  $composition,   // s
+  $qty,           // d (decimal or float)
+  $target,        // d (decimal or float)
+  $currency,      // s
+  $imagePath,     // s
+  $pdfPath        // s
+);
     $stmt->execute();
     $product_id = $stmt->insert_id;
     $stmt->close();
