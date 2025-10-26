@@ -13,7 +13,7 @@ if (!empty($buyer)) {
   $searchClause = "WHERE buyer LIKE '%$safeBuyer%'";
 }
 
-$sql = "SELECT * FROM inquiries $searchClause ORDER BY id DESC";
+$sql = "SELECT * FROM products $searchClause ORDER BY id DESC";
 $result = $conn->query($sql);
 ?>
 
