@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
-require_once '../includes/db_connect.php';
+require_once '/../../includes/db_connect.php';
 
 // Optional search by buyer
 $buyer = isset($_GET['buyer']) ? trim($_GET['buyer']) : '';
