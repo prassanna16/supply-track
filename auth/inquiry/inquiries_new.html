@@ -5,13 +5,13 @@
   <title>Product Entry Form</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    /* [Your original styling preserved exactly as provided] */
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(to bottom right, #d0f0f7, #eafde4);
       padding: 40px;
     }
-
     .form-container {
       background-color: #ffffff;
       border-radius: 20px;
@@ -20,48 +20,41 @@
       max-width: 1100px;
       margin: auto;
     }
-
     h2 {
       text-align: center;
       color: #00796b;
       margin-bottom: 30px;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 20px;
       table-layout: fixed;
     }
-
     th {
       background-color: #00bcd4;
       color: white;
       padding: 12px;
       text-align: left;
     }
-
     td {
       padding: 15px;
       vertical-align: top;
       background-color: #f0fdfc;
       border-bottom: 1px solid #ddd;
     }
-
     .sno {
       width: 30px;
       min-width: 30px;
       text-align: center;
       font-weight: bold;
     }
-
     label {
       display: block;
       margin-top: 10px;
       font-weight: bold;
       color: #00796b;
     }
-
     input, select {
       width: 100%;
       padding: 8px;
@@ -70,12 +63,10 @@
       background-color: #e0f2f1;
       margin-top: 5px;
     }
-
     input:focus, select:focus {
       border-color: #00796b;
       outline: none;
     }
-
     .image-preview {
       width: 100px;
       height: 100px;
@@ -85,7 +76,6 @@
       border-radius: 8px;
       display: none;
     }
-
     .supplier-group {
       display: flex;
       flex-direction: column;
@@ -93,7 +83,6 @@
       max-height: 150px;
       overflow-y: auto;
     }
-
     .supplier-buttons button {
       margin-right: 5px;
       padding: 6px 12px;
@@ -103,17 +92,14 @@
       color: white;
       cursor: pointer;
     }
-
     .supplier-error {
       color: red;
       font-size: 0.9em;
     }
-
     .actions {
       text-align: center;
       margin-top: 20px;
     }
-
     .actions button {
       padding: 10px 20px;
       border-radius: 8px;
@@ -124,7 +110,6 @@
       cursor: pointer;
       margin: 0 10px;
     }
-
     @media (max-width: 768px) {
       td, th {
         display: block;
@@ -181,7 +166,7 @@
             </select>
             <label>Suppliers</label>
             <div class="supplier-group">
-              <input type="text" name="suppliers[]" placeholder="Supplier Name" onblur="checkDuplicate(this)">
+              <input type="text" name="suppliers[0][]" placeholder="Supplier Name" onblur="checkDuplicate(this)">
             </div>
             <div class="supplier-error"></div>
             <div class="supplier-buttons">
@@ -233,12 +218,14 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   window.addSupplier = function (button) {
-    const group = button.closest('td').querySelector('.supplier-group');
+    const row = button.closest('tr');
+    const index = Array.from(document.querySelectorAll('.product-entry')).indexOf(row);
+    const group = row.querySelector('.supplier-group');
     if (!group) return;
 
     const input = document.createElement('input');
     input.type = 'text';
-    input.name = 'suppliers[]';
+    input.name = `suppliers[${index}][]`;
     input.placeholder = 'Supplier Name';
     input.onblur = function () {
       checkDuplicate(this);
@@ -263,31 +250,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addProductRow = function () {
     const group = document.getElementById('productGroup');
-    const firstRow = document.querySelector('.product-entry');
-    if (!group || !firstRow) return;
+        const newRow = firstRow.cloneNode(true);
 
-    const newRow = firstRow.cloneNode(true);
-
-       newRow.querySelectorAll('input, select').forEach(el => {
+    newRow.querySelectorAll('input, select').forEach(el => {
       if (el.type === 'file') return;
       el.value = '';
       el.classList.remove('filled');
     });
 
-    // Reset image preview
     const preview = newRow.querySelector('.image-preview');
     if (preview) {
       preview.src = '#';
       preview.style.display = 'none';
     }
 
-    // Reset supplier group
     const supplierGroup = newRow.querySelector('.supplier-group');
+    const index = document.querySelectorAll('.product-entry').length;
     if (supplierGroup) {
       supplierGroup.innerHTML = '';
       const input = document.createElement('input');
       input.type = 'text';
-      input.name = 'suppliers[]';
+      input.name = `suppliers[${index}][]`;
       input.placeholder = 'Supplier Name';
       input.onblur = function () {
         checkDuplicate(this);
@@ -295,7 +278,6 @@ document.addEventListener("DOMContentLoaded", () => {
       supplierGroup.appendChild(input);
     }
 
-    // Reset supplier error
     const supplierError = newRow.querySelector('.supplier-error');
     if (supplierError) supplierError.textContent = '';
 
@@ -303,16 +285,19 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSno();
   };
 
-  // ✅ Update S.No values
   function updateSno() {
     const rows = document.querySelectorAll('.product-entry');
     rows.forEach((row, index) => {
       const snoCell = row.querySelector('.sno');
       if (snoCell) snoCell.textContent = index + 1;
+
+      const supplierInputs = row.querySelectorAll('.supplier-group input');
+      supplierInputs.forEach(input => {
+        input.name = `suppliers[${index}][]`;
+      });
     });
   }
 
-  // ✅ Background fill effect
   document.querySelectorAll("input[type='text'], input[type='number'], select").forEach(input => {
     input.addEventListener("input", () => {
       if (input.value.trim() !== "") {
