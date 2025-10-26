@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
-require_once '../../includes/db_connect.php'; // Adjusted path from /auth/inquiry/
+require_once '../../includes/db_connect.php'; // Adjusted path
 
 // Optional search by buyer
 $buyer = isset($_GET['buyer']) ? trim($_GET['buyer']) : '';
@@ -97,7 +97,7 @@ if ($supplierResult && $supplierResult->num_rows > 0) {
 <h2>Product Details</h2>
 
 <form method="GET" action="">
-  <input type="text" name="buyer" placeholder="Search by Buyer" value="<?php echo htmlspecialchars($buyer); ?>">
+  <input type="text" name="buyer" placeholder="Search by Buyer" value="<?php echo htmlspecialchars($buyer ?? '', ENT_QUOTES); ?>">
   <button type="submit">Search</button>
 </form>
 
@@ -119,19 +119,19 @@ if ($supplierResult && $supplierResult->num_rows > 0) {
     <?php $sno = 1; while($row = $result->fetch_assoc()): ?>
       <tr>
         <td><?php echo $sno++; ?></td>
-        <td><?php echo htmlspecialchars($row['buyer']); ?></td>
-        <td><?php echo htmlspecialchars($row['style']); ?></td>
-        <td><?php echo htmlspecialchars($row['description']); ?></td>
-        <td><?php echo htmlspecialchars($row['department']); ?></td>
-        <td><?php echo htmlspecialchars($row['size_range']); ?></td>
-        <td><?php echo htmlspecialchars($row['qty']); ?></td>
-        <td><?php echo htmlspecialchars($row['currency']); ?></td>
-        <td><?php echo htmlspecialchars($row['target']); ?></td>
+        <td><?php echo htmlspecialchars($row['buyer'] ?? '', ENT_QUOTES); ?></td>
+        <td><?php echo htmlspecialchars($row['style'] ?? '', ENT_QUOTES); ?></td>
+        <td><?php echo htmlspecialchars($row['description'] ?? '', ENT_QUOTES); ?></td>
+        <td><?php echo htmlspecialchars($row['department'] ?? '', ENT_QUOTES); ?></td>
+        <td><?php echo htmlspecialchars($row['size_range'] ?? '', ENT_QUOTES); ?></td>
+        <td><?php echo htmlspecialchars($row['qty'] ?? '', ENT_QUOTES); ?></td>
+        <td><?php echo htmlspecialchars($row['currency'] ?? '', ENT_QUOTES); ?></td>
+        <td><?php echo htmlspecialchars($row['target'] ?? '', ENT_QUOTES); ?></td>
         <td>
           <?php
-            $pid = $row['id'];
+            $pid = $row['id'] ?? 0;
             if (isset($supplierMap[$pid])) {
-              echo implode(', ', array_map('htmlspecialchars', $supplierMap[$pid]));
+              echo implode(', ', array_map(fn($s) => htmlspecialchars($s, ENT_QUOTES), $supplierMap[$pid]));
             } else {
               echo '—';
             }
@@ -139,9 +139,9 @@ if ($supplierResult && $supplierResult->num_rows > 0) {
         </td>
         <td>
           <?php
-            $imageFile = htmlspecialchars($row['image']); // assuming column name is 'image'
+            $imageFile = $row['image_path'] ?? '';
             $imagePath = "uploads/" . $imageFile;
-            if (!empty($imageFile) && file_exists($imagePath)) {
+            if (!empty($imageFile) && file_exists(__DIR__ . "/uploads/" . $imageFile)) {
               echo "<img src='$imagePath' class='product-image' alt='Product Image'>";
             } else {
               echo 'No image';
