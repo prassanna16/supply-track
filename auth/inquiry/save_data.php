@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $product_id = $stmt->insert_id;
     $stmt->close();
 
-    // Insert suppliers (multiple per product row)
+    // Insert suppliers
     if (isset($_POST['suppliers'][$i]) && is_array($_POST['suppliers'][$i])) {
       foreach ($_POST['suppliers'][$i] as $supplier) {
         $supplier = trim($supplier);
@@ -62,6 +62,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   $conn->close();
-  echo "<h3 style='text-align:center; color:green;'>✅ All entries saved successfully!</h3>";
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Saved</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0fdfc;
+      text-align: center;
+      padding: 60px;
+    }
+    .toast {
+      display: inline-block;
+      background-color: #4caf50;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 8px;
+      font-size: 18px;
+      animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+    @keyframes fadein {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    @keyframes fadeout {
+      from {opacity: 1;}
+      to {opacity: 0;}
+    }
+    .btn {
+      margin-top: 40px;
+      padding: 12px 24px;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      text-decoration: none;
+    }
+    .btn:hover {
+      background-color: #004d40;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="toast">✅ All entries saved successfully!</div>
+
+  <br><br>
+  <a href="dashboard.php" class="btn">Go to Dashboard</a>
+
+  <script>
+    // Refresh the input page after 3 seconds
+    setTimeout(function() {
+      window.location.href = "inquiries_new.html"; // Adjust if your input form has a different name
+    }, 3000);
+  </script>
+
+</body>
+</html>
