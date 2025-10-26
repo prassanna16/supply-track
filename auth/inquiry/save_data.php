@@ -47,8 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $product_id = $stmt->insert_id;
     $stmt->close();
 
-   // Insert suppliers
-    if (!empty($_POST['suppliers'][$i])) {
+    // ✅ Insert suppliers
+    if (isset($_POST['suppliers'][$i]) && is_array($_POST['suppliers'][$i])) {
       foreach ($_POST['suppliers'][$i] as $supplier) {
         $supplier = trim($supplier);
         if ($supplier !== '') {
