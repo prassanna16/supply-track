@@ -36,6 +36,7 @@ while ($row = $supplierResult->fetch_assoc()) {
     .container {
       display: flex;
       height: 100vh;
+      border-radius: 20px;
     }
     .sidebar {
       width: 250px;
