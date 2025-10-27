@@ -126,8 +126,8 @@ while ($row = $supplierResult->fetch_assoc()) {
     }
     button[type="submit"] {
       padding: 8px 16px;
-      background-color: #B22222;
-      color: white;
+      background-color: #f7f0f0ff;
+      color: black;
       border: none;
       border-radius: 6px;
       cursor: pointer;
