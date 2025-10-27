@@ -46,12 +46,12 @@ while ($row = $supplierResult->fetch_assoc()) {
       border-right: 1px solid #ccc;
     }
     .sidebar img {
-  width: 240px;
+  width: 320px;
   max-width: 100%;
   height: auto;
   margin-bottom: 20px;
     }
-    
+
     .sidebar h2 {
       font-size: 18px;
       margin-top: 20px;
