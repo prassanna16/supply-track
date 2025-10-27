@@ -178,7 +178,7 @@ while ($row = $supplierResult->fetch_assoc()) {
 
 <div class="container">
   <div class="sidebar">
-    <img src="../assets/image/logo-avis.jpg" alt="Logo">
+    <img src="../assets/image/bck-tee.jpg" alt="Logo">
 
     <h2 onclick="toggleSection('inquiriesGroup', 'arrow1')">
       INQUIRIES <span id="arrow1" class="arrow">▼</span>
