@@ -39,10 +39,11 @@ while ($row = $supplierResult->fetch_assoc()) {
     }
     .sidebar {
       width: 250px;
-      background-color: #333;
-      color: white;
+      background-color: #fff;
+      color: #000;
       padding: 20px;
       box-sizing: border-box;
+      border-right: 1px solid #ccc;
     }
     .sidebar img {
       width: 180px;
@@ -52,25 +53,39 @@ while ($row = $supplierResult->fetch_assoc()) {
       font-size: 18px;
       margin-top: 20px;
       cursor: pointer;
-    }
-    .sidebar .btn-group {
-      margin-top: 10px;
       display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #000;
+    }
+    .arrow {
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+    .arrow.rotate {
+      transform: rotate(180deg);
+    }
+    .btn-group {
+      display: none;
       flex-direction: column;
       gap: 10px;
+      margin-top: 10px;
+      padding-left: 10px;
     }
-    .sidebar .btn {
-      background-color: #B22222;
-      color: white;
-      border: none;
+    .btn-group.show {
+      display: flex;
+    }
+    .btn {
+      background-color: #fff;
+      color: #000;
+      border: 1px solid #B22222;
       padding: 10px;
-      text-align: left;
       border-radius: 5px;
       text-decoration: none;
       font-weight: bold;
     }
-    .sidebar .btn:hover {
-      background-color: #8B1A1A;
+    .btn:hover {
+      background-color: #f2f2f2;
     }
     .main {
       flex: 1;
@@ -126,8 +141,8 @@ while ($row = $supplierResult->fetch_assoc()) {
     }
     button[type="submit"] {
       padding: 8px 16px;
-      background-color: #f7f0f0ff;
-      color: black;
+      background-color: #B22222;
+      color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
@@ -161,18 +176,27 @@ while ($row = $supplierResult->fetch_assoc()) {
 <div class="container">
   <div class="sidebar">
     <img src="../assets/image/logo-avis.jpg" alt="Logo">
-    <h2>INQUIRIES</h2>
-    <div class="btn-group">
+
+    <h2 onclick="toggleSection('inquiriesGroup', 'arrow1')">
+      INQUIRIES <span id="arrow1" class="arrow">▼</span>
+    </h2>
+    <div class="btn-group" id="inquiriesGroup">
       <a href="inquiry/inquiries_new.html" class="btn">New Entry</a>
       <a href="inquiry/inquiries_details.php" class="btn">Details</a>
     </div>
-    <h2>ORDERS</h2>
-    <div class="btn-group">
+
+    <h2 onclick="toggleSection('ordersGroup', 'arrow2')">
+      ORDERS <span id="arrow2" class="arrow">▼</span>
+    </h2>
+    <div class="btn-group" id="ordersGroup">
       <a href="../orders/orders_new.php" class="btn">New Entry</a>
       <a href="../orders/orders_details.php" class="btn">Details</a>
     </div>
-    <h2>SUPPLIERS</h2>
-    <div class="btn-group">
+
+    <h2 onclick="toggleSection('suppliersGroup', 'arrow3')">
+      SUPPLIERS <span id="arrow3" class="arrow">▼</span>
+    </h2>
+    <div class="btn-group" id="suppliersGroup">
       <a href="../suppliers/suppliers_new.php" class="btn">New Entry</a>
       <a href="../suppliers/suppliers_data.php" class="btn">DATA</a>
     </div>
@@ -231,7 +255,7 @@ while ($row = $supplierResult->fetch_assoc()) {
               <?php
                 $imageFile = $row['image_path'];
                 $imagePath = "inquiry/uploads/" . $imageFile;
-                if (!empty($imageFile) && file_exists(__DIR__ . "/inquiry/uploads/" . $imageFile)) {
+                                if (!empty($imageFile) && file_exists(__DIR__ . "/inquiry/uploads/" . $imageFile)) {
                   echo "<img src='$imagePath' class='product-image' alt='Product Image'>";
                 } else {
                   echo 'No image';
@@ -259,6 +283,15 @@ while ($row = $supplierResult->fetch_assoc()) {
     <?php endif; ?>
   </div>
 </div>
+
+<script>
+  function toggleSection(id, arrowId) {
+    const group = document.getElementById(id);
+    const arrow = document.getElementById(arrowId);
+    group.classList.toggle('show');
+    arrow.classList.toggle('rotate');
+  }
+</script>
 
 <?php $conn->close(); ?>
 </body>
