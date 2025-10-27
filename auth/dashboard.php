@@ -46,7 +46,7 @@ while ($row = $supplierResult->fetch_assoc()) {
       border-right: 1px solid #ccc;
     }
     .sidebar img {
-  width: 320px;
+  width: 360px;
   max-width: 100%;
   height: auto;
   margin-bottom: 20px;
