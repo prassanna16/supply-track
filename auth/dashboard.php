@@ -253,8 +253,7 @@ if ($supplierResult && $supplierResult->num_rows > 0) {
           <td><?php echo htmlspecialchars($row['size_range'] ?? '', ENT_QUOTES); ?></td>
           <td><?php echo htmlspecialchars($row['qty'] ?? '', ENT_QUOTES); ?></td>
           <td><?php echo htmlspecialchars($row['currency'] ?? '', ENT_QUOTES); ?></td>
-          <td><?php echo htmlspecialchars
-                    <td><?php echo htmlspecialchars($row['target'] ?? '', ENT_QUOTES); ?></td>
+          <td><?php echo htmlspecialchars($row['target'] ?? '', ENT_QUOTES); ?></td>
           <td>
             <?php
               $pid = $row['id'] ?? 0;
