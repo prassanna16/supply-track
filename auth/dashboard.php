@@ -345,6 +345,7 @@ img.product-image {
     </div>
     <div class="btn-group" id="inquiriesGroup">
       <a href="#" class="btn">New Entry</a>
+      <a href="#" class="btn">Sup. Price Entry</a>
       <a href="#" class="btn">Details</a>
     </div>
   </div>
