@@ -185,7 +185,7 @@ while ($row = $supplierResult->fetch_assoc()) {
 }
 .content-wrapper {
   width: 100%;
-  max-width: 1600px; /* optional: limits width for readability */
+  max-width: 1500px; /* optional: limits width for readability */
 }
 
 .top-bar {
@@ -196,6 +196,7 @@ while ($row = $supplierResult->fetch_assoc()) {
 }
 
 h2 {
+  align: center;
   color: #B22222;
   margin-bottom: 10px;
 }
