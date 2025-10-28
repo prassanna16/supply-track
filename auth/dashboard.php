@@ -177,7 +177,7 @@ while ($row = $supplierResult->fetch_assoc()) {
 
 .main {
   flex: 1;
-  padding: 30px;
+  padding: 10px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
