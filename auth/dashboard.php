@@ -196,7 +196,6 @@ while ($row = $supplierResult->fetch_assoc()) {
 }
 
 h2 {
-  align: center;
   color: #B22222;
   margin-bottom: 10px;
 }
