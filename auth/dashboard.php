@@ -33,35 +33,45 @@ while ($row = $supplierResult->fetch_assoc()) {
       font-family: 'Segoe UI', sans-serif;
       background-color: #f9f9f9;
     }
-    .container {
-      display: flex;
-      height: 100vh;
-          }
-    .sidebar {
-      width: 250px;
-      background-color: #fff;
-      color: #000;
-      padding: 20px;
-      box-sizing: border-box;
-      border-right: 1px solid #ccc;
-    }
-    .sidebar img {
-  width: 240px;
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 20px;
-    }
+      .top-nav {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 15px 30px;
+  border-radius: 30px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin: 20px;
+  gap: 30px;
+  flex-wrap: wrap;
+}
 
-    .sidebar h2 {
-      font-size: 18px;
-      margin-top: 20px;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #000;
-    }
-    .arrow {
+.logo {
+  height: 50px;
+  border-radius: 12px;
+}
+
+.nav-section {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.nav-item {
+  background-color: #B22222;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-item:hover {
+  background-color: #8B1A1A;
+}
+
+       .arrow {
       display: inline-block;
       transition: transform 0.3s ease;
     }
@@ -176,34 +186,35 @@ while ($row = $supplierResult->fetch_assoc()) {
 </head>
 <body>
 
-<div class="container">
-  <div class="sidebar">
-    <img src="../assets/image/logo-avis.jpg" alt="Logo">
-
-    <h2 onclick="toggleSection('inquiriesGroup', 'arrow1')">
+<div class="top-nav">
+  <img src="../assets/image/logo-avis.jpg" alt="Logo" class="logo">
+  
+  <div class="nav-section">
+    <div class="nav-item" onclick="toggleSection('inquiriesGroup', 'arrow1')">
       INQUIRIES <span id="arrow1" class="arrow">▼</span>
-    </h2>
+    </div>
     <div class="btn-group" id="inquiriesGroup">
       <a href="inquiry/inquiries_new.html" class="btn">New Entry</a>
       <a href="inquiry/inquiries_details.php" class="btn">Details</a>
     </div>
 
-    <h2 onclick="toggleSection('ordersGroup', 'arrow2')">
+    <div class="nav-item" onclick="toggleSection('ordersGroup', 'arrow2')">
       ORDERS <span id="arrow2" class="arrow">▼</span>
-    </h2>
+    </div>
     <div class="btn-group" id="ordersGroup">
       <a href="../orders/orders_new.php" class="btn">New Entry</a>
       <a href="../orders/orders_details.php" class="btn">Details</a>
     </div>
 
-    <h2 onclick="toggleSection('suppliersGroup', 'arrow3')">
+    <div class="nav-item" onclick="toggleSection('suppliersGroup', 'arrow3')">
       SUPPLIERS <span id="arrow3" class="arrow">▼</span>
-    </h2>
+    </div>
     <div class="btn-group" id="suppliersGroup">
       <a href="../suppliers/suppliers_new.php" class="btn">New Entry</a>
       <a href="../suppliers/suppliers_data.php" class="btn">DATA</a>
     </div>
   </div>
+</div>
 
   <div class="main">
     <div class="top-bar">
