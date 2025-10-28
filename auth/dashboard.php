@@ -157,18 +157,19 @@ while ($row = $supplierResult->fetch_assoc()) {
 }
 
 .btn {
-  background-color: #fff;
-  color: #000;
-  border: 1px solid #B22222;
+  background-color: #000;
+  color: #fff;
+  border: none;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 6px;
   text-decoration: none;
   font-weight: bold;
 }
 
 .btn:hover {
-  background-color: #f2f2f2;
+  background-color: #333;
 }
+
 
 .main {
   flex: 1;
