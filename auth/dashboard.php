@@ -111,6 +111,7 @@ while ($row = $supplierResult->fetch_assoc()) {
 }
 
 .nav-item {
+  position: relative;
   background-color: #B22222;
   color: white;
   padding: 10px 20px;
@@ -121,6 +122,7 @@ while ($row = $supplierResult->fetch_assoc()) {
   align-items: center;
   gap: 8px;
 }
+
 
 .nav-item:hover {
   background-color: #8B1A1A;
@@ -137,11 +139,18 @@ while ($row = $supplierResult->fetch_assoc()) {
 
 .btn-group {
   display: none;
+  position: absolute;
+  background-color: #000;
+  border-radius: 12px;
+  padding: 10px;
+  margin-top: 5px;
+  z-index: 5;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   flex-direction: column;
-  gap: 10px;
-  margin-top: 10px;
-  padding-left: 10px;
+  gap: 8px;
+  min-width: 160px;
 }
+
 
 .btn-group.show {
   display: flex;
@@ -255,11 +264,7 @@ img.product-image {
     padding: 8px 16px;
   }
 
-  .btn-group {
-    padding-left: 0;
-  }
-
-  .main {
+    .main {
     padding: 20px;
   }
 
