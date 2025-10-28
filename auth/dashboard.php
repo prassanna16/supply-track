@@ -199,7 +199,7 @@ while ($row = $supplierResult->fetch_assoc()) {
 
 .content-wrapper {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1500px;
 }
 
 .top-bar {
