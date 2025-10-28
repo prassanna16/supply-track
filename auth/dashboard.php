@@ -185,7 +185,7 @@ while ($row = $supplierResult->fetch_assoc()) {
 }
 .content-wrapper {
   width: 100%;
-  max-width: 1200px; /* optional: limits width for readability */
+  max-width: 1600px; /* optional: limits width for readability */
 }
 
 .top-bar {
