@@ -107,8 +107,9 @@ while ($row = $supplierResult->fetch_assoc()) {
 .nav-wrapper {
   position: relative;
   display: inline-block;
+  z-index: 10; /* ensures dropdown stays above other elements */
+  overflow: visible;
 }
-
 .nav-item {
   background-color: #B22222;
   color: white;
@@ -141,13 +142,12 @@ while ($row = $supplierResult->fetch_assoc()) {
   visibility: hidden;
   pointer-events: none;
   position: absolute;
-  top: 100%;
+  top: calc(100% + 8px); /* ensures dropdown appears below the button */
   left: 0;
   background-color: #000;
   border-radius: 12px;
   padding: 10px;
-  margin-top: 8px;
-  z-index: 5;
+  z-index: 999;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   flex-direction: column;
   gap: 8px;
@@ -155,12 +155,14 @@ while ($row = $supplierResult->fetch_assoc()) {
   transform: translateY(-10px);
   transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
 }
+
 .btn-group.show {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
   transform: translateY(0);
 }
+
 .btn {
   background-color: #000;
   color: #fff;
@@ -265,12 +267,10 @@ img.product-image {
   }
 
   .top-nav {
-    flex-direction: column;
-    align-items: stretch;
-    border-radius: 20px;
-    padding: 20px;
-    gap: 15px;
-  }
+  overflow: visible;
+  position: relative;
+  z-index: 5;
+}
 
   .nav-item {
     justify-content: center;
@@ -296,6 +296,24 @@ img.product-image {
     display: block;
     overflow-x: auto;
     white-space: nowrap;
+  }
+    .nav-wrapper {
+    width: 100%;
+  }
+
+  .btn-group {
+    left: 0;
+    right: 0;
+    min-width: 100%;
+    position: absolute;
+    top: calc(100% + 8px);
+    z-index: 999;
+  }
+
+  .btn {
+    text-align: center;
+    padding: 12px;
+    font-size: 14px;
   }
 }
 </style>
