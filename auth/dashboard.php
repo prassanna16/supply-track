@@ -149,7 +149,7 @@ while ($row = $supplierResult->fetch_assoc()) {
   position: absolute;
   top: calc(100% + 12px);
   left: 0;
-  background-color: #000;
+  background-color: #f7f2f2ff;
   border-radius: 12px;
   padding: 12px;
   z-index: 9999;
