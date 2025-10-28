@@ -163,20 +163,24 @@ while ($row = $supplierResult->fetch_assoc()) {
   transform: translateY(0);
 }
 
+
 .btn {
-  background-color: #f4ececff;
+  background-color: #000;
   color: #fff;
-  border: 1px solid #B22222;
-  padding: 10px;
+  border: none;
+  padding: 12px 16px;
   border-radius: 6px;
   text-decoration: none;
   font-weight: bold;
+  text-align: left;
+  white-space: nowrap;
   transition: background-color 0.3s ease;
 }
 
 .btn:hover {
   background-color: #333;
 }
+
 /* Main content */
 .main {
   flex: 1;
@@ -305,15 +309,14 @@ img.product-image {
     left: 0;
     right: 0;
     min-width: 100%;
-    position: absolute;
     top: calc(100% + 8px);
     z-index: 999;
   }
 
   .btn {
-    text-align: center;
-    padding: 12px;
     font-size: 14px;
+    padding: 14px;
+    text-align: center;
   }
 }
 </style>
