@@ -91,17 +91,10 @@ while ($row = $supplierResult->fetch_assoc()) {
 }
 
 /* Curved top navigation bar */
-.top-nav {
-  display: flex;
-  align-items: flex-start;
-  background-color: #fff;
-  padding: 15px 30px;
-  border-radius: 30px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  margin: 20px;
-  gap: 30px;
-  flex-wrap: wrap;
-  justify-content: center;
+ .top-nav {
+  overflow: visible;
+  position: relative;
+  z-index: 5;
 }
 
 .nav-wrapper {
@@ -142,16 +135,16 @@ while ($row = $supplierResult->fetch_assoc()) {
   visibility: hidden;
   pointer-events: none;
   position: absolute;
-  top: calc(100% + 8px); /* ensures dropdown appears below the button */
+  top: calc(100% + 12px); /* pushes dropdown further below the button */
   left: 0;
   background-color: #000;
   border-radius: 12px;
-  padding: 10px;
-  z-index: 999;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  padding: 12px;
+  z-index: 9999;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
   flex-direction: column;
-  gap: 8px;
-  min-width: 160px;
+  gap: 10px;
+  min-width: 180px;
   transform: translateY(-10px);
   transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
 }
@@ -162,14 +155,12 @@ while ($row = $supplierResult->fetch_assoc()) {
   pointer-events: auto;
   transform: translateY(0);
 }
-
-
 .btn {
   background-color: #000;
   color: #fff;
   border: none;
-  padding: 12px 16px;
-  border-radius: 6px;
+  padding: 14px 18px;
+  border-radius: 8px;
   text-decoration: none;
   font-weight: bold;
   text-align: left;
@@ -309,13 +300,13 @@ img.product-image {
     left: 0;
     right: 0;
     min-width: 100%;
-    top: calc(100% + 8px);
-    z-index: 999;
+    top: calc(100% + 12px);
+    z-index: 9999;
   }
 
   .btn {
-    font-size: 14px;
-    padding: 14px;
+    font-size: 15px;
+    padding: 16px;
     text-align: center;
   }
 }
