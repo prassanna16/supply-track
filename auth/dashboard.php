@@ -33,10 +33,6 @@ while ($row = $supplierResult->fetch_assoc()) {
   font-family: 'Segoe UI', sans-serif;
   background-color: #f9f9f9;
 }
-.nav-wrapper {
-  position: relative;
-  display: inline-block;
-}
 
 /* Header with logo and admin toggle */
 .header-bar {
@@ -97,7 +93,7 @@ while ($row = $supplierResult->fetch_assoc()) {
 /* Curved top navigation bar */
 .top-nav {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   background-color: #fff;
   padding: 15px 30px;
   border-radius: 30px;
@@ -108,10 +104,9 @@ while ($row = $supplierResult->fetch_assoc()) {
   justify-content: center;
 }
 
-.nav-section {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+.nav-wrapper {
+  position: relative;
+  display: inline-block;
 }
 
 .nav-item {
@@ -124,6 +119,7 @@ while ($row = $supplierResult->fetch_assoc()) {
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: background-color 0.3s ease;
 }
 
 .nav-item:hover {
@@ -139,12 +135,15 @@ while ($row = $supplierResult->fetch_assoc()) {
   transform: rotate(180deg);
 }
 
+/* Dropdown panel with fade and slide animation */
 .btn-group {
-  display: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
   position: absolute;
   top: 100%;
   left: 0;
-  background-color: #fcf8f8ff;
+  background-color: #000;
   border-radius: 12px;
   padding: 10px;
   margin-top: 8px;
@@ -153,39 +152,42 @@ while ($row = $supplierResult->fetch_assoc()) {
   flex-direction: column;
   gap: 8px;
   min-width: 160px;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
 }
-
 .btn-group.show {
-  display: flex;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
 }
-
-
 .btn {
-  background-color: #f7f0f0ff;
-  color: #0e0101ff;
+  background-color: #000;
+  color: #fff;
   border: none;
   padding: 10px;
   border-radius: 6px;
   text-decoration: none;
   font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
 .btn:hover {
-  background-color: #c7adadff;
+  background-color: #333;
 }
-
-
+/* Main content */
 .main {
   flex: 1;
-  padding: 10px;
+  padding: 30px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  align-items: center; /* centers content horizontally */
+  align-items: center;
 }
+
 .content-wrapper {
   width: 100%;
-  max-width: 1500px; /* optional: limits width for readability */
+  max-width: 1200px;
 }
 
 .top-bar {
@@ -261,18 +263,14 @@ img.product-image {
     align-self: flex-end;
     margin-top: 10px;
   }
-.top-nav {
-  display: flex;
-  align-items: flex-start;
-  background-color: #fff;
-  padding: 15px 30px;
-  border-radius: 30px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  margin: 20px;
-  gap: 30px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
+
+  .top-nav {
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: 20px;
+    padding: 20px;
+    gap: 15px;
+  }
 
   .nav-item {
     justify-content: center;
@@ -280,7 +278,7 @@ img.product-image {
     padding: 8px 16px;
   }
 
-    .main {
+  .main {
     padding: 20px;
   }
 
@@ -426,12 +424,56 @@ img.product-image {
 </div>
 
 <script>
+  let activeDropdown = null;
+  let activeArrow = null;
+  let hideTimeout = null;
+
   function toggleSection(id, arrowId) {
     const group = document.getElementById(id);
     const arrow = document.getElementById(arrowId);
-    group.classList.toggle('show');
-    arrow.classList.toggle('rotate');
+    const isOpen = group.classList.contains('show');
+
+    // Close all dropdowns
+    document.querySelectorAll('.btn-group').forEach(g => g.classList.remove('show'));
+    document.querySelectorAll('.arrow').forEach(a => a.classList.remove('rotate'));
+    clearTimeout(hideTimeout);
+
+    if (!isOpen) {
+      group.classList.add('show');
+      arrow.classList.add('rotate');
+      activeDropdown = group;
+      activeArrow = arrow;
+
+      // Auto-hide after 5 seconds
+      hideTimeout = setTimeout(() => {
+        group.classList.remove('show');
+        arrow.classList.remove('rotate');
+        activeDropdown = null;
+        activeArrow = null;
+      }, 5000);
+    } else {
+      // Toggle off if already open
+      activeDropdown = null;
+      activeArrow = null;
+    }
   }
+
+  // Close dropdowns on outside click or mobile tap
+  function handleOutsideClick(event) {
+    const isNavItem = event.target.closest('.nav-item');
+    const isBtnGroup = event.target.closest('.btn-group');
+
+    if (!isNavItem && !isBtnGroup && activeDropdown) {
+      activeDropdown.classList.remove('show');
+      if (activeArrow) activeArrow.classList.remove('rotate');
+      activeDropdown = null;
+      activeArrow = null;
+      clearTimeout(hideTimeout);
+    }
+  }
+
+  document.addEventListener('click', handleOutsideClick);
+  document.addEventListener('touchstart', handleOutsideClick);
 </script>
 
 <?php $conn->close(); ?>
