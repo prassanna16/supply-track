@@ -1,5 +1,5 @@
 <?php
-include '../../db.php';
+include '../../includes/db_connect.php';
 
 $supplier_id = intval($_POST['supplier_id']);
 $price = floatval($_POST['price']);

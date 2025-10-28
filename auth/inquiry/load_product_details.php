@@ -1,5 +1,5 @@
 <?php
-include '../../db.php';
+include '../../includes/db_connect.php';
 
 $id = intval($_GET['id']);
 $result = mysqli_query($conn, "SELECT * FROM products WHERE id = $id");

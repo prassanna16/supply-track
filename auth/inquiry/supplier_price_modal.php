@@ -1,6 +1,6 @@
 <?php
 // supplier_price_modal.php
-include '../../db.php';
+include '../../includes/db_connect.php';
 ?>
 <div id="priceModal" class="modal">
   <div class="modal-content">
