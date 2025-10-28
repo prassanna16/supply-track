@@ -164,7 +164,7 @@ while ($row = $supplierResult->fetch_assoc()) {
 }
 
 .btn {
-  background-color: #000;
+  background-color: #f4ececff;
   color: #fff;
   border: none;
   padding: 10px;
