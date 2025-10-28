@@ -668,7 +668,7 @@ img.product-image {
     </div>
     <div class="btn-group" id="inquiriesGroup">
       <a href="inquiry/inquiries_new.html" class="btn">New Entry</a>
-     <button type="button" class="btn" onclick="openPriceModal(<?php echo $row['id']; ?>)">Sup. Price Entry</button>
+     <button type="button" class="btn" onclick="openPriceModal(1)">Sup. Price Entry</button>
       <a href="inquiry/inquiries_details.php" class="btn">Details</a>
     </div>
   </div>
