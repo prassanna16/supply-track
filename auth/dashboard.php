@@ -373,7 +373,7 @@ img.product-image {
     </div>
     <div class="btn-group" id="inquiriesGroup">
       <a href="inquiry/inquiries_new.html" class="btn">New Entry</a>
-     <a href="inquiry/supplier_price_modal.php" class="btn" onclick="openPriceModal(1)">Sup. Price Entry</a>
+     <button type="button" class="btn" onclick="openPriceModal(1)">Sup. Price Entry</button>
       <a href="inquiry/inquiries_details.php" class="btn">Details</a>
     </div>
   </div>
@@ -405,8 +405,6 @@ img.product-image {
       <h2>Product Details</h2>
       <!-- Username dropdown -->
     </div>
-
-
     <form method="GET">
       <input type="text" name="buyer" placeholder="Search by Buyer" value="<?php echo htmlspecialchars($buyer); ?>">
       <button type="submit">Search</button>
@@ -477,6 +475,22 @@ img.product-image {
     <?php endif; ?>
   </div>
 </div>
+<!-- ✅ Modal HTML first -->
+<div id="priceModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close" onclick="closePriceModal()">&times;</span>
+    <div id="productDetails">Loading...</div>
+    <form id="supplierPriceForm">
+      <input type="hidden" name="product_id" id="product_id">
+      <label for="supplier">Supplier:</label>
+      <select name="supplier" id="supplier"></select>
+      <label for="price">Price:</label>
+      <input type="text" name="price" id="price" required>
+      <button type="submit">Save</button>
+    </form>
+    <div id="responseMessage"></div>
+  </div>
+</div>
 
 <script>
   let activeDropdown = null;
@@ -534,10 +548,18 @@ function openPriceModal(productId) {
   document.getElementById('priceModal').style.display = 'block';
   document.getElementById('product_id').value = productId;
 
+  // Load product details
   fetch('inquiry/load_product_details.php?id=' + productId)
     .then(response => response.text())
     .then(html => {
       document.getElementById('productDetails').innerHTML = html;
+    });
+
+  // Load supplier options
+  fetch('inquiry/load_supplier_options.php')
+    .then(response => response.text())
+    .then(options => {
+      document.getElementById('supplier').innerHTML = options;
     });
 }
 
@@ -563,7 +585,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script>
-<?php include 'inquiry/supplier_price_modal.php'; ?>
 <?php $conn->close(); ?>
 </body>
 </html>
