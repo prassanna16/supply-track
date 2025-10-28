@@ -788,41 +788,41 @@ img.product-image {
 </div>
 
 <script>
+
   let activeDropdown = null;
   let activeArrow = null;
   let hideTimeout = null;
 
   function toggleSection(id, arrowId) {
-  const group = document.getElementById(id);
-  const arrow = document.getElementById(arrowId);
-  const isOpen = group.classList.contains('show');
+    const group = document.getElementById(id);
+    const arrow = document.getElementById(arrowId);
+    const isOpen = group.classList.contains('show');
 
-  // Close all dropdowns
-  document.querySelectorAll('.btn-group').forEach(g => g.classList.remove('show'));
-  document.querySelectorAll('.arrow').forEach(a => a.classList.remove('rotate'));
-  clearTimeout(hideTimeout);
+    // Close all dropdowns
+    document.querySelectorAll('.btn-group').forEach(g => g.classList.remove('show'));
+    document.querySelectorAll('.arrow').forEach(a => a.classList.remove('rotate'));
+    clearTimeout(hideTimeout);
 
-  if (!isOpen) {
-    group.classList.add('show');
-    arrow.classList.add('rotate');
-    activeDropdown = group;
-    activeArrow = arrow;
+    if (!isOpen) {
+      group.classList.add('show');
+      arrow.classList.add('rotate');
+      activeDropdown = group;
+      activeArrow = arrow;
 
-    // Auto-hide after 5 seconds
-    hideTimeout = setTimeout(() => {
+      // Auto-hide after 5 seconds
+      hideTimeout = setTimeout(() => {
+        group.classList.remove('show');
+        arrow.classList.remove('rotate');
+        activeDropdown = null;
+        activeArrow = null;
+      }, 5000);
+    } else {
       group.classList.remove('show');
       arrow.classList.remove('rotate');
       activeDropdown = null;
       activeArrow = null;
-    }, 5000);
-  } else {
-    // 🔧 Add this block here
-    group.classList.remove('show');
-    arrow.classList.remove('rotate');
-    activeDropdown = null;
-    activeArrow = null;
+    }
   }
-}
 
   // Close dropdowns on outside click or mobile tap
   function handleOutsideClick(event) {
@@ -841,45 +841,46 @@ img.product-image {
   document.addEventListener('click', handleOutsideClick);
   document.addEventListener('touchstart', handleOutsideClick);
 
-function openPriceModal(productId) {
-  document.getElementById('priceModal').style.display = 'block';
-  document.getElementById('product_id').value = productId;
+  function openPriceModal(productId) {
+    document.getElementById('priceModal').style.display = 'block';
+    document.getElementById('product_id').value = productId;
 
-  // Load product details
-  fetch('inquiry/load_product_details.php?id=' + productId)
-    .then(response => response.text())
-    .then(html => {
-      document.getElementById('productDetails').innerHTML = html;
+    // Load product details
+    fetch('inquiry/load_product_details.php?id=' + productId)
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('productDetails').innerHTML = html;
+      });
+
+    // Load supplier options with fallback
+    fetch('inquiry/load_supplier_options.php')
+      .then(response => response.text())
+      .then(options => {
+        document.getElementById('supplier').innerHTML = options || "<option disabled>No suppliers found</option>";
+      });
+  }
+
+  function closePriceModal() {
+    document.getElementById('priceModal').style.display = 'none';
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('supplierPriceForm');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+
+      fetch('inquiry/save_supplier_price.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('responseMessage').innerHTML = data;
+        form.reset();
+      });
     });
-
- // Load supplier options with fallback
-fetch('inquiry/load_supplier_options.php')
-  .then(response => response.text())
-  .then(options => {
-    document.getElementById('supplier').innerHTML = options || "<option disabled>No suppliers found</option>";
   });
-
-function closePriceModal() {
-  document.getElementById('priceModal').style.display = 'none';
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.getElementById('supplierPriceForm');
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    const formData = new FormData(form);
-
-    fetch('inquiry/save_supplier_price.php', {
-      method: 'POST',
-      body: formData
-    })
-    .then(res => res.text())
-    .then(data => {
-      document.getElementById('responseMessage').innerHTML = data;
-      form.reset();
-    });
-  });
-});
 </script>
 <?php $conn->close(); ?>
 </body>
