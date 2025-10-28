@@ -1,5 +1,15 @@
-<?php include '../../includes/db_connect.php'; ?>
+<?php
+require_once __DIR__ . '/../../includes/db_connect.php';
 
+if (!isset($conn) || $conn->connect_error) {
+  echo "<div style='color:red; padding:10px; background:#fee; border:1px solid #f00;'>
+          <strong>Database Error:</strong> " . htmlspecialchars($conn->connect_error) . "
+        </div>";
+  return;
+}
+?>
+
+<!-- Supplier Price Modal -->
 <div id="priceModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closePriceModal()">&times;</span>
