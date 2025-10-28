@@ -1,7 +1,5 @@
-<?php
-// supplier_price_modal.php
-include '../../includes/db_connect.php';
-?>
+<?php include '../../includes/db_connect.php'; ?>
+
 <div id="priceModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closePriceModal()">&times;</span>
