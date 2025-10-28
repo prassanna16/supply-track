@@ -307,7 +307,7 @@ img.product-image {
   </div>
 </div>
 
-<<div class="top-nav">
+<div class="top-nav">
   <div class="nav-wrapper">
     <div class="nav-item" onclick="toggleSection('inquiriesGroup', 'arrow1')">
       INQUIRIES <span id="arrow1" class="arrow">▼</span>
@@ -342,11 +342,7 @@ img.product-image {
   <div class="main">
     <div class="top-bar">
       <h2>Product Details</h2>
-      <div class="username-dropdown">
-        <button class="username-btn"><?php echo htmlspecialchars($username); ?> ▼</button>
-        <div class="dropdown-content">
-          <a href="logout.php">Logout</a>
-        </div>
+      </div>
       </div>
     </div>
 
