@@ -90,19 +90,30 @@ while ($row = $supplierResult->fetch_assoc()) {
   display: block;
 }
 
-/* Curved top navigation bar */
- .top-nav {
-  overflow: visible;
+/* Top navigation bar */
+.top-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 15px 30px;
+  background-color: #fff;
+  border-radius: 30px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin: 20px;
   position: relative;
   z-index: 5;
+  overflow: visible;
 }
 
+/* Each nav item + dropdown wrapper */
 .nav-wrapper {
   position: relative;
   display: inline-block;
-  z-index: 10; /* ensures dropdown stays above other elements */
-  overflow: visible;
+  z-index: 10;
 }
+
+/* Nav button */
 .nav-item {
   background-color: #B22222;
   color: white;
@@ -120,6 +131,7 @@ while ($row = $supplierResult->fetch_assoc()) {
   background-color: #8B1A1A;
 }
 
+/* Arrow animation */
 .arrow {
   display: inline-block;
   transition: transform 0.3s ease;
@@ -129,19 +141,20 @@ while ($row = $supplierResult->fetch_assoc()) {
   transform: rotate(180deg);
 }
 
-/* Dropdown panel with fade and slide animation */
+/* Dropdown panel */
 .btn-group {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   position: absolute;
-  top: calc(100% + 12px); /* pushes dropdown further below the button */
+  top: calc(100% + 12px);
   left: 0;
   background-color: #000;
   border-radius: 12px;
   padding: 12px;
   z-index: 9999;
   box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+  display: flex;
   flex-direction: column;
   gap: 10px;
   min-width: 180px;
@@ -155,6 +168,8 @@ while ($row = $supplierResult->fetch_assoc()) {
   pointer-events: auto;
   transform: translateY(0);
 }
+
+/* Dropdown buttons */
 .btn {
   background-color: #000;
   color: #fff;
@@ -262,15 +277,31 @@ img.product-image {
   }
 
   .top-nav {
-  overflow: visible;
-  position: relative;
-  z-index: 5;
-}
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav-wrapper {
+    width: 100%;
+  }
 
   .nav-item {
     justify-content: center;
     font-size: 14px;
     padding: 8px 16px;
+  }
+
+  .btn-group {
+    left: 0;
+    right: 0;
+    min-width: 100%;
+    top: calc(100% + 12px);
+  }
+
+  .btn {
+    font-size: 15px;
+    padding: 16px;
+    text-align: center;
   }
 
   .main {
@@ -291,23 +322,6 @@ img.product-image {
     display: block;
     overflow-x: auto;
     white-space: nowrap;
-  }
-    .nav-wrapper {
-    width: 100%;
-  }
-
-  .btn-group {
-    left: 0;
-    right: 0;
-    min-width: 100%;
-    top: calc(100% + 12px);
-    z-index: 9999;
-  }
-
-  .btn {
-    font-size: 15px;
-    padding: 16px;
-    text-align: center;
   }
 }
 </style>
@@ -330,8 +344,8 @@ img.product-image {
       INQUIRIES <span id="arrow1" class="arrow">▼</span>
     </div>
     <div class="btn-group" id="inquiriesGroup">
-      <a href="inquiry/inquiries_new.html" class="btn">New Entry</a>
-      <a href="inquiry/inquiries_details.php" class="btn">Details</a>
+      <a href="#" class="btn">New Entry</a>
+      <a href="#" class="btn">Details</a>
     </div>
   </div>
 
@@ -340,8 +354,8 @@ img.product-image {
       ORDERS <span id="arrow2" class="arrow">▼</span>
     </div>
     <div class="btn-group" id="ordersGroup">
-      <a href="../orders/orders_new.php" class="btn">New Entry</a>
-      <a href="../orders/orders_details.php" class="btn">Details</a>
+      <a href="#" class="btn">New Entry</a>
+      <a href="#" class="btn">Details</a>
     </div>
   </div>
 
@@ -350,8 +364,8 @@ img.product-image {
       SUPPLIERS <span id="arrow3" class="arrow">▼</span>
     </div>
     <div class="btn-group" id="suppliersGroup">
-      <a href="../suppliers/suppliers_new.php" class="btn">New Entry</a>
-      <a href="../suppliers/suppliers_data.php" class="btn">DATA</a>
+      <a href="#" class="btn">New Entry</a>
+      <a href="#" class="btn">Details</a>
     </div>
   </div>
 </div>
