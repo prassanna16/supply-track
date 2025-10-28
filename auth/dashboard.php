@@ -179,6 +179,13 @@ while ($row = $supplierResult->fetch_assoc()) {
   flex: 1;
   padding: 30px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centers content horizontally */
+}
+.content-wrapper {
+  width: 100%;
+  max-width: 1200px; /* optional: limits width for readability */
 }
 
 .top-bar {
@@ -340,11 +347,12 @@ img.product-image {
 </div>
 
   <div class="main">
+  <div class="content-wrapper">
     <div class="top-bar">
       <h2>Product Details</h2>
-      </div>
-      </div>
+      <!-- Username dropdown -->
     </div>
+
 
     <form method="GET">
       <input type="text" name="buyer" placeholder="Search by Buyer" value="<?php echo htmlspecialchars($buyer); ?>">
