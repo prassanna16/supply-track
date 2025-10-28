@@ -174,8 +174,8 @@ while ($row = $supplierResult->fetch_assoc()) {
   background-color: #f6ededff;
   color: #0a0101ff;
   border: none;
-  padding: 14px 18px;
-  border-radius: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
   text-decoration: none;
   font-weight: bold;
   text-align: left;
