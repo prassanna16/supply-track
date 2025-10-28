@@ -28,12 +28,70 @@ while ($row = $supplierResult->fetch_assoc()) {
   <meta charset="UTF-8" />
   <title>Admin Dashboard - SupplyTrack</title>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f9f9f9;
-    }
-      .top-nav {
+ body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9f9f9;
+}
+
+/* Header with logo and admin toggle */
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  background-color: #fff;
+  position: relative;
+  z-index: 10;
+  flex-wrap: wrap;
+}
+
+.logo {
+  height: 50px;
+  border-radius: 12px;
+}
+
+/* Admin dropdown */
+.username-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.username-btn {
+  background-color: #B22222;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: white;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 10px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.username-dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Curved top navigation bar */
+.top-nav {
   display: flex;
   align-items: center;
   background-color: #fff;
@@ -43,11 +101,7 @@ while ($row = $supplierResult->fetch_assoc()) {
   margin: 20px;
   gap: 30px;
   flex-wrap: wrap;
-}
-
-.logo {
-  height: 50px;
-  border-radius: 12px;
+  justify-content: center;
 }
 
 .nav-section {
@@ -67,164 +121,212 @@ while ($row = $supplierResult->fetch_assoc()) {
   align-items: center;
   gap: 8px;
 }
+
 .nav-item:hover {
   background-color: #8B1A1A;
 }
 
-       .arrow {
-      display: inline-block;
-      transition: transform 0.3s ease;
-    }
-    .arrow.rotate {
-      transform: rotate(180deg);
-    }
-    .btn-group {
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 10px;
-      padding-left: 10px;
-    }
-    .btn-group.show {
-      display: flex;
-    }
-    .btn {
-      background-color: #fff;
-      color: #000;
-      border: 1px solid #B22222;
-      padding: 10px;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .btn:hover {
-      background-color: #f2f2f2;
-    }
-    .main {
-      flex: 1;
-      padding: 30px;
-      overflow-y: auto;
-    }
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    .username-dropdown {
-      position: relative;
-      display: inline-block;
-    }
-    .username-btn {
-      background: none;
-      border: none;
-      color: #333;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      right: 0;
-      background-color: white;
-      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-      z-index: 1;
-    }
-    .dropdown-content a {
-      color: black;
-      padding: 8px 12px;
-      text-decoration: none;
-      display: block;
-    }
-    .username-dropdown:hover .dropdown-content {
-      display: block;
-    }
-    h2 {
-      color: #B22222;
-      margin-bottom: 10px;
-    }
-    form {
-      margin-bottom: 20px;
-    }
-    input[type="text"] {
-      padding: 8px;
-      width: 200px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    button[type="submit"] {
-      padding: 8px 16px;
-      background-color: #B22222;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-left: 10px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 10px;
-      border: 1px solid #ccc;
-      text-align: left;
-    }
-    th {
-      background-color: #B22222;
-      color: white;
-    }
-    tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
-    img.product-image {
-      width: 80px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-  </style>
+.arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.arrow.rotate {
+  transform: rotate(180deg);
+}
+
+.btn-group {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+  padding-left: 10px;
+}
+
+.btn-group.show {
+  display: flex;
+}
+
+.btn {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #B22222;
+  padding: 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.btn:hover {
+  background-color: #f2f2f2;
+}
+
+.main {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+h2 {
+  color: #B22222;
+  margin-bottom: 10px;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+input[type="text"] {
+  padding: 8px;
+  width: 200px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button[type="submit"] {
+  padding: 8px 16px;
+  background-color: #B22222;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+/* Product table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow-x: auto;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+th {
+  background-color: #B22222;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+img.product-image {
+  width: 80px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .header-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+  }
+
+  .username-dropdown {
+    align-self: flex-end;
+    margin-top: 10px;
+  }
+
+  .top-nav {
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: 20px;
+    padding: 20px;
+    gap: 15px;
+  }
+
+  .nav-item {
+    justify-content: center;
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .btn-group {
+    padding-left: 0;
+  }
+
+  .main {
+    padding: 20px;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+</style>
 </head>
 <body>
 
-<div class="username-dropdown">
-        <button class="username-btn"><?php echo htmlspecialchars($username); ?> ▼</button>
-        <div class="dropdown-content">
-          <a href="logout.php">Logout</a>
-        </div>
+<div class="header-bar">
+  <img src="../assets/image/logo-avis.jpg" alt="Logo" class="logo">
+  <div class="username-dropdown">
+    <button class="username-btn"><?php echo htmlspecialchars($username); ?> ▼</button>
+    <div class="dropdown-content">
+      <a href="logout.php">Logout</a>
+    </div>
+  </div>
+</div>
 
 <div class="top-nav">
-  <img src="../assets/image/logo-avis.jpg" alt="Logo" class="logo">
-  
-  <div class="nav-section">
-    <div class="nav-item" onclick="toggleSection('inquiriesGroup', 'arrow1')">
-      INQUIRIES <span id="arrow1" class="arrow">▼</span>
-    </div>
-    <div class="btn-group" id="inquiriesGroup">
-      <a href="inquiry/inquiries_new.html" class="btn">New Entry</a>
-      <a href="inquiry/inquiries_details.php" class="btn">Details</a>
-    </div>
+  <div class="nav-item" onclick="toggleSection('inquiriesGroup', 'arrow1')">
+    INQUIRIES <span id="arrow1" class="arrow">▼</span>
+  </div>
+  <div class="btn-group" id="inquiriesGroup">
+    <a href="inquiry/inquiries_new.html" class="btn">New Entry</a>
+    <a href="inquiry/inquiries_details.php" class="btn">Details</a>
+  </div>
 
-    <div class="nav-item" onclick="toggleSection('ordersGroup', 'arrow2')">
-      ORDERS <span id="arrow2" class="arrow">▼</span>
-    </div>
-    <div class="btn-group" id="ordersGroup">
-      <a href="../orders/orders_new.php" class="btn">New Entry</a>
-      <a href="../orders/orders_details.php" class="btn">Details</a>
-    </div>
+  <div class="nav-item" onclick="toggleSection('ordersGroup', 'arrow2')">
+    ORDERS <span id="arrow2" class="arrow">▼</span>
+  </div>
+  <div class="btn-group" id="ordersGroup">
+    <a href="../orders/orders_new.php" class="btn">New Entry</a>
+    <a href="../orders/orders_details.php" class="btn">Details</a>
+  </div>
 
-    <div class="nav-item" onclick="toggleSection('suppliersGroup', 'arrow3')">
-      SUPPLIERS <span id="arrow3" class="arrow">▼</span>
-    </div>
-    <div class="btn-group" id="suppliersGroup">
-      <a href="../suppliers/suppliers_new.php" class="btn">New Entry</a>
-      <a href="../suppliers/suppliers_data.php" class="btn">DATA</a>
-    </div>
+  <div class="nav-item" onclick="toggleSection('suppliersGroup', 'arrow3')">
+    SUPPLIERS <span id="arrow3" class="arrow">▼</span>
+  </div>
+  <div class="btn-group" id="suppliersGroup">
+    <a href="../suppliers/suppliers_new.php" class="btn">New Entry</a>
+    <a href="../suppliers/suppliers_data.php" class="btn">DATA</a>
   </div>
 </div>
 
   <div class="main">
     <div class="top-bar">
       <h2>Product Details</h2>
+      <div class="username-dropdown">
+        <button class="username-btn"><?php echo htmlspecialchars($username); ?> ▼</button>
+        <div class="dropdown-content">
+          <a href="logout.php">Logout</a>
+        </div>
       </div>
     </div>
 
