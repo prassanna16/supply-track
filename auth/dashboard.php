@@ -344,9 +344,9 @@ img.product-image {
       INQUIRIES <span id="arrow1" class="arrow">▼</span>
     </div>
     <div class="btn-group" id="inquiriesGroup">
-      <a href="#" class="btn">New Entry</a>
+      <a href="inquiry/inquiries_new.html" class="btn">New Entry</a>
       <a href="#" class="btn">Sup. Price Entry</a>
-      <a href="#" class="btn">Details</a>
+      <a href="inquiry/inquiries_details.php" class="btn">Details</a>
     </div>
   </div>
 
