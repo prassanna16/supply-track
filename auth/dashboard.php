@@ -171,8 +171,8 @@ while ($row = $supplierResult->fetch_assoc()) {
 
 /* Dropdown buttons */
 .btn {
-  background-color: #000;
-  color: #fff;
+  background-color: #f6ededff;
+  color: #0a0101ff;
   border: none;
   padding: 14px 18px;
   border-radius: 8px;
