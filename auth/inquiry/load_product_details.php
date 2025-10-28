@@ -32,7 +32,7 @@ if ($result && $result->num_rows > 0) {
   echo "<p><strong>Currency:</strong> " . htmlspecialchars($row['currency']) . "</p>";
   echo "<p><strong>target:</strong> " . htmlspecialchars($row['target_price']) . "</p>";
 } else {
-  echo "<p style='color:red;'>Product not found.</p>";
+  echo "<div style='color:red; font-weight:bold; padding:10px;'>Product not found.</div>";
 }
 
 $conn->close();

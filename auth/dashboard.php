@@ -622,24 +622,26 @@ img.product-image {
 }
 /* supplier price entry chart styles */
 .modal {
-  display: none;
   position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
   z-index: 9999;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
+  display: none;
+  overflow-y: auto;
+  padding: 40px 20px;
+  box-sizing: border-box;
 }
 
 .modal-content {
-  background-color: #fff;
-  margin: 10% auto;
-  padding: 20px;
+  background: #fff;
+  margin: auto;
+  padding: 20px 30px;
   border-radius: 12px;
-  width: 90%;
+  width: 100%;
   max-width: 500px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  position: relative;
 }
 
 .close {
@@ -860,9 +862,12 @@ img.product-image {
       });
   }
 
-  function closePriceModal() {
-    document.getElementById('priceModal').style.display = 'none';
-  }
+ function closePriceModal() {
+  document.getElementById('priceModal').style.display = 'none';
+  document.getElementById('productDetails').innerHTML = 'Loading...';
+  document.getElementById('supplier').innerHTML = '';
+  document.getElementById('responseMessage').innerHTML = '';
+}
 
   document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('supplierPriceForm');
