@@ -186,6 +186,12 @@ while ($row = $supplierResult->fetch_assoc()) {
 </head>
 <body>
 
+<div class="username-dropdown">
+        <button class="username-btn"><?php echo htmlspecialchars($username); ?> ▼</button>
+        <div class="dropdown-content">
+          <a href="logout.php">Logout</a>
+        </div>
+
 <div class="top-nav">
   <img src="../assets/image/logo-avis.jpg" alt="Logo" class="logo">
   
@@ -219,11 +225,6 @@ while ($row = $supplierResult->fetch_assoc()) {
   <div class="main">
     <div class="top-bar">
       <h2>Product Details</h2>
-      <div class="username-dropdown">
-        <button class="username-btn"><?php echo htmlspecialchars($username); ?> ▼</button>
-        <div class="dropdown-content">
-          <a href="logout.php">Logout</a>
-        </div>
       </div>
     </div>
 
