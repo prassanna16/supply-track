@@ -324,6 +324,34 @@ img.product-image {
     white-space: nowrap;
   }
 }
+/* supplier price entry chart styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.close {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+}
+
 </style>
 </head>
 <body>
@@ -345,7 +373,7 @@ img.product-image {
     </div>
     <div class="btn-group" id="inquiriesGroup">
       <a href="inquiry/inquiries_new.html" class="btn">New Entry</a>
-      <a href="#" class="btn">Sup. Price Entry</a>
+     <a href="inquiry/supplier_price_modal.php" class="btn" onclick="openPriceModal(1)">Sup. Price Entry</a>
       <a href="inquiry/inquiries_details.php" class="btn">Details</a>
     </div>
   </div>
@@ -501,6 +529,39 @@ img.product-image {
 
   document.addEventListener('click', handleOutsideClick);
   document.addEventListener('touchstart', handleOutsideClick);
+
+function openPriceModal(productId) {
+  document.getElementById('priceModal').style.display = 'block';
+  document.getElementById('product_id').value = productId;
+
+  fetch('inquiry/load_product_details.php?id=' + productId)
+    .then(response => response.text())
+    .then(html => {
+      document.getElementById('productDetails').innerHTML = html;
+    });
+}
+
+function closePriceModal() {
+  document.getElementById('priceModal').style.display = 'none';
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('supplierPriceForm');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const formData = new FormData(form);
+
+    fetch('inquiry/save_supplier_price.php', {
+      method: 'POST',
+      body: formData
+    })
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById('responseMessage').innerHTML = data;
+      form.reset();
+    });
+  });
+});
 </script>
 
 <?php $conn->close(); ?>
