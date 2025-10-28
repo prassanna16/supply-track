@@ -563,7 +563,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script>
-
+<?php include 'inquiry/supplier_price_modal.php'; ?>
 <?php $conn->close(); ?>
 </body>
 </html>
