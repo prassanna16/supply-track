@@ -30,7 +30,7 @@ if ($result && $result->num_rows > 0) {
   echo "<p><strong>Size Range:</strong> " . htmlspecialchars($row['size_range']) . "</p>";
   echo "<p><strong>QTY:</strong> " . htmlspecialchars($row['qty']) . "</p>";
   echo "<p><strong>Currency:</strong> " . htmlspecialchars($row['currency']) . "</p>";
-  echo "<p><strong>Target:</strong> " . htmlspecialchars($row['target_price']) . "</p>";
+  echo "<p><strong>target:</strong> " . htmlspecialchars($row['target_price']) . "</p>";
 } else {
   echo "<p style='color:red;'>Product not found.</p>";
 }

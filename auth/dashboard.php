@@ -324,6 +324,302 @@ img.product-image {
     white-space: nowrap;
   }
 }
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9f9f9;
+}
+
+/* Header with logo and admin toggle */
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  background-color: #fff;
+  position: relative;
+  z-index: 10;
+  flex-wrap: wrap;
+}
+
+.logo {
+  height: 50px;
+  border-radius: 12px;
+}
+
+/* Admin dropdown */
+.username-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.username-btn {
+  background-color: #B22222;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: white;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 10px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.username-dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Top navigation bar */
+.top-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 15px 30px;
+  background-color: #fff;
+  border-radius: 30px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin: 20px;
+  position: relative;
+  z-index: 5;
+  overflow: visible;
+}
+
+/* Each nav item + dropdown wrapper */
+.nav-wrapper {
+  position: relative;
+  display: inline-block;
+  z-index: 10;
+}
+
+/* Nav button */
+.nav-item {
+  background-color: #B22222;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.nav-item:hover {
+  background-color: #8B1A1A;
+}
+
+/* Arrow animation */
+.arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.arrow.rotate {
+  transform: rotate(180deg);
+}
+
+/* Dropdown panel */
+.btn-group {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 0;
+  background-color: #f7f2f2ff;
+  border-radius: 12px;
+  padding: 12px;
+  z-index: 9999;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 180px;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+}
+
+.btn-group.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Dropdown buttons */
+.btn {
+  background-color: #f6ededff;
+  color: #0a0101ff;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  text-align: left;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #eeaaaaff;
+}
+
+/* Main content */
+.main {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content-wrapper {
+  width: 100%;
+  max-width: 1500px;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+h2 {
+  color: #B22222;
+  margin-bottom: 10px;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+input[type="text"] {
+  padding: 8px;
+  width: 200px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button[type="submit"] {
+  padding: 8px 16px;
+  background-color: #B22222;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+/* Product table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow-x: auto;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+th {
+  background-color: #B22222;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+img.product-image {
+  width: 80px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .header-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+  }
+
+  .username-dropdown {
+    align-self: flex-end;
+    margin-top: 10px;
+  }
+
+  .top-nav {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav-wrapper {
+    width: 100%;
+  }
+
+  .nav-item {
+    justify-content: center;
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .btn-group {
+    left: 0;
+    right: 0;
+    min-width: 100%;
+    top: calc(100% + 12px);
+  }
+
+  .btn {
+    font-size: 15px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .main {
+    padding: 20px;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
 /* supplier price entry chart styles */
 .modal {
   display: none;
@@ -351,7 +647,6 @@ img.product-image {
   font-size: 24px;
   cursor: pointer;
 }
-
 </style>
 </head>
 <body>
@@ -373,7 +668,7 @@ img.product-image {
     </div>
     <div class="btn-group" id="inquiriesGroup">
       <a href="inquiry/inquiries_new.html" class="btn">New Entry</a>
-     <button type="button" class="btn" onclick="openPriceModal(1)">Sup. Price Entry</button>
+     <button type="button" class="btn" onclick="openPriceModal(<?php echo $row['id']; ?>)">Sup. Price Entry</button>
       <a href="inquiry/inquiries_details.php" class="btn">Details</a>
     </div>
   </div>
@@ -498,34 +793,36 @@ img.product-image {
   let hideTimeout = null;
 
   function toggleSection(id, arrowId) {
-    const group = document.getElementById(id);
-    const arrow = document.getElementById(arrowId);
-    const isOpen = group.classList.contains('show');
+  const group = document.getElementById(id);
+  const arrow = document.getElementById(arrowId);
+  const isOpen = group.classList.contains('show');
 
-    // Close all dropdowns
-    document.querySelectorAll('.btn-group').forEach(g => g.classList.remove('show'));
-    document.querySelectorAll('.arrow').forEach(a => a.classList.remove('rotate'));
-    clearTimeout(hideTimeout);
+  // Close all dropdowns
+  document.querySelectorAll('.btn-group').forEach(g => g.classList.remove('show'));
+  document.querySelectorAll('.arrow').forEach(a => a.classList.remove('rotate'));
+  clearTimeout(hideTimeout);
 
-    if (!isOpen) {
-      group.classList.add('show');
-      arrow.classList.add('rotate');
-      activeDropdown = group;
-      activeArrow = arrow;
+  if (!isOpen) {
+    group.classList.add('show');
+    arrow.classList.add('rotate');
+    activeDropdown = group;
+    activeArrow = arrow;
 
-      // Auto-hide after 5 seconds
-      hideTimeout = setTimeout(() => {
-        group.classList.remove('show');
-        arrow.classList.remove('rotate');
-        activeDropdown = null;
-        activeArrow = null;
-      }, 5000);
-    } else {
-      // Toggle off if already open
+    // Auto-hide after 5 seconds
+    hideTimeout = setTimeout(() => {
+      group.classList.remove('show');
+      arrow.classList.remove('rotate');
       activeDropdown = null;
       activeArrow = null;
-    }
+    }, 5000);
+  } else {
+    // 🔧 Add this block here
+    group.classList.remove('show');
+    arrow.classList.remove('rotate');
+    activeDropdown = null;
+    activeArrow = null;
   }
+}
 
   // Close dropdowns on outside click or mobile tap
   function handleOutsideClick(event) {
@@ -555,13 +852,12 @@ function openPriceModal(productId) {
       document.getElementById('productDetails').innerHTML = html;
     });
 
-  // Load supplier options
-  fetch('inquiry/load_supplier_options.php')
-    .then(response => response.text())
-    .then(options => {
-      document.getElementById('supplier').innerHTML = options;
-    });
-}
+ // Load supplier options with fallback
+fetch('inquiry/load_supplier_options.php')
+  .then(response => response.text())
+  .then(options => {
+    document.getElementById('supplier').innerHTML = options || "<option disabled>No suppliers found</option>";
+  });
 
 function closePriceModal() {
   document.getElementById('priceModal').style.display = 'none';
