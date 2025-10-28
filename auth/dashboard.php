@@ -184,7 +184,7 @@ while ($row = $supplierResult->fetch_assoc()) {
 }
 
 .btn:hover {
-  background-color: #333;
+  background-color: #eeaaaaff;
 }
 
 /* Main content */
