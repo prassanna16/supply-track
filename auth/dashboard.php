@@ -144,7 +144,7 @@ while ($row = $supplierResult->fetch_assoc()) {
   position: absolute;
   top: 100%;
   left: 0;
-  background-color: #000;
+  background-color: #fcf8f8ff;
   border-radius: 12px;
   padding: 10px;
   margin-top: 8px;
@@ -161,8 +161,8 @@ while ($row = $supplierResult->fetch_assoc()) {
 
 
 .btn {
-  background-color: #000;
-  color: #fff;
+  background-color: #f7f0f0ff;
+  color: #0e0101ff;
   border: none;
   padding: 10px;
   border-radius: 6px;
@@ -171,7 +171,7 @@ while ($row = $supplierResult->fetch_assoc()) {
 }
 
 .btn:hover {
-  background-color: #333;
+  background-color: #c7adadff;
 }
 
 
