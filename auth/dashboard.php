@@ -620,35 +620,6 @@ img.product-image {
     white-space: nowrap;
   }
 }
-/* supplier price entry chart styles */
-.modal {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.5);
-  z-index: 9999;
-  display: none;
-  overflow-y: auto;
-  padding: 40px 20px;
-  box-sizing: border-box;
-}
-
-.modal-content {
-  background: #fff;
-  margin: auto;
-  padding: 20px 30px;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 500px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  position: relative;
-}
-
-.close {
-  float: right;
-  font-size: 24px;
-  cursor: pointer;
-}
 </style>
 </head>
 <body>
@@ -670,7 +641,6 @@ img.product-image {
     </div>
     <div class="btn-group" id="inquiriesGroup">
       <a href="inquiry/inquiries_new.html" class="btn">New Entry</a>
-     <button type="button" class="btn" onclick="openPriceModal(1)">Sup. Price Entry</button>
       <a href="inquiry/inquiries_details.php" class="btn">Details</a>
     </div>
   </div>
@@ -696,11 +666,10 @@ img.product-image {
   </div>
 </div>
 
-  <div class="main">
+<div class="main">
   <div class="content-wrapper">
     <div class="top-bar">
       <h2>Product Details</h2>
-      <!-- Username dropdown -->
     </div>
     <form method="GET">
       <input type="text" name="buyer" placeholder="Search by Buyer" value="<?php echo htmlspecialchars($buyer); ?>">
@@ -744,7 +713,7 @@ img.product-image {
               <?php
                 $imageFile = $row['image_path'];
                 $imagePath = "inquiry/uploads/" . $imageFile;
-                                if (!empty($imageFile) && file_exists(__DIR__ . "/inquiry/uploads/" . $imageFile)) {
+                if (!empty($imageFile) && file_exists(__DIR__ . "/inquiry/uploads/" . $imageFile)) {
                   echo "<img src='$imagePath' class='product-image' alt='Product Image'>";
                 } else {
                   echo 'No image';
@@ -772,23 +741,6 @@ img.product-image {
     <?php endif; ?>
   </div>
 </div>
-<!-- ✅ Modal HTML first -->
-<div id="priceModal" class="modal" style="display:none;">
-  <div class="modal-content">
-    <span class="close" onclick="closePriceModal()">&times;</span>
-    <div id="productDetails">Loading...</div>
-    <form id="supplierPriceForm">
-      <input type="hidden" name="product_id" id="product_id">
-      <label for="supplier">Supplier:</label>
-      <select name="supplier" id="supplier"></select>
-      <label for="price">Price:</label>
-      <input type="text" name="price" id="price" required>
-      <button type="submit">Save</button>
-    </form>
-    <div id="responseMessage"></div>
-  </div>
-</div>
-
 <<script>
   let activeDropdown = null;
   let activeArrow = null;
