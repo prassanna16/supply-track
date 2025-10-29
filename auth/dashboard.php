@@ -789,8 +789,7 @@ img.product-image {
   </div>
 </div>
 
-<script>
-
+<<script>
   let activeDropdown = null;
   let activeArrow = null;
   let hideTimeout = null;
@@ -862,30 +861,12 @@ img.product-image {
       });
   }
 
- function closePriceModal() {
-  document.getElementById('priceModal').style.display = 'none';
-  document.getElementById('productDetails').innerHTML = 'Loading...';
-  document.getElementById('supplier').innerHTML = '';
-  document.getElementById('responseMessage').innerHTML = '';
-}
-
-  document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('supplierPriceForm');
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      const formData = new FormData(form);
-
-      fetch('inquiry/save_supplier_price.php', {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById('responseMessage').innerHTML = data;
-        form.reset();
-      });
-    });
-  });
+  function closePriceModal() {
+    document.getElementById('priceModal').style.display = 'none';
+    document.getElementById('productDetails').innerHTML = 'Loading...';
+    document.getElementById('supplier').innerHTML = '';
+    document.getElementById('responseMessage').innerHTML = '';
+  }
 </script>
 <?php $conn->close(); ?>
 </body>
