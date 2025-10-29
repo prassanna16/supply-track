@@ -277,43 +277,46 @@ document.addEventListener("DOMContentLoaded", () => {
     if (row) row.remove();
     updateSno();
   };
+window.addProductRow = function () {
+  const group = document.getElementById('productGroup');
+  const firstRow = group.querySelector('.product-entry');
+  if (!firstRow) return;
 
-  window.addProductRow = function () {
-    const group = document.getElementById('productGroup');
-        const newRow = firstRow.cloneNode(true);
+  const newRow = firstRow.cloneNode(true);
 
-    newRow.querySelectorAll('input, select').forEach(el => {
-      if (el.type === 'file') return;
-      el.value = '';
-      el.classList.remove('filled');
-    });
+  newRow.querySelectorAll('input, select').forEach(el => {
+    if (el.type === 'file') return;
+    el.value = '';
+    el.classList.remove('filled');
+  });
 
-    const preview = newRow.querySelector('.image-preview');
-    if (preview) {
-      preview.src = '#';
-      preview.style.display = 'none';
-    }
+  const preview = newRow.querySelector('.image-preview');
+  if (preview) {
+    preview.src = '#';
+    preview.style.display = 'none';
+  }
 
-    const supplierGroup = newRow.querySelector('.supplier-group');
-    const index = document.querySelectorAll('.product-entry').length;
-    if (supplierGroup) {
-      supplierGroup.innerHTML = '';
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.name = `suppliers[${index}][]`;
-      input.placeholder = 'Supplier Name';
-      input.onblur = function () {
-        checkDuplicate(this);
-      };
-      supplierGroup.appendChild(input);
-    }
+  const supplierGroup = newRow.querySelector('.supplier-group');
+  const index = document.querySelectorAll('.product-entry').length;
+  if (supplierGroup) {
+    supplierGroup.innerHTML = '';
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.name = `suppliers[${index}][]`;
+    input.placeholder = 'Supplier Name';
+    input.onblur = function () {
+      checkDuplicate(this);
+    };
+    supplierGroup.appendChild(input);
+  }
 
-    const supplierError = newRow.querySelector('.supplier-error');
-    if (supplierError) supplierError.textContent = '';
+  const supplierError = newRow.querySelector('.supplier-error');
+  if (supplierError) supplierError.textContent = '';
 
-    group.appendChild(newRow);
-    updateSno();
-  };
+  group.appendChild(newRow);
+  updateSno();
+};
+ 
 
   function updateSno() {
     const rows = document.querySelectorAll('.product-entry');
