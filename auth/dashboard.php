@@ -870,7 +870,7 @@ img.product-image {
     modal.style.display = 'block';
 
     if (!modal.dataset.loaded) {
-      fetch('get_styles.php')
+      fetch('inquiry/get_styles.php')
         .then(res => res.json())
         .then(styles => {
           const select = document.getElementById('styleSelect');
