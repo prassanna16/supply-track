@@ -669,6 +669,7 @@ img.product-image {
     </div>
     <div class="btn-group" id="inquiriesGroup">
       <a href="inquiry/inquiries_new.html" class="btn">New Entry</a>
+      <button type="button" class="btn" onclick="showStylePanel()">Enter Supplier Price</button>
       <a href="inquiry/inquiries_details.php" class="btn">Details</a>
     </div>
   </div>
@@ -699,14 +700,15 @@ img.product-image {
     <div class="top-bar">
       <h2>Product Details</h2>
     </div>
-    <!-- ✅ Style selection panel -->
-    <div class="style-window">
+     <!-- ✅ Style panel appears on demand -->
+    <div id="stylePanel" class="style-window" style="display: none;">
       <h2>Select Styles</h2>
       <div class="style-dropdown">
         <label for="styleSelect">Styles:</label>
         <select id="styleSelect" multiple></select>
       </div>
     </div>
+
 
     <form method="GET">
       <input type="text" name="buyer" placeholder="Search by Buyer" value="<?php echo htmlspecialchars($buyer); ?>">
@@ -870,6 +872,28 @@ img.product-image {
       });
     });
 });
+function showStylePanel() {
+  const panel = document.getElementById('stylePanel');
+  panel.style.display = 'block';
+
+  // Load styles only once
+  if (!panel.dataset.loaded) {
+    fetch('get_styles.php')
+      .then(res => res.json())
+      .then(styles => {
+        const select = document.getElementById('styleSelect');
+        styles.forEach(style => {
+          const option = document.createElement('option');
+          option.value = style;
+          option.textContent = style;
+          option.selected = true; // ✅ Pre-check
+          select.appendChild(option);
+        });
+        panel.dataset.loaded = 'true';
+      });
+  }
+}
+
 
 </script>
 <?php $conn->close(); ?>
