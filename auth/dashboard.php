@@ -776,22 +776,16 @@ img.product-image {
 <div id="priceModal" class="modal" style="display:none;">
   <div class="modal-content">
     <span class="close" onclick="closePriceModal()">&times;</span>
-    <form id="priceForm">
-  <label for="styleSelect">Style Number:</label>
-  <select id="styleSelect" multiple>
-    <?php
-    include 'db.php';
-    $query = "SELECT style_number FROM products";
-    $result = mysqli_query($conn, $query);
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo "<option value='{$row['style_number']}'>{$row['style_number']}</option>";
-    }
-    ?>
-  </select>
-
-  <div id="productTableContainer" style="margin-top: 20px;"></div>
-  <button type="button" id="savePrices">Save</button>
-</form>
+    <div id="productDetails">Loading...</div>
+    <form id="supplierPriceForm">
+      <input type="hidden" name="product_id" id="product_id">
+      <label for="supplier">Supplier:</label>
+      <select name="supplier" id="supplier"></select>
+      <label for="price">Price:</label>
+      <input type="text" name="price" id="price" required>
+      <button type="submit">Save</button>
+    </form>
+    <div id="responseMessage"></div>
   </div>
 </div>
 
@@ -892,48 +886,6 @@ img.product-image {
       });
     });
   });
-document.getElementById('styleSelect').addEventListener('change', function () {
-  const selectedStyles = Array.from(this.selectedOptions).map(opt => opt.value);
-  if (selectedStyles.length === 0) return;
-
-  fetch('get_product_details.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ styles: selectedStyles })
-  })
-  .then(res => res.json())
-  .then(data => renderProductTable(data))
-  .catch(err => console.error('Error loading product details:', err));
-});
-
-function renderProductTable(data) {
-  const suppliers = data.suppliers;
-  const products = data.products;
-
-  let html = `<table><thead><tr>
-    <th>S.No</th><th>Buyer</th><th>Style</th><th>Description</th><th>Target</th>`;
-
-  suppliers.forEach(s => html += `<th>${s}</th>`);
-  html += `</tr></thead><tbody>`;
-
-  products.forEach((p, i) => {
-    html += `<tr>
-      <td>${i + 1}</td>
-      <td>${p.buyer}</td>
-      <td>${p.style}</td>
-      <td>${p.description}</td>
-      <td>${p.target}</td>`;
-
-    suppliers.forEach(s => {
-      html += `<td><input type="text" name="price[${p.id}][${s}]" /></td>`;
-    });
-
-    html += `</tr>`;
-  });
-
-  html += `</tbody></table>`;
-  document.getElementById('productTableContainer').innerHTML = html;
-}
 </script>
 <?php $conn->close(); ?>
 </body>
