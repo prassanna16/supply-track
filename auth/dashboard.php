@@ -648,6 +648,35 @@ img.product-image {
   padding: 10px;
   font-size: 16px;
 }
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 9999;
+  display: none;
+  overflow-y: auto;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+.modal-content {
+  background: #fff;
+  margin: auto;
+  padding: 20px 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.close {
+  float: right;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -700,15 +729,17 @@ img.product-image {
     <div class="top-bar">
       <h2>Product Details</h2>
     </div>
-     <!-- ✅ Style panel appears on demand -->
-    <div id="stylePanel" class="style-window" style="display: none;">
-      <h2>Select Styles</h2>
-      <div class="style-dropdown">
-        <label for="styleSelect">Styles:</label>
-        <select id="styleSelect" multiple></select>
-      </div>
+     <!-- ✅ Modal-style popup -->
+<div id="styleModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close" onclick="closeStyleModal()">&times;</span>
+    <h2>Select Styles</h2>
+    <div class="style-dropdown">
+      <label for="styleSelect">Styles:</label>
+      <select id="styleSelect" multiple></select>
     </div>
-
+  </div>
+</div>
 
     <form method="GET">
       <input type="text" name="buyer" placeholder="Search by Buyer" value="<?php echo htmlspecialchars($buyer); ?>">
@@ -780,7 +811,7 @@ img.product-image {
     <?php endif; ?>
   </div>
 </div>
-<<script>
+<script>
   let activeDropdown = null;
   let activeArrow = null;
   let hideTimeout = null;
@@ -833,68 +864,32 @@ img.product-image {
   document.addEventListener('click', handleOutsideClick);
   document.addEventListener('touchstart', handleOutsideClick);
 
-  function openPriceModal(productId) {
-    document.getElementById('priceModal').style.display = 'block';
-    document.getElementById('product_id').value = productId;
+  // ✅ Show the style modal and load styles once
+  function showStylePanel() {
+    const modal = document.getElementById('styleModal');
+    modal.style.display = 'block';
 
-    // Load product details
-    fetch('inquiry/load_product_details.php?id=' + productId)
-      .then(response => response.text())
-      .then(html => {
-        document.getElementById('productDetails').innerHTML = html;
-      });
-
-    // Load supplier options with fallback
-    fetch('inquiry/load_supplier_options.php')
-      .then(response => response.text())
-      .then(options => {
-        document.getElementById('supplier').innerHTML = options || "<option disabled>No suppliers found</option>";
-      });
-  }
-
-  function closePriceModal() {
-    document.getElementById('priceModal').style.display = 'none';
-    document.getElementById('productDetails').innerHTML = 'Loading...';
-    document.getElementById('supplier').innerHTML = '';
-    document.getElementById('responseMessage').innerHTML = '';
- }
- document.addEventListener('DOMContentLoaded', function () {
-  fetch('get_styles.php')
-    .then(res => res.json())
-    .then(styles => {
-      const select = document.getElementById('styleSelect');
-      styles.forEach(style => {
-        const option = document.createElement('option');
-        option.value = style;
-        option.textContent = style;
-        option.selected = true; // ✅ Pre-check
-        select.appendChild(option);
-      });
-    });
-});
-function showStylePanel() {
-  const panel = document.getElementById('stylePanel');
-  panel.style.display = 'block';
-
-  // Load styles only once
-  if (!panel.dataset.loaded) {
-    fetch('get_styles.php')
-      .then(res => res.json())
-      .then(styles => {
-        const select = document.getElementById('styleSelect');
-        styles.forEach(style => {
-          const option = document.createElement('option');
-          option.value = style;
-          option.textContent = style;
-          option.selected = true; // ✅ Pre-check
-          select.appendChild(option);
+    if (!modal.dataset.loaded) {
+      fetch('get_styles.php')
+        .then(res => res.json())
+        .then(styles => {
+          const select = document.getElementById('styleSelect');
+          styles.forEach(style => {
+            const option = document.createElement('option');
+            option.value = style;
+            option.textContent = style;
+            option.selected = true;
+            select.appendChild(option);
+          });
+          modal.dataset.loaded = 'true';
         });
-        panel.dataset.loaded = 'true';
-      });
+    }
   }
-}
 
-
+  // ✅ Close the style modal
+  function closeStyleModal() {
+    document.getElementById('styleModal').style.display = 'none';
+  }
 </script>
 <?php $conn->close(); ?>
 </body>
