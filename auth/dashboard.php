@@ -620,6 +620,34 @@ img.product-image {
     white-space: nowrap;
   }
 }
+.style-window {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 20px 30px;
+  margin: 30px auto;
+  max-width: 600px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.style-window h2 {
+  color: #B22222;
+  margin-bottom: 20px;
+}
+
+.style-dropdown label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+#styleSelect {
+  width: 100%;
+  height: 200px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  font-size: 16px;
+}
 </style>
 </head>
 <body>
@@ -671,6 +699,15 @@ img.product-image {
     <div class="top-bar">
       <h2>Product Details</h2>
     </div>
+    <!-- ✅ Style selection panel -->
+    <div class="style-window">
+      <h2>Select Styles</h2>
+      <div class="style-dropdown">
+        <label for="styleSelect">Styles:</label>
+        <select id="styleSelect" multiple></select>
+      </div>
+    </div>
+
     <form method="GET">
       <input type="text" name="buyer" placeholder="Search by Buyer" value="<?php echo htmlspecialchars($buyer); ?>">
       <button type="submit">Search</button>
@@ -818,7 +855,22 @@ img.product-image {
     document.getElementById('productDetails').innerHTML = 'Loading...';
     document.getElementById('supplier').innerHTML = '';
     document.getElementById('responseMessage').innerHTML = '';
-  }
+ }
+ document.addEventListener('DOMContentLoaded', function () {
+  fetch('get_styles.php')
+    .then(res => res.json())
+    .then(styles => {
+      const select = document.getElementById('styleSelect');
+      styles.forEach(style => {
+        const option = document.createElement('option');
+        option.value = style;
+        option.textContent = style;
+        option.selected = true; // ✅ Pre-check
+        select.appendChild(option);
+      });
+    });
+});
+
 </script>
 <?php $conn->close(); ?>
 </body>
