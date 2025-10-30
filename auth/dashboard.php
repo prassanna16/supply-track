@@ -707,7 +707,6 @@ while ($row = $supplierResult->fetch_assoc()) {
             container.innerHTML = `<p style="color:red;">Failed to load product details. ${error.message}</p>`;
         });
     }
-
     function renderProductDetails(data) {
         console.log('Received product data:', data);
 
@@ -736,6 +735,9 @@ while ($row = $supplierResult->fetch_assoc()) {
             // Dynamically create the table headers for suppliers
             const supplierHeaders = rows.map((r, i) => `<th>Supplier ${i + 1}<br>(${r.supplier_name || '-'})</th>`).join('');
             
+            // Dynamically create the data cells (Supplier Names)
+            const supplierDataCells = rows.map(r => `<td>${r.supplier_name || '-'}</td>`).join('');
+            
             // Dynamically create input fields for supplier prices
             const priceInputs = rows.map(r => `
                 <td>
@@ -746,7 +748,13 @@ while ($row = $supplierResult->fetch_assoc()) {
                 </td>
             `).join('');
 
+            // Calculate the number of standard data columns before suppliers (Description, Dept, Size, QTY, Target = 5 columns)
+            const standardColumns = 5;
+            
+            // Create empty placeholder cells for the price row to align under the first 5 header columns
+            let priceRowPlaceholders = '<td></td>'.repeat(standardColumns - 1); // -1 because the first cell is the label
 
+            // Inject the new, aligned structure
             section.innerHTML = `
                 <h3>Style: ${style} - Buyer: ${base.buyer}</h3>
                 <div class="product-table-container">
@@ -768,15 +776,12 @@ while ($row = $supplierResult->fetch_assoc()) {
                                 <td>${base.size_range || '-'}</td>
                                 <td>${base.qty || '-'}</td>
                                 <td>${base.currency || ''} ${base.target || '-'}</td>
-                                ${rows.map(r => `<td>${r.supplier_name || '-'}</td>`).join('')}
+                                ${supplierDataCells}
                             </tr>
                             <tr>
                                 <td><strong>Enter Supplier Prices:</strong></td> 
                                 
-                                <td></td> 
-                                <td></td> 
-                                <td></td> 
-                                <td></td> 
+                                ${priceRowPlaceholders} 
                                 
                                 ${priceInputs}
                             </tr>
