@@ -20,7 +20,13 @@ $result = $conn->query($query);
 
 if ($result) {
     while ($row = $result->fetch_assoc()) {
-        $styles[] = $row['style'];
+        // --- Correction for Robustness ---
+        // Trim whitespace and ensure only non-empty strings are added.
+        $style = trim($row['style']);
+        if (!empty($style)) {
+            $styles[] = $style;
+        }
+        // ----------------------------------
     }
     // Free result set
     $result->free(); 
