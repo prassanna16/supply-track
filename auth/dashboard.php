@@ -30,7 +30,7 @@ while ($row = $supplierResult->fetch_assoc()) {
     <title>Admin Dashboard - SupplyTrack</title>
     <style>
         /* ------------------------------------------------------------------ */
-        /* GLOBAL / LAYOUT STYLES */
+        /* GLOBAL / LAYOUT STYLES (omitted for brevity) */
         /* ------------------------------------------------------------------ */
         body {
             margin: 0;
@@ -57,7 +57,7 @@ while ($row = $supplierResult->fetch_assoc()) {
             margin-bottom: 10px;
         }
         
-        /* --- Header/Nav styles --- */
+        /* --- Header/Nav styles (omitted for brevity) --- */
         .header-bar {
             display: flex;
             justify-content: space-between;
@@ -153,6 +153,10 @@ while ($row = $supplierResult->fetch_assoc()) {
         .arrow {
             display: inline-block;
             transition: transform 0.3s ease;
+        }
+        
+        .arrow.rotate {
+            transform: rotate(180deg);
         }
         
         .btn-group {
@@ -251,19 +255,17 @@ while ($row = $supplierResult->fetch_assoc()) {
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             position: relative;
             
-            /* Vertical Scroll Fix: Make this a flex container and prevent its own scroll */
             overflow-y: hidden; 
             display: flex;
             flex-direction: column;
         }
 
-        /* NEW SCROLLING CONTAINER CSS */
+        /* NEW SCROLLING CONTAINER CSS (Vertical Scroll Fix) */
         #modalBodyScroll {
             flex-grow: 1; 
-            /* Set a height that leaves room for the header (h2, dropdown) and the Save button */
             max-height: calc(95vh - 200px); 
-            overflow-y: auto; /* This is the only area that scrolls vertically */
-            padding-bottom: 20px; 
+            overflow-y: auto; 
+            margin-bottom: 15px; /* Spacing above the Save button */
         }
         
         .close {
@@ -354,7 +356,7 @@ while ($row = $supplierResult->fetch_assoc()) {
              min-width: 120px; 
         }
 
-        /* Styles for all cells */
+        /* Styles for all cells (CRITICAL ALIGNMENT FIX) */
         .product-table th, .product-table td {
             border: 1px solid #ccc;
             padding: 6px 4px; 
@@ -362,6 +364,7 @@ while ($row = $supplierResult->fetch_assoc()) {
             font-size: 0.85em; 
             box-sizing: border-box;
             white-space: normal;
+            vertical-align: middle; /* Ensures inputs and text align */
         }
 
         .product-table tbody tr:last-child td:first-child {
@@ -382,10 +385,14 @@ while ($row = $supplierResult->fetch_assoc()) {
             border: 1px solid #B22222;
         }
         
-        /* Ensure the save button is not part of the scrollable area */
-        .modal-content > .btn {
-            margin-top: 15px;
-            flex-shrink: 0; 
+        /* Save Button Width Fix (CSS applied to the button via the parent div's style) */
+        .modal-content > div:last-child > .btn {
+            display: inline-block;
+            float: right; 
+            margin-top: 5px; 
+            width: auto; 
+            padding: 10px 20px; 
+            text-align: center;
         }
         
     </style>
@@ -462,9 +469,10 @@ while ($row = $supplierResult->fetch_assoc()) {
                         <div id="productDetailsContainer"></div>
                     </div>
                 </div>
-                <button type="button" class="btn" style="background-color: #28a745; color: white;">Save Prices</button>
-
-            </div>
+                <div style="width: 100%; overflow: auto;">
+                    <button type="button" class="btn" id="savePricesBtn" style="background-color: #28a745; color: white;">Save Prices</button>
+                </div>
+                </div>
         </div>
         <form method="GET">
             <input type="text" name="buyer" placeholder="Search by Buyer" value="<?php echo htmlspecialchars($buyer); ?>">
