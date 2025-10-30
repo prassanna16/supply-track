@@ -247,7 +247,8 @@ while ($row = $supplierResult->fetch_assoc()) {
         .modal-content {
             background: #fff;
             margin: auto;
-            padding: 20px 30px;
+            /* Key Fix: Increased bottom padding to prevent the last element (Save button) from being cut off */
+            padding: 20px 30px 60px 30px; 
             border-radius: 12px;
             width: 95%; 
             max-width: 1400px; 
@@ -255,7 +256,6 @@ while ($row = $supplierResult->fetch_assoc()) {
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             position: relative;
             
-            /* FIX 1: Enable vertical scrolling for the modal content */
             overflow-y: auto; 
         }
 
@@ -524,7 +524,7 @@ while ($row = $supplierResult->fetch_assoc()) {
     let activeDropdown = null;
     let activeArrow = null;
     let hideTimeout = null;
-    let modalStyleDropdownTimeout = null; // New timeout for the modal dropdown
+    let modalStyleDropdownTimeout = null; 
 
     function toggleSection(id, arrowId) {
         // Function for top navigation dropdowns (unchanged)
@@ -663,7 +663,7 @@ while ($row = $supplierResult->fetch_assoc()) {
 
         const dropdown = document.getElementById('styleDropdown');
         
-        // FIX 2: Close the dropdown after selection/deselection
+        // Close the dropdown after selection/deselection
         if (closeAfterSelection) {
             clearTimeout(modalStyleDropdownTimeout);
             // Close after 3 seconds
