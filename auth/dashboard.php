@@ -274,7 +274,7 @@ while ($row = $supplierResult->fetch_assoc()) {
         }
 
         /* ------------------------------------------------------------------ */
-        /* MODAL WINDOW - ALIGNMENT FIXES START HERE */
+        /* MODAL WINDOW - CORRECTIONS START HERE */
         /* ------------------------------------------------------------------ */
         .modal {
             position: fixed;
@@ -300,12 +300,14 @@ while ($row = $supplierResult->fetch_assoc()) {
             overflow: hidden; 
         }
 
+        /* 1. SCROLLABLE CONTENT WRAPPER ADJUSTED */
         #productDetailsContainerWrapper {
+            /* 90vh is the max height, subtract estimated height of h2, dropdown, and Save button area (~170px) */
             max-height: calc(90vh - 170px); 
             overflow-y: auto; 
             padding-right: 15px; 
             margin-top: 20px;
-            margin-bottom: 20px; 
+            margin-bottom: 20px; /* Space above the fixed Save button */
         }
         
         .close {
@@ -315,7 +317,49 @@ while ($row = $supplierResult->fetch_assoc()) {
             cursor: pointer;
         }
         
-        /* Multi-select dropdown styles (for modal) - omitted for brevity */
+        /* Multi-select dropdown styles (for modal) */
+        .multi-select-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+            font-family: sans-serif;
+            margin-bottom: 20px;
+        }
+        
+        .multi-select-toggle {
+            border: 1px solid #ccc;
+            padding: 8px 10px;
+            background-color: #fff;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 6px;
+        }
+        
+        .multi-select-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            z-index: 10;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        
+        .multi-select-dropdown label {
+            display: block;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+        
+        .multi-select-dropdown label:hover {
+            background-color: #f5f5f5;
+        }
 
         /* Product Details Block (inside modal) */
         .product-block {
@@ -331,7 +375,7 @@ while ($row = $supplierResult->fetch_assoc()) {
             font-size: 1.1em;
         }
         
-        /* CORRECTION: Changed display to ensure alignment of TH/TD rows */
+        /* CORRECTION: Allow horizontal scroll for wide tables */
         .product-table {
             width: 100%;
             border-collapse: collapse;
@@ -341,51 +385,38 @@ while ($row = $supplierResult->fetch_assoc()) {
             white-space: nowrap;
         }
 
-        /* ALIGNMENT FIX: Remove display: block from internal rows and use table layout */
+        /* CORRECTION: Ensure internal table elements work with display: block */
         .product-table thead,
         .product-table tbody,
         .product-table tr {
-            /* IMPORTANT: We let these use their default table display properties */
-            display: table-row-group; 
+            display: block; 
         }
 
-        /* ALIGNMENT FIX: Setting fixed widths for the first few columns */
-        .product-table th:nth-child(1), .product-table td:nth-child(1) { min-width: 120px; max-width: 120px; width: 120px; } /* Description */
-        .product-table th:nth-child(2), .product-table td:nth-child(2) { min-width: 80px; max-width: 80px; width: 80px; } /* Department */
-        .product-table th:nth-child(3), .product-table td:nth-child(3) { min-width: 90px; max-width: 90px; width: 90px; } /* Size Range */
-        .product-table th:nth-child(4), .product-table td:nth-child(4) { min-width: 60px; max-width: 60px; width: 60px; } /* QTY */
-        .product-table th:nth-child(5), .product-table td:nth-child(5) { min-width: 80px; max-width: 80px; width: 80px; } /* Target */
-
-        /* Styles for all table cells */
+        /* 2. SHRINKING CELL WIDTHS FOR COMPACTNESS */
         .product-table th, .product-table td {
             border: 1px solid #ccc;
-            padding: 6px 4px; 
+            padding: 6px 4px; /* Reduced padding */
             text-align: center;
-            font-size: 0.85em; 
+            font-size: 0.85em; /* Slightly smaller font */
             
-            /* Styles for supplier/price columns (remaining columns) */
-            min-width: 100px; 
+            width: auto; /* Allow the browser to calculate width */
+            min-width: 65px; /* Reduced minimum width */
             max-width: 150px; 
-            white-space: normal;
+            white-space: normal; /* Allow cell text to wrap if necessary */
             overflow: hidden; 
             text-overflow: ellipsis; 
             box-sizing: border-box;
-            display: table-cell; /* IMPORTANT: Ensures normal cell behavior */
         }
 
-        /* Specific row handling for the 'Enter Supplier Prices' row */
-        .product-table tbody tr:last-child td:first-child {
-            text-align: right;
-            font-weight: bold;
-            /* Fix for colspan: This cell should span the first 5 columns */
-            width: calc(120px + 80px + 90px + 60px + 80px + 4px); /* Sum of first 5 columns + padding correction */
-            min-width: auto;
-            max-width: none;
+        .product-table tr td:first-child,
+        .product-table tr th:first-child {
+            /* Give Description column a bit more room */
+            min-width: 100px;
         }
-
+        
         .supplier-price {
-            width: 80px; /* Slightly larger input for better usability */
-            min-width: 80px;
+            width: 60px; /* Narrower width for the input field */
+            min-width: 60px;
             padding: 4px;
             box-sizing: border-box;
             text-align: center;
@@ -393,6 +424,7 @@ while ($row = $supplierResult->fetch_assoc()) {
             border: 1px solid #B22222;
         }
         
+        /* Style for the Save button (now outside the scroll) */
         .modal-content > .btn {
             margin-top: 15px !important;
         }
@@ -408,7 +440,59 @@ while ($row = $supplierResult->fetch_assoc()) {
                 align-items: flex-start;
                 padding: 15px;
             }
-            /* ... (rest of responsive styles) ... */
+        
+            .username-dropdown {
+                align-self: flex-end;
+                margin-top: 10px;
+            }
+        
+            .top-nav {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        
+            .nav-wrapper {
+                width: 100%;
+            }
+        
+            .nav-item {
+                justify-content: center;
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+        
+            .btn-group {
+                left: 0;
+                right: 0;
+                min-width: 100%;
+                top: calc(100% + 12px);
+            }
+        
+            .btn {
+                font-size: 15px;
+                padding: 16px;
+                text-align: center;
+            }
+        
+            .main {
+                padding: 20px;
+            }
+        
+            input[type="text"] {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        
+            button[type="submit"] {
+                width: 100%;
+                margin-left: 0;
+            }
+        
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
         }
     </style>
 </head>
@@ -482,7 +566,6 @@ while ($row = $supplierResult->fetch_assoc()) {
                 <div id="productDetailsContainerWrapper">
                     <div id="productDetailsContainer"></div>
                 </div>
-                
                 <button type="button" class="btn" style="background-color: #28a745; color: white;">Save Prices</button>
 
             </div>
@@ -765,7 +848,7 @@ while ($row = $supplierResult->fetch_assoc()) {
                             ${rows.map(r => `<td>${r.supplier_name || '-'}</td>`).join('')}
                         </tr>
                         <tr>
-                            <td class="first-five-span"><strong>Enter Supplier Prices:</strong></td>
+                            <td colspan="5"><strong>Enter Supplier Prices:</strong></td>
                             ${priceInputs}
                         </tr>
                     </tbody>
