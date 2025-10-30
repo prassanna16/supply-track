@@ -738,6 +738,23 @@ img.product-image {
   font-size: 12px;
   color: #666;
 }
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+.product-table th, .product-table td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: center;
+}
+.product-block {
+  margin-bottom: 20px;
+}
+.supplier-price {
+  width: 80px;
+  padding: 4px;
+}
 </style>
 </head>
 <body>
@@ -893,7 +910,6 @@ img.product-image {
     const arrow = document.getElementById(arrowId);
     const isOpen = group.classList.contains('show');
 
-    // Close all dropdowns
     document.querySelectorAll('.btn-group').forEach(g => g.classList.remove('show'));
     document.querySelectorAll('.arrow').forEach(a => a.classList.remove('rotate'));
     clearTimeout(hideTimeout);
@@ -904,7 +920,6 @@ img.product-image {
       activeDropdown = group;
       activeArrow = arrow;
 
-      // Auto-hide after 5 seconds
       hideTimeout = setTimeout(() => {
         group.classList.remove('show');
         arrow.classList.remove('rotate');
@@ -919,7 +934,6 @@ img.product-image {
     }
   }
 
-  // Close dropdowns on outside click or mobile tap
   function handleOutsideClick(event) {
     const isNavItem = event.target.closest('.nav-item');
     const isBtnGroup = event.target.closest('.btn-group');
@@ -936,137 +950,118 @@ img.product-image {
   document.addEventListener('click', handleOutsideClick);
   document.addEventListener('touchstart', handleOutsideClick);
 
-  // ✅ Show the style modal and load styles once
   function showStylePanel() {
-    const modal = document.getElementById('styleModal');
-    modal.style.display = 'block';
-
-    if (!modal.dataset.loaded) {
-      fetch('inquiry/get_styles.php')
-        .then(res => res.json())
-        .then(styles => {
-          const select = document.getElementById('styleSelect');
-          styles.forEach(style => {
-            const option = document.createElement('option');
-            option.value = style;
-            option.textContent = style;
-            option.selected = true;
-            select.appendChild(option);
-          });
-          modal.dataset.loaded = 'true';
-        });
-    }
+    document.getElementById('styleModal').style.display = 'block';
+    loadStyles();
   }
 
-  // ✅ Close the style modal
   function closeStyleModal() {
     document.getElementById('styleModal').style.display = 'none';
   }
-  function loadProductDetails() {
-  const selectedOptions = Array.from(document.getElementById('styleSelect').selectedOptions);
-  const selectedStyles = selectedOptions.map(opt => opt.value);
 
-  fetch('inquiry/get_product_details.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ styles: selectedStyles })
-  })
-  .then(res => res.json())
-  .then(data => renderProductDetails(data));
-}
+  function loadStyles() {
+    fetch('inquiry/get_styles.php')
+      .then(res => res.json())
+      .then(styles => {
+        const dropdown = document.getElementById('styleDropdown');
+        dropdown.innerHTML = '';
 
-function renderProductDetails(data) {
-  const container = document.getElementById('productDetailsContainer');
-  container.innerHTML = '';
-
-  if (data.length === 0) {
-    container.innerHTML = '<p>No product details found.</p>';
-    return;
+        styles.forEach(style => {
+          const label = document.createElement('label');
+          label.innerHTML = `
+            <input type="checkbox" value="${style}" onchange="updateSelectedStyles()" />
+            ${style}
+          `;
+          dropdown.appendChild(label);
+        });
+      });
   }
 
-  const grouped = {};
-  data.forEach(row => {
-    const key = row.buyer_style;
-    if (!grouped[key]) grouped[key] = [];
-    grouped[key].push(row);
-  });
+  function updateSelectedStyles() {
+    const checkboxes = document.querySelectorAll('#styleDropdown input[type="checkbox"]');
+    const selected = Array.from(checkboxes)
+      .filter(cb => cb.checked)
+      .map(cb => cb.value);
 
-  Object.keys(grouped).forEach(style => {
-    const rows = grouped[style];
-    const base = rows[0];
+    const display = selected.length > 0 ? selected.join(', ') : 'Select style';
+    document.getElementById('selectedStyles').textContent = display;
 
-    const section = document.createElement('div');
-    section.className = 'product-block';
+    loadProductDetails(selected);
+  }
 
-    section.innerHTML = `
-      <h3>Style: ${style}</h3>
-      <table class="product-table">
-        <thead>
-          <tr>
-            <th>S.No</th><th>Buyer Style</th><th>Description</th><th>Department</th>
-            <th>Size Range</th><th>QTY</th><th>Currency</th><th>Target</th>
-            ${rows.map((_, i) => `<th>Supplier ${i + 1}</th>`).join('')}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>${base.sno}</td><td>${base.buyer_style}</td><td>${base.description}</td>
-            <td>${base.department}</td><td>${base.size_range}</td><td>${base.qty}</td>
-            <td>${base.currency}</td><td>${base.target}</td>
-            ${rows.map(r => `<td>${r.supplier_name || '-'}</td>`).join('')}
-          </tr>
-          <tr>
-            <td colspan="8"><strong>Enter Supplier Prices:</strong></td>
-            ${rows.map(() => `<td><input type="text" class="supplier-price" /></td>`).join('')}
-          </tr>
-        </tbody>
-      </table>
-    `;
-
-    container.appendChild(section);
-  });
-}
-function toggleDropdown() {
-  const dropdown = document.getElementById('styleDropdown');
-  dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-}
-
-function loadStyles() {
-  fetch('inquiry/get_styles.php')
+  function loadProductDetails(selectedStyles) {
+    fetch('inquiry/get_product_details.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ styles: selectedStyles })
+    })
     .then(res => res.json())
-    .then(styles => {
-      const dropdown = document.getElementById('styleDropdown');
-      dropdown.innerHTML = '';
+    .then(data => renderProductDetails(data));
+  }
 
-      styles.forEach(style => {
-        const label = document.createElement('label');
-        label.innerHTML = `
-          <input type="checkbox" value="${style}" onchange="updateSelectedStyles()" />
-          ${style}
-        `;
-        dropdown.appendChild(label);
-      });
+  function renderProductDetails(data) {
+    const container = document.getElementById('productDetailsContainer');
+    container.innerHTML = '';
+
+    if (data.length === 0) {
+      container.innerHTML = '<p>No product details found.</p>';
+      return;
+    }
+
+    const grouped = {};
+    data.forEach(row => {
+      const key = row.buyer_style;
+      if (!grouped[key]) grouped[key] = [];
+      grouped[key].push(row);
     });
-}
 
-function updateSelectedStyles() {
-  const checkboxes = document.querySelectorAll('#styleDropdown input[type="checkbox"]');
-  const selected = Array.from(checkboxes)
-    .filter(cb => cb.checked)
-    .map(cb => cb.value);
+    Object.keys(grouped).forEach(style => {
+      const rows = grouped[style];
+      const base = rows[0];
 
-  const display = selected.length > 0 ? selected.join(', ') : 'Select style';
-  document.getElementById('selectedStyles').textContent = display;
+      const section = document.createElement('div');
+      section.className = 'product-block';
 
-  // Optional: trigger product detail loading
-  loadProductDetails(selected);
-}
+      section.innerHTML = `
+        <h3>Style: ${style}</h3>
+        <table class="product-table">
+          <thead>
+            <tr>
+              <th>S.No</th><th>Buyer Style</th><th>Description</th><th>Department</th>
+              <th>Size Range</th><th>QTY</th><th>Currency</th><th>Target</th>
+              ${rows.map((_, i) => `<th>Supplier ${i + 1}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>${base.sno}</td><td>${base.buyer_style}</td><td>${base.description}</td>
+              <td>${base.department}</td><td>${base.size_range}</td><td>${base.qty}</td>
+              <td>${base.currency}</td><td>${base.target}</td>
+              ${rows.map(r => `<td>${r.supplier_name || '-'}</td>`).join('')}
+            </tr>
+            <tr>
+              <td colspan="8"><strong>Enter Supplier Prices:</strong></td>
+              ${rows.map(r => `
+                <td>
+                  <input type="text" class="supplier-price"
+                         data-style="${style}"
+                         data-supplier="${r.supplier_name}"
+                         placeholder="Price" />
+                </td>
+              `).join('')}
+            </tr>
+          </tbody>
+        </table>
+      `;
 
-// Call this when modal opens
-function showStylePanel() {
-  document.getElementById('styleModal').style.display = 'block';
-  loadStyles();
-}
+      container.appendChild(section);
+    });
+  }
+
+  function toggleDropdown() {
+    const dropdown = document.getElementById('styleDropdown');
+    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+  }
 </script>
 <?php $conn->close(); ?>
 </body>

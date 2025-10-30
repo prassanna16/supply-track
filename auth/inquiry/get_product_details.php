@@ -1,7 +1,7 @@
 <?php
 require_once '../../includes/db_connect.php';
 
-$styles = $_POST['styles'] ?? [];
+$styles = json_decode(file_get_contents("php://input"), true)['styles'] ?? [];
 
 if (empty($styles)) {
   echo json_encode([]);
