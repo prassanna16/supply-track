@@ -677,6 +677,22 @@ img.product-image {
   font-weight: bold;
   cursor: pointer;
 }
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+.product-table th, .product-table td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: center;
+}
+.product-block {
+  margin-bottom: 20px;
+}
+.supplier-price {
+  width: 80px;
+}
 </style>
 </head>
 <body>
@@ -736,10 +752,14 @@ img.product-image {
     <h2>Select Styles</h2>
     <div class="style-dropdown">
       <label for="styleSelect">Styles:</label>
-      <select id="styleSelect" multiple></select>
+      <select id="styleSelect" multiple onchange="loadProductDetails()"></select>
     </div>
+
+    <!-- 🔽 Product details will be injected here -->
+    <div id="productDetailsContainer"></div>
   </div>
 </div>
+
 
     <form method="GET">
       <input type="text" name="buyer" placeholder="Search by Buyer" value="<?php echo htmlspecialchars($buyer); ?>">
@@ -890,6 +910,70 @@ img.product-image {
   function closeStyleModal() {
     document.getElementById('styleModal').style.display = 'none';
   }
+  function loadProductDetails() {
+  const selectedOptions = Array.from(document.getElementById('styleSelect').selectedOptions);
+  const selectedStyles = selectedOptions.map(opt => opt.value);
+
+  fetch('inquiry/get_product_details.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ styles: selectedStyles })
+  })
+  .then(res => res.json())
+  .then(data => renderProductDetails(data));
+}
+
+function renderProductDetails(data) {
+  const container = document.getElementById('productDetailsContainer');
+  container.innerHTML = '';
+
+  if (data.length === 0) {
+    container.innerHTML = '<p>No product details found.</p>';
+    return;
+  }
+
+  const grouped = {};
+  data.forEach(row => {
+    const key = row.buyer_style;
+    if (!grouped[key]) grouped[key] = [];
+    grouped[key].push(row);
+  });
+
+  Object.keys(grouped).forEach(style => {
+    const rows = grouped[style];
+    const base = rows[0];
+
+    const section = document.createElement('div');
+    section.className = 'product-block';
+
+    section.innerHTML = `
+      <h3>Style: ${style}</h3>
+      <table class="product-table">
+        <thead>
+          <tr>
+            <th>S.No</th><th>Buyer Style</th><th>Description</th><th>Department</th>
+            <th>Size Range</th><th>QTY</th><th>Currency</th><th>Target</th>
+            ${rows.map((_, i) => `<th>Supplier ${i + 1}</th>`).join('')}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>${base.sno}</td><td>${base.buyer_style}</td><td>${base.description}</td>
+            <td>${base.department}</td><td>${base.size_range}</td><td>${base.qty}</td>
+            <td>${base.currency}</td><td>${base.target}</td>
+            ${rows.map(r => `<td>${r.supplier_name || '-'}</td>`).join('')}
+          </tr>
+          <tr>
+            <td colspan="8"><strong>Enter Supplier Prices:</strong></td>
+            ${rows.map(() => `<td><input type="text" class="supplier-price" /></td>`).join('')}
+          </tr>
+        </tbody>
+      </table>
+    `;
+
+    container.appendChild(section);
+  });
+}
 </script>
 <?php $conn->close(); ?>
 </body>
