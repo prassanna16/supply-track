@@ -983,6 +983,8 @@ img.product-image {
       .filter(cb => cb.checked)
       .map(cb => cb.value);
 
+    console.log('Selected styles:', selected);
+
     const display = selected.length > 0 ? selected.join(', ') : 'Select style';
     document.getElementById('selectedStyles').textContent = display;
 
@@ -990,6 +992,8 @@ img.product-image {
   }
 
   function loadProductDetails(selectedStyles) {
+    console.log('Sending styles to PHP:', selectedStyles);
+
     fetch('inquiry/get_product_details.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1000,6 +1004,8 @@ img.product-image {
   }
 
   function renderProductDetails(data) {
+    console.log('Received product data:', data);
+
     const container = document.getElementById('productDetailsContainer');
     container.innerHTML = '';
 
