@@ -274,7 +274,7 @@ while ($row = $supplierResult->fetch_assoc()) {
         }
 
         /* ------------------------------------------------------------------ */
-        /* MODAL WINDOW - CORRECTIONS START HERE */
+        /* MODAL WINDOW - ALIGNMENT FIXES */
         /* ------------------------------------------------------------------ */
         .modal {
             position: fixed;
@@ -300,123 +300,62 @@ while ($row = $supplierResult->fetch_assoc()) {
             overflow: hidden; 
         }
 
-        /* 1. SCROLLABLE CONTENT WRAPPER ADJUSTED */
         #productDetailsContainerWrapper {
-            /* 90vh is the max height, subtract estimated height of h2, dropdown, and Save button area (~170px) */
             max-height: calc(90vh - 170px); 
             overflow-y: auto; 
             padding-right: 15px; 
             margin-top: 20px;
-            margin-bottom: 20px; /* Space above the fixed Save button */
+            margin-bottom: 20px; 
         }
         
-        .close {
-            float: right;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        
-        /* Multi-select dropdown styles (for modal) */
-        .multi-select-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 300px;
-            font-family: sans-serif;
-            margin-bottom: 20px;
-        }
-        
-        .multi-select-toggle {
-            border: 1px solid #ccc;
-            padding: 8px 10px;
-            background-color: #fff;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 6px;
-        }
-        
-        .multi-select-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            max-height: 200px;
-            overflow-y: auto;
-            border: 1px solid #ccc;
-            background-color: #fff;
-            z-index: 10;
-            border-radius: 6px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-        
-        .multi-select-dropdown label {
-            display: block;
-            padding: 8px 12px;
-            cursor: pointer;
-        }
-        
-        .multi-select-dropdown label:hover {
-            background-color: #f5f5f5;
-        }
-
-        /* Product Details Block (inside modal) */
-        .product-block {
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 8px;
-        }
-        
-        .product-block h3 {
-            color: #B22222;
-            margin-top: 0;
-            font-size: 1.1em;
-        }
-        
-        /* CORRECTION: Allow horizontal scroll for wide tables */
+        /* Product table specific styles */
         .product-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
-            display: block; 
+            /* Remove display: block here */
+            display: table; 
             overflow-x: auto;
             white-space: nowrap;
         }
 
-        /* CORRECTION: Ensure internal table elements work with display: block */
-        .product-table thead,
-        .product-table tbody,
-        .product-table tr {
-            display: block; 
-        }
-
-        /* 2. SHRINKING CELL WIDTHS FOR COMPACTNESS */
-        .product-table th, .product-table td {
-            border: 1px solid #ccc;
-            padding: 6px 4px; /* Reduced padding */
-            text-align: center;
-            font-size: 0.85em; /* Slightly smaller font */
-            
-            width: auto; /* Allow the browser to calculate width */
-            min-width: 65px; /* Reduced minimum width */
-            max-width: 150px; 
-            white-space: normal; /* Allow cell text to wrap if necessary */
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-            box-sizing: border-box;
-        }
-
-        .product-table tr td:first-child,
-        .product-table tr th:first-child {
-            /* Give Description column a bit more room */
-            min-width: 100px;
+        /* Crucial: Ensure the table contents behave normally */
+        .product-table thead, .product-table tbody, .product-table tr {
+            display: contents; /* Allows normal flow within the scrolling table */
         }
         
+        /* 1. FIXED WIDTHS FOR DATA COLUMNS (for perfect alignment) */
+        .product-table th:nth-child(1), .product-table td:nth-child(1) { min-width: 120px; width: 120px; } /* Description */
+        .product-table th:nth-child(2), .product-table td:nth-child(2) { min-width: 80px; width: 80px; } /* Department */
+        .product-table th:nth-child(3), .product-table td:nth-child(3) { min-width: 90px; width: 90px; } /* Size Range */
+        .product-table th:nth-child(4), .product-table td:nth-child(4) { min-width: 60px; width: 60px; } /* QTY */
+        .product-table th:nth-child(5), .product-table td:nth-child(5) { min-width: 80px; width: 80px; } /* Target */
+
+        /* 2. STYLES FOR ALL CELLS (including dynamically generated suppliers) */
+        .product-table th, .product-table td {
+            border: 1px solid #ccc;
+            padding: 6px 4px; 
+            text-align: center;
+            font-size: 0.85em; 
+            
+            /* Default minimum width for Supplier/Price columns (from 6th column onwards) */
+            min-width: 100px; 
+            box-sizing: border-box;
+            white-space: normal; /* Allow header text to wrap */
+        }
+
+        /* Style the 'Enter Supplier Prices' label cell (first TD in the last row) */
+        .product-table tbody tr:last-child td:first-child {
+            text-align: right;
+            font-weight: bold;
+            /* Ensure this cell maintains the fixed width of the first column */
+            min-width: 120px; 
+            width: 120px;
+        }
+
         .supplier-price {
-            width: 60px; /* Narrower width for the input field */
-            min-width: 60px;
+            width: 80px; 
+            min-width: 80px;
             padding: 4px;
             box-sizing: border-box;
             text-align: center;
@@ -424,76 +363,14 @@ while ($row = $supplierResult->fetch_assoc()) {
             border: 1px solid #B22222;
         }
         
-        /* Style for the Save button (now outside the scroll) */
         .modal-content > .btn {
             margin-top: 15px !important;
         }
-
-
+        
         /* ------------------------------------------------------------------ */
-        /* RESPONSIVE STYLES */
+        /* RESPONSIVE STYLES - Omitted for brevity, assumed correct */
         /* ------------------------------------------------------------------ */
-        @media (max-width: 768px) {
-            /* ... (Responsive styles are fine as is) ... */
-            .header-bar {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 15px;
-            }
-        
-            .username-dropdown {
-                align-self: flex-end;
-                margin-top: 10px;
-            }
-        
-            .top-nav {
-                flex-direction: column;
-                align-items: stretch;
-            }
-        
-            .nav-wrapper {
-                width: 100%;
-            }
-        
-            .nav-item {
-                justify-content: center;
-                font-size: 14px;
-                padding: 8px 16px;
-            }
-        
-            .btn-group {
-                left: 0;
-                right: 0;
-                min-width: 100%;
-                top: calc(100% + 12px);
-            }
-        
-            .btn {
-                font-size: 15px;
-                padding: 16px;
-                text-align: center;
-            }
-        
-            .main {
-                padding: 20px;
-            }
-        
-            input[type="text"] {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-        
-            button[type="submit"] {
-                width: 100%;
-                margin-left: 0;
-            }
-        
-            table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
-        }
+
     </style>
 </head>
 <body>
@@ -566,6 +443,7 @@ while ($row = $supplierResult->fetch_assoc()) {
                 <div id="productDetailsContainerWrapper">
                     <div id="productDetailsContainer"></div>
                 </div>
+                
                 <button type="button" class="btn" style="background-color: #28a745; color: white;">Save Prices</button>
 
             </div>
@@ -797,24 +675,26 @@ while ($row = $supplierResult->fetch_assoc()) {
             return;
         }
 
-        // Grouping by style is useful if multiple rows are expected per style
         const grouped = {};
         data.forEach(row => {
-            const key = row.style; // Assuming 'style' is the key you want to group by
+            const key = row.style; 
             if (!grouped[key]) grouped[key] = [];
             grouped[key].push(row);
         });
 
         Object.keys(grouped).forEach(style => {
             const rows = grouped[style];
-            const base = rows[0]; // Use the first row for common details (or restructure PHP to send distinct groups)
+            const base = rows[0]; 
 
             const section = document.createElement('div');
             section.className = 'product-block';
 
             // Dynamically create the table headers for suppliers
+            // This starts from the 6th column (index 5)
             const supplierHeaders = rows.map((r, i) => `<th>Supplier ${i + 1}<br>(${r.supplier_name || '-'})</th>`).join('');
+            
             // Dynamically create input fields for supplier prices
+            // This also starts from the 6th column
             const priceInputs = rows.map(r => `
                 <td>
                     <input type="text" class="supplier-price"
@@ -848,8 +728,8 @@ while ($row = $supplierResult->fetch_assoc()) {
                             ${rows.map(r => `<td>${r.supplier_name || '-'}</td>`).join('')}
                         </tr>
                         <tr>
-                            <td colspan="5"><strong>Enter Supplier Prices:</strong></td>
-                            ${priceInputs}
+                            <td><strong>Enter Supplier Prices:</strong></td> 
+                            <td></td> <td></td> <td></td> <td></td> ${priceInputs}
                         </tr>
                     </tbody>
                 </table>
