@@ -693,6 +693,51 @@ img.product-image {
 .supplier-price {
   width: 80px;
 }
+.multi-select-wrapper {
+  position: relative;
+  width: 250px;
+  font-family: sans-serif;
+}
+
+.multi-select-toggle {
+  border: 1px solid #ccc;
+  padding: 8px 10px;
+  background-color: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 6px;
+}
+
+.multi-select-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  z-index: 10;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.multi-select-dropdown label {
+  display: block;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.multi-select-dropdown label:hover {
+  background-color: #f5f5f5;
+}
+
+.arrow {
+  font-size: 12px;
+  color: #666;
+}
 </style>
 </head>
 <body>
@@ -745,15 +790,22 @@ img.product-image {
     <div class="top-bar">
       <h2>Product Details</h2>
     </div>
-     <!-- ✅ Modal-style popup -->
+    <!-- ✅ Modal-style popup -->
 <div id="styleModal" class="modal" style="display: none;">
   <div class="modal-content">
     <span class="close" onclick="closeStyleModal()">&times;</span>
     <h2>Select Styles</h2>
+
     <div class="style-dropdown">
       <label for="styleSelect">Styles:</label>
-      <select id="styleSelect" multiple onchange="loadProductDetails()"></select>
-    </div>
+      <div id="styleSelectBox" class="multi-select-wrapper">
+        <div class="multi-select-toggle" onclick="toggleDropdown()">
+          <span id="selectedStyles">Select style</span>
+          <span class="arrow">&#9662;</span>
+        </div>
+        <div id="styleDropdown" class="multi-select-dropdown" style="display: none;"></div>
+      </div>
+    </div> <!-- ✅ Properly closed here -->
 
     <!-- 🔽 Product details will be injected here -->
     <div id="productDetailsContainer"></div>
@@ -973,6 +1025,47 @@ function renderProductDetails(data) {
 
     container.appendChild(section);
   });
+}
+function toggleDropdown() {
+  const dropdown = document.getElementById('styleDropdown');
+  dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+}
+
+function loadStyles() {
+  fetch('inquiry/get_styles.php')
+    .then(res => res.json())
+    .then(styles => {
+      const dropdown = document.getElementById('styleDropdown');
+      dropdown.innerHTML = '';
+
+      styles.forEach(style => {
+        const label = document.createElement('label');
+        label.innerHTML = `
+          <input type="checkbox" value="${style}" onchange="updateSelectedStyles()" />
+          ${style}
+        `;
+        dropdown.appendChild(label);
+      });
+    });
+}
+
+function updateSelectedStyles() {
+  const checkboxes = document.querySelectorAll('#styleDropdown input[type="checkbox"]');
+  const selected = Array.from(checkboxes)
+    .filter(cb => cb.checked)
+    .map(cb => cb.value);
+
+  const display = selected.length > 0 ? selected.join(', ') : 'Select style';
+  document.getElementById('selectedStyles').textContent = display;
+
+  // Optional: trigger product detail loading
+  loadProductDetails(selected);
+}
+
+// Call this when modal opens
+function showStylePanel() {
+  document.getElementById('styleModal').style.display = 'block';
+  loadStyles();
 }
 </script>
 <?php $conn->close(); ?>
