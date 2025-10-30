@@ -247,7 +247,7 @@ while ($row = $supplierResult->fetch_assoc()) {
         .modal-content {
             background: #fff;
             margin: auto;
-            /* Bottom padding increased to ensure save button is visible */
+            /* Key Fix: Increased bottom padding to prevent the last element (Save button) from being cut off */
             padding: 20px 30px 60px 30px; 
             border-radius: 12px;
             width: 95%; 
@@ -314,39 +314,32 @@ while ($row = $supplierResult->fetch_assoc()) {
         /* ------------------------------------------------------------------ */
         /* MODAL PRODUCT TABLE STYLES (.product-table) */
         /* ------------------------------------------------------------------ */
-        
-        /* FIX 1: The product-table-container controls the horizontal scroll */
-        .product-table-container {
-            width: 100%;
-            overflow-x: auto;
-            margin-top: 10px;
-        }
-        
         .product-table {
-            /* Now table acts like a standard table, allowing columns to size naturally/overflow */
-            width: max-content; /* Allow the table to be as wide as its content needs */
-            min-width: 100%; /* But ensure it takes up at least 100% of the container width */
+            width: 100%;
             border-collapse: collapse;
+            margin-top: 10px;
+            display: block; 
+            overflow-x: auto;
+            white-space: nowrap;
         }
 
-        /* FIX 2: Removed display: table and table-layout: fixed from thead/tbody/tr */
         .product-table thead, .product-table tbody, .product-table tr {
-            /* Reverting these to standard table element display types */
-            display: table-row-group; 
-            width: auto;
-            table-layout: auto; 
+            display: table; 
+            width: 100%;
+            table-layout: fixed; 
         }
         
-        /* Min-Widths for core data columns (ensure these don't shrink too much) */
-        .product-table th:nth-child(1), .product-table td:nth-child(1) { min-width: 120px; } /* Description */
-        .product-table th:nth-child(2), .product-table td:nth-child(2) { min-width: 80px; } /* Department */
-        .product-table th:nth-child(3), .product-table td:nth-child(3) { min-width: 90px; } /* Size Range */
-        .product-table th:nth-child(4), .product-table td:nth-child(4) { min-width: 60px; } /* QTY */
-        .product-table th:nth-child(5), .product-table td:nth-child(5) { min-width: 80px; } /* Target */
+        /* Fixed Widths for Data Columns */
+        .product-table th:nth-child(1), .product-table td:nth-child(1) { min-width: 120px; width: 120px; } /* Description */
+        .product-table th:nth-child(2), .product-table td:nth-child(2) { min-width: 80px; width: 80px; } /* Department */
+        .product-table th:nth-child(3), .product-table td:nth-child(3) { min-width: 90px; width: 90px; } /* Size Range */
+        .product-table th:nth-child(4), .product-table td:nth-child(4) { min-width: 60px; width: 60px; } /* QTY */
+        .product-table th:nth-child(5), .product-table td:nth-child(5) { min-width: 80px; width: 80px; } /* Target */
         
-        /* Min-Width for Supplier/Price columns (from 6th column onwards) */
+        /* Default minimum width for Supplier/Price columns (from 6th column onwards) */
         .product-table th:nth-child(n+6), .product-table td:nth-child(n+6) {
-             min-width: 120px; /* Slightly larger to accommodate Supplier name */
+             min-width: 100px; 
+             width: 100px; 
         }
 
         /* Styles for all cells */
@@ -370,7 +363,8 @@ while ($row = $supplierResult->fetch_assoc()) {
         }
         
         .supplier-price {
-            width: 100%; /* Fill the entire cell width */
+            width: 80px; 
+            min-width: 80px;
             padding: 4px;
             box-sizing: border-box;
             text-align: center;
@@ -707,6 +701,7 @@ while ($row = $supplierResult->fetch_assoc()) {
             container.innerHTML = `<p style="color:red;">Failed to load product details. ${error.message}</p>`;
         });
     }
+
     function renderProductDetails(data) {
         console.log('Received product data:', data);
 
@@ -735,9 +730,6 @@ while ($row = $supplierResult->fetch_assoc()) {
             // Dynamically create the table headers for suppliers
             const supplierHeaders = rows.map((r, i) => `<th>Supplier ${i + 1}<br>(${r.supplier_name || '-'})</th>`).join('');
             
-            // Dynamically create the data cells (Supplier Names)
-            const supplierDataCells = rows.map(r => `<td>${r.supplier_name || '-'}</td>`).join('');
-            
             // Dynamically create input fields for supplier prices
             const priceInputs = rows.map(r => `
                 <td>
@@ -748,46 +740,41 @@ while ($row = $supplierResult->fetch_assoc()) {
                 </td>
             `).join('');
 
-            // Calculate the number of standard data columns before suppliers (Description, Dept, Size, QTY, Target = 5 columns)
-            const standardColumns = 5;
-            
-            // Create empty placeholder cells for the price row to align under the first 5 header columns
-            let priceRowPlaceholders = '<td></td>'.repeat(standardColumns - 1); // -1 because the first cell is the label
 
-            // Inject the new, aligned structure
             section.innerHTML = `
                 <h3>Style: ${style} - Buyer: ${base.buyer}</h3>
-                <div class="product-table-container">
-                    <table class="product-table">
-                        <thead>
-                            <tr>
-                                <th>Description</th>
-                                <th>Department</th>
-                                <th>Size Range</th>
-                                <th>QTY</th>
-                                <th>Target</th>
-                                ${supplierHeaders}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>${base.description || '-'}</td>
-                                <td>${base.department || '-'}</td>
-                                <td>${base.size_range || '-'}</td>
-                                <td>${base.qty || '-'}</td>
-                                <td>${base.currency || ''} ${base.target || '-'}</td>
-                                ${supplierDataCells}
-                            </tr>
-                            <tr>
-                                <td><strong>Enter Supplier Prices:</strong></td> 
-                                
-                                ${priceRowPlaceholders} 
-                                
-                                ${priceInputs}
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <table class="product-table">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Department</th>
+                            <th>Size Range</th>
+                            <th>QTY</th>
+                            <th>Target</th>
+                            ${supplierHeaders}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>${base.description || '-'}</td>
+                            <td>${base.department || '-'}</td>
+                            <td>${base.size_range || '-'}</td>
+                            <td>${base.qty || '-'}</td>
+                            <td>${base.currency || ''} ${base.target || '-'}</td>
+                            ${rows.map(r => `<td>${r.supplier_name || '-'}</td>`).join('')}
+                        </tr>
+                        <tr>
+                            <td><strong>Enter Supplier Prices:</strong></td> 
+                            
+                            <td></td> 
+                            <td></td> 
+                            <td></td> 
+                            <td></td> 
+                            
+                            ${priceInputs}
+                        </tr>
+                    </tbody>
+                </table>
             `;
 
             container.appendChild(section);
