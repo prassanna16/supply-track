@@ -30,7 +30,7 @@ while ($row = $supplierResult->fetch_assoc()) {
     <title>Admin Dashboard - SupplyTrack</title>
     <style>
         /* ------------------------------------------------------------------ */
-        /* GLOBAL / LAYOUT STYLES */
+        /* GLOBAL / LAYOUT STYLES (omitted for brevity) */
         /* ------------------------------------------------------------------ */
         body {
             margin: 0;
@@ -203,9 +203,7 @@ while ($row = $supplierResult->fetch_assoc()) {
             background-color: #eeaaaaff;
         }
         
-        /* ------------------------------------------------------------------ */
-        /* PRODUCT TABLE (Main Dashboard) - DEFAULT STYLES */
-        /* ------------------------------------------------------------------ */
+        /* --- Main Dashboard Table Styles (omitted for brevity) --- */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -259,22 +257,37 @@ while ($row = $supplierResult->fetch_assoc()) {
             overflow: hidden; 
         }
 
-        /* FIX 3: Close Icon Styling */
         .close {
-            /* Position on the top right */
             position: absolute;
             top: 10px;
             right: 20px;
-            
-            font-size: 30px; /* Bigger icon */
+            font-size: 30px; 
             font-weight: bold;
             cursor: pointer;
-            color: #B22222; /* Use brand color */
+            color: #B22222; 
             line-height: 1;
             z-index: 10;
         }
         
-        /* FIX 2: Dropdown Alignment (Styles) */
+        /* FIX: Dropdown container needed relative positioning for children to anchor */
+        .multi-select-wrapper {
+            position: relative;
+            display: inline-block; /* Allows the box to shrink-wrap its content */
+            min-width: 150px;
+            z-index: 99; /* Ensure it stays above the table */
+        }
+
+        .multi-select-toggle {
+             padding: 8px;
+             border: 1px solid #ccc;
+             border-radius: 4px;
+             cursor: pointer;
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             background-color: #fff;
+        }
+
         .multi-select-dropdown label {
             /* Crucial: Ensure each checkbox/style name appears on its own line */
             display: block; 
@@ -286,12 +299,12 @@ while ($row = $supplierResult->fetch_assoc()) {
             position: absolute;
             top: 100%;
             left: 0;
-            width: 100%;
+            width: 100%; /* Important: Takes the width of the parent .multi-select-wrapper */
             max-height: 200px;
             overflow-y: auto;
             border: 1px solid #ccc;
             background-color: #fff;
-            z-index: 10;
+            z-index: 100; /* Higher Z-index to ensure visibility */
             border-radius: 6px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             box-sizing: border-box; 
@@ -344,15 +357,9 @@ while ($row = $supplierResult->fetch_assoc()) {
             font-weight: bold;
         }
 
-        /* FIX 1: Input Row Alignment (The issue was here and in the JS) */
         .product-table tbody tr:last-child td {
-             /* Reset background for all cells in the price input row */
              background-color: #f2f2f2; 
         }
-
-        /* Cells 2 through 5 are NOT required to be empty spacers in the last row */
-        /* We only need the first cell for the label. The actual inputs start from the 6th cell */
-        /* This removes the need for explicit empty spacers from the CSS side, as the JS will place the inputs correctly */
         
         .supplier-price {
             width: 80px; 
@@ -573,6 +580,7 @@ while ($row = $supplierResult->fetch_assoc()) {
 
     function toggleDropdown() {
         const dropdown = document.getElementById('styleDropdown');
+        // This is where the magic happens: block = show, none = hide
         dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
     }
 
@@ -684,7 +692,6 @@ while ($row = $supplierResult->fetch_assoc()) {
             const supplierHeaders = rows.map((r, i) => `<th>Supplier ${i + 1}<br>(${r.supplier_name || '-'})</th>`).join('');
             
             // Dynamically create input fields for supplier prices
-            // IMPORTANT: The priceInputs must now contain their own <td> wrappers
             const priceInputs = rows.map(r => `
                 <td>
                     <input type="text" class="supplier-price"
@@ -694,8 +701,6 @@ while ($row = $supplierResult->fetch_assoc()) {
                 </td>
             `).join('');
 
-            // Create the five empty cells needed to push the inputs to the right
-            const emptyCells = `<td></td><td></td><td></td><td></td><td></td>`;
 
             section.innerHTML = `
                 <h3>Style: ${style} - Buyer: ${base.buyer}</h3>
@@ -722,7 +727,12 @@ while ($row = $supplierResult->fetch_assoc()) {
                         <tr>
                             <td><strong>Enter Supplier Prices:</strong></td> 
                             
-                            <td></td> <td></td> <td></td> <td></td> ${priceInputs}
+                            <td></td> 
+                            <td></td> 
+                            <td></td> 
+                            <td></td> 
+                            
+                            ${priceInputs}
                         </tr>
                     </tbody>
                 </table>
