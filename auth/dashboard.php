@@ -294,7 +294,7 @@ while ($row = $supplierResult->fetch_assoc()) {
       padding: 20px 30px;
       border-radius: 12px;
       width: 100%;
-      max-width: 650px; /* Slightly wider for the supplier table */
+      max-width: 1250px; /* Slightly wider for the supplier table */
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       position: relative;
     }
