@@ -255,11 +255,12 @@ while ($row = $supplierResult->fetch_assoc()) {
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             position: relative;
             
+            /* Enable vertical scrolling for the modal content structure */
             overflow-y: hidden; 
             display: flex;
             flex-direction: column;
         }
-
+        
         /* NEW SCROLLING CONTAINER CSS (Vertical Scroll Fix) */
         #modalBodyScroll {
             flex-grow: 1; 
@@ -333,11 +334,13 @@ while ($row = $supplierResult->fetch_assoc()) {
         }
         
         .product-table {
+            /* Crucial for allowing the table to expand beyond container width */
             width: max-content; 
             min-width: 100%; 
             border-collapse: collapse;
         }
 
+        /* Revert table elements to their default display for proper column alignment */
         .product-table thead, .product-table tbody, .product-table tr {
             display: table-row-group; 
             width: auto;
@@ -353,7 +356,7 @@ while ($row = $supplierResult->fetch_assoc()) {
         
         /* Min-Width for Supplier/Price columns (from 6th column onwards) */
         .product-table th:nth-child(n+6), .product-table td:nth-child(n+6) {
-             min-width: 150px; 
+             min-width: 150px; /* Increased to accommodate supplier name and number */
         }
 
         /* Styles for all header cells */
@@ -361,16 +364,17 @@ while ($row = $supplierResult->fetch_assoc()) {
              /* CRITICAL: Prevent wrapping and force consistent height/width calculation */
              white-space: nowrap; 
              padding: 10px 4px;
+             /* Ensure header text is centered */
+             text-align: center;
         }
 
-        /* Styles for all cells (CRITICAL ALIGNMENT FIX) */
+        /* Styles for all cells (General Alignment Fix) */
         .product-table th, .product-table td {
             border: 1px solid #ccc;
             padding: 6px 4px; 
             text-align: center;
             font-size: 0.85em; 
             box-sizing: border-box;
-            /* Allow wrapping in data cells, but ensure vertical alignment */
             white-space: normal;
             vertical-align: middle; 
         }
@@ -741,8 +745,9 @@ while ($row = $supplierResult->fetch_assoc()) {
             const section = document.createElement('div');
             section.className = 'product-block';
 
-            // JS FIX: Removed <br> from the header to prevent misalignment caused by text wrapping
+            // CRITICAL JS FIX: Removed <br> to prevent misalignment caused by text wrapping
             const supplierHeaders = rows.map((r, i) => `<th>Supplier ${i + 1} (${r.supplier_name || '-'})</th>`).join('');
+            
             const supplierDataCells = rows.map(r => `<td>${r.supplier_name || '-'}</td>`).join('');
             
             const priceInputs = rows.map(r => `
