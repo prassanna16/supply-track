@@ -265,7 +265,7 @@ while ($row = $supplierResult->fetch_assoc()) {
             flex-grow: 1; 
             max-height: calc(95vh - 200px); 
             overflow-y: auto; 
-            margin-bottom: 15px; /* Spacing above the Save button */
+            margin-bottom: 15px; 
         }
         
         .close {
@@ -280,7 +280,7 @@ while ($row = $supplierResult->fetch_assoc()) {
             z-index: 10;
         }
         
-        /* --- Dropdown Styles --- */
+        /* --- Dropdown Styles (omitted for brevity) --- */
         .multi-select-wrapper {
             position: relative;
             display: inline-block;
@@ -344,16 +344,23 @@ while ($row = $supplierResult->fetch_assoc()) {
             table-layout: auto; 
         }
         
-        /* Min-Widths for core data columns (for alignment) */
-        .product-table th:nth-child(1), .product-table td:nth-child(1) { min-width: 120px; } /* Description */
-        .product-table th:nth-child(2), .product-table td:nth-child(2) { min-width: 80px; } /* Department */
-        .product-table th:nth-child(3), .product-table td:nth-child(3) { min-width: 90px; } /* Size Range */
-        .product-table th:nth-child(4), .product-table td:nth-child(4) { min-width: 60px; } /* QTY */
-        .product-table th:nth-child(5), .product-table td:nth-child(5) { min-width: 80px; } /* Target */
+        /* Min-Widths for core data columns (CRITICAL ADJUSTMENT for Alignment) */
+        .product-table th:nth-child(1), .product-table td:nth-child(1) { min-width: 150px; } /* Description */
+        .product-table th:nth-child(2), .product-table td:nth-child(2) { min-width: 100px; } /* Department */
+        .product-table th:nth-child(3), .product-table td:nth-child(3) { min-width: 100px; } /* Size Range */
+        .product-table th:nth-child(4), .product-table td:nth-child(4) { min-width: 80px; } /* QTY */
+        .product-table th:nth-child(5), .product-table td:nth-child(5) { min-width: 100px; } /* Target */
         
         /* Min-Width for Supplier/Price columns (from 6th column onwards) */
         .product-table th:nth-child(n+6), .product-table td:nth-child(n+6) {
-             min-width: 120px; 
+             min-width: 150px; 
+        }
+
+        /* Styles for all header cells */
+        .product-table thead th {
+             /* CRITICAL: Prevent wrapping and force consistent height/width calculation */
+             white-space: nowrap; 
+             padding: 10px 4px;
         }
 
         /* Styles for all cells (CRITICAL ALIGNMENT FIX) */
@@ -363,8 +370,9 @@ while ($row = $supplierResult->fetch_assoc()) {
             text-align: center;
             font-size: 0.85em; 
             box-sizing: border-box;
+            /* Allow wrapping in data cells, but ensure vertical alignment */
             white-space: normal;
-            vertical-align: middle; /* Ensures inputs and text align */
+            vertical-align: middle; 
         }
 
         .product-table tbody tr:last-child td:first-child {
@@ -733,7 +741,8 @@ while ($row = $supplierResult->fetch_assoc()) {
             const section = document.createElement('div');
             section.className = 'product-block';
 
-            const supplierHeaders = rows.map((r, i) => `<th>Supplier ${i + 1}<br>(${r.supplier_name || '-'})</th>`).join('');
+            // JS FIX: Removed <br> from the header to prevent misalignment caused by text wrapping
+            const supplierHeaders = rows.map((r, i) => `<th>Supplier ${i + 1} (${r.supplier_name || '-'})</th>`).join('');
             const supplierDataCells = rows.map(r => `<td>${r.supplier_name || '-'}</td>`).join('');
             
             const priceInputs = rows.map(r => `
