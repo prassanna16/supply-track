@@ -283,7 +283,6 @@ while ($row = $supplierResult->fetch_assoc()) {
             background: rgba(0,0,0,0.5);
             z-index: 9999;
             display: none;
-            /* Changed from overflow-y: auto to ensure the internal wrapper scrolls */
             padding: 40px 20px;
             box-sizing: border-box;
         }
@@ -293,21 +292,22 @@ while ($row = $supplierResult->fetch_assoc()) {
             margin: auto;
             padding: 20px 30px;
             border-radius: 12px;
-            width: 95%; /* Increased width */
-            max-width: 1400px; /* Increased max-width for better table visibility */
-            max-height: 95vh; /* Allow modal to take up almost full screen height */
+            width: 95%; 
+            max-width: 1400px; 
+            max-height: 95vh; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             position: relative;
-            overflow: hidden; /* Contains the scrollable content */
+            overflow: hidden; 
         }
 
-        /* NEW STYLE: Scrollable content container inside the modal */
+        /* 1. SCROLLABLE CONTENT WRAPPER ADJUSTED */
         #productDetailsContainerWrapper {
-            /* This is the new wrapper for the details and the button */
-            max-height: calc(90vh - 150px); /* Adjust height: 90vh minus space for header/dropdown */
-            overflow-y: auto; /* Adds vertical scrollbar when content overflows */
+            /* 90vh is the max height, subtract estimated height of h2, dropdown, and Save button area (~170px) */
+            max-height: calc(90vh - 170px); 
+            overflow-y: auto; 
             padding-right: 15px; 
             margin-top: 20px;
+            margin-bottom: 20px; /* Space above the fixed Save button */
         }
         
         .close {
@@ -317,7 +317,7 @@ while ($row = $supplierResult->fetch_assoc()) {
             cursor: pointer;
         }
         
-        /* Multi-select dropdown styles (for modal) - Fine as is */
+        /* Multi-select dropdown styles (for modal) */
         .multi-select-wrapper {
             position: relative;
             width: 100%;
@@ -380,7 +380,7 @@ while ($row = $supplierResult->fetch_assoc()) {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
-            display: block; /* Essential for overflow-x to work properly */
+            display: block; 
             overflow-x: auto;
             white-space: nowrap;
         }
@@ -392,16 +392,31 @@ while ($row = $supplierResult->fetch_assoc()) {
             display: block; 
         }
 
+        /* 2. SHRINKING CELL WIDTHS FOR COMPACTNESS */
         .product-table th, .product-table td {
             border: 1px solid #ccc;
-            padding: 6px;
+            padding: 6px 4px; /* Reduced padding */
             text-align: center;
-            font-size: 0.9em;
-            min-width: 120px; /* Ensures columns have minimum readable width */
+            font-size: 0.85em; /* Slightly smaller font */
+            
+            width: auto; /* Allow the browser to calculate width */
+            min-width: 65px; /* Reduced minimum width */
+            max-width: 150px; 
+            white-space: normal; /* Allow cell text to wrap if necessary */
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            box-sizing: border-box;
+        }
+
+        .product-table tr td:first-child,
+        .product-table tr th:first-child {
+            /* Give Description column a bit more room */
+            min-width: 100px;
         }
         
         .supplier-price {
-            width: 80px;
+            width: 60px; /* Narrower width for the input field */
+            min-width: 60px;
             padding: 4px;
             box-sizing: border-box;
             text-align: center;
@@ -409,6 +424,12 @@ while ($row = $supplierResult->fetch_assoc()) {
             border: 1px solid #B22222;
         }
         
+        /* Style for the Save button (now outside the scroll) */
+        .modal-content > .btn {
+            margin-top: 15px !important;
+        }
+
+
         /* ------------------------------------------------------------------ */
         /* RESPONSIVE STYLES */
         /* ------------------------------------------------------------------ */
@@ -544,10 +565,10 @@ while ($row = $supplierResult->fetch_assoc()) {
 
                 <div id="productDetailsContainerWrapper">
                     <div id="productDetailsContainer"></div>
-                    
-                    <button type="button" class="btn" style="background-color: #28a745; color: white; margin-top: 20px;">Save Prices</button>
                 </div>
-                </div>
+                <button type="button" class="btn" style="background-color: #28a745; color: white;">Save Prices</button>
+
+            </div>
         </div>
         <form method="GET">
             <input type="text" name="buyer" placeholder="Search by Buyer" value="<?php echo htmlspecialchars($buyer); ?>">
