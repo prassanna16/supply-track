@@ -30,7 +30,7 @@ while ($row = $supplierResult->fetch_assoc()) {
     <title>Admin Dashboard - SupplyTrack</title>
     <style>
         /* ------------------------------------------------------------------ */
-        /* GLOBAL / LAYOUT STYLES (omitted for brevity) */
+        /* GLOBAL / LAYOUT STYLES */
         /* ------------------------------------------------------------------ */
         body {
             margin: 0;
@@ -57,7 +57,7 @@ while ($row = $supplierResult->fetch_assoc()) {
             margin-bottom: 10px;
         }
         
-        /* --- Header/Nav styles (omitted for brevity) --- */
+        /* --- Header/Nav styles --- */
         .header-bar {
             display: flex;
             justify-content: space-between;
@@ -155,10 +155,6 @@ while ($row = $supplierResult->fetch_assoc()) {
             transition: transform 0.3s ease;
         }
         
-        .arrow.rotate {
-            transform: rotate(180deg);
-        }
-        
         .btn-group {
             opacity: 0;
             visibility: hidden;
@@ -247,18 +243,29 @@ while ($row = $supplierResult->fetch_assoc()) {
         .modal-content {
             background: #fff;
             margin: auto;
-            /* Key Fix: Increased bottom padding to prevent the last element (Save button) from being cut off */
-            padding: 20px 30px 60px 30px; 
+            padding: 20px 30px; 
             border-radius: 12px;
             width: 95%; 
             max-width: 1400px; 
-            max-height: 600vh; 
+            max-height: 95vh; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             position: relative;
             
-            overflow-y: auto; 
+            /* Vertical Scroll Fix: Make this a flex container and prevent its own scroll */
+            overflow-y: hidden; 
+            display: flex;
+            flex-direction: column;
         }
 
+        /* NEW SCROLLING CONTAINER CSS */
+        #modalBodyScroll {
+            flex-grow: 1; 
+            /* Set a height that leaves room for the header (h2, dropdown) and the Save button */
+            max-height: calc(95vh - 200px); 
+            overflow-y: auto; /* This is the only area that scrolls vertically */
+            padding-bottom: 20px; 
+        }
+        
         .close {
             position: absolute;
             top: 10px;
@@ -277,6 +284,7 @@ while ($row = $supplierResult->fetch_assoc()) {
             display: inline-block;
             min-width: 150px;
             z-index: 99; 
+            margin-bottom: 15px;
         }
 
         .multi-select-toggle {
@@ -314,32 +322,36 @@ while ($row = $supplierResult->fetch_assoc()) {
         /* ------------------------------------------------------------------ */
         /* MODAL PRODUCT TABLE STYLES (.product-table) */
         /* ------------------------------------------------------------------ */
-        .product-table {
+        
+        /* Horizontal Scroll Fix: The container handles the scrollbar */
+        .product-table-container {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            display: block; 
             overflow-x: auto;
-            white-space: nowrap;
+            margin-top: 10px;
+        }
+        
+        .product-table {
+            width: max-content; 
+            min-width: 100%; 
+            border-collapse: collapse;
         }
 
         .product-table thead, .product-table tbody, .product-table tr {
-            display: table; 
-            width: 100%;
-            table-layout: fixed; 
+            display: table-row-group; 
+            width: auto;
+            table-layout: auto; 
         }
         
-        /* Fixed Widths for Data Columns */
-        .product-table th:nth-child(1), .product-table td:nth-child(1) { min-width: 120px; width: 120px; } /* Description */
-        .product-table th:nth-child(2), .product-table td:nth-child(2) { min-width: 80px; width: 80px; } /* Department */
-        .product-table th:nth-child(3), .product-table td:nth-child(3) { min-width: 90px; width: 90px; } /* Size Range */
-        .product-table th:nth-child(4), .product-table td:nth-child(4) { min-width: 60px; width: 60px; } /* QTY */
-        .product-table th:nth-child(5), .product-table td:nth-child(5) { min-width: 80px; width: 80px; } /* Target */
+        /* Min-Widths for core data columns (for alignment) */
+        .product-table th:nth-child(1), .product-table td:nth-child(1) { min-width: 120px; } /* Description */
+        .product-table th:nth-child(2), .product-table td:nth-child(2) { min-width: 80px; } /* Department */
+        .product-table th:nth-child(3), .product-table td:nth-child(3) { min-width: 90px; } /* Size Range */
+        .product-table th:nth-child(4), .product-table td:nth-child(4) { min-width: 60px; } /* QTY */
+        .product-table th:nth-child(5), .product-table td:nth-child(5) { min-width: 80px; } /* Target */
         
-        /* Default minimum width for Supplier/Price columns (from 6th column onwards) */
+        /* Min-Width for Supplier/Price columns (from 6th column onwards) */
         .product-table th:nth-child(n+6), .product-table td:nth-child(n+6) {
-             min-width: 100px; 
-             width: 100px; 
+             min-width: 120px; 
         }
 
         /* Styles for all cells */
@@ -352,7 +364,6 @@ while ($row = $supplierResult->fetch_assoc()) {
             white-space: normal;
         }
 
-        /* Style the 'Enter Supplier Prices' label cell (first TD in the last row) */
         .product-table tbody tr:last-child td:first-child {
             text-align: right;
             font-weight: bold;
@@ -363,13 +374,18 @@ while ($row = $supplierResult->fetch_assoc()) {
         }
         
         .supplier-price {
-            width: 80px; 
-            min-width: 80px;
+            width: 100%; 
             padding: 4px;
             box-sizing: border-box;
             text-align: center;
             border-radius: 4px;
             border: 1px solid #B22222;
+        }
+        
+        /* Ensure the save button is not part of the scrollable area */
+        .modal-content > .btn {
+            margin-top: 15px;
+            flex-shrink: 0; 
         }
         
     </style>
@@ -440,11 +456,12 @@ while ($row = $supplierResult->fetch_assoc()) {
                         <div id="styleDropdown" class="multi-select-dropdown" style="display: none;"></div>
                     </div>
                 </div>
-
-                <div id="productDetailsContainerWrapper">
-                    <div id="productDetailsContainer"></div>
-                </div>
                 
+                <div id="modalBodyScroll">
+                    <div id="productDetailsContainerWrapper">
+                        <div id="productDetailsContainer"></div>
+                    </div>
+                </div>
                 <button type="button" class="btn" style="background-color: #28a745; color: white;">Save Prices</button>
 
             </div>
@@ -558,7 +575,6 @@ while ($row = $supplierResult->fetch_assoc()) {
     }
 
     function handleOutsideClick(event) {
-        // Function for top navigation outside clicks (unchanged)
         const isNavItem = event.target.closest('.nav-item');
         const isBtnGroup = event.target.closest('.btn-group');
 
@@ -571,12 +587,10 @@ while ($row = $supplierResult->fetch_assoc()) {
         }
     }
 
-    // New function to handle outside clicks for the modal style dropdown
     function handleModalOutsideClick(event) {
         const styleSelectBox = document.getElementById('styleSelectBox');
         const styleDropdown = document.getElementById('styleDropdown');
         
-        // If the click is outside the dropdown box, close the dropdown
         if (styleDropdown.style.display === 'block' && !styleSelectBox.contains(event.target)) {
             styleDropdown.style.display = 'none';
         }
@@ -584,8 +598,6 @@ while ($row = $supplierResult->fetch_assoc()) {
 
     document.addEventListener('click', handleOutsideClick);
     document.addEventListener('touchstart', handleOutsideClick);
-
-    // Add event listeners for the modal outside click logic
     document.addEventListener('click', handleModalOutsideClick);
     document.addEventListener('touchstart', handleModalOutsideClick);
 
@@ -597,7 +609,6 @@ while ($row = $supplierResult->fetch_assoc()) {
 
     function closeStyleModal() {
         document.getElementById('styleModal').style.display = 'none';
-        // Ensure the style dropdown is hidden when closing the modal
         document.getElementById('styleDropdown').style.display = 'none';
     }
 
@@ -605,15 +616,11 @@ while ($row = $supplierResult->fetch_assoc()) {
         const dropdown = document.getElementById('styleDropdown');
         dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
         
-        // Clear any previous auto-close timer when the dropdown is manually toggled open
         if (dropdown.style.display === 'block') {
              clearTimeout(modalStyleDropdownTimeout);
         }
     }
 
-    /**
-     * Loads available styles from the server.
-     */
     function loadStyles() {
         fetch('inquiry/get_styles.php')
             .then(res => {
@@ -645,7 +652,6 @@ while ($row = $supplierResult->fetch_assoc()) {
             });
     }
 
-    // Updated updateSelectedStyles function to handle auto-closing
     function updateSelectedStyles(closeAfterSelection = false) {
         const checkboxes = document.querySelectorAll('#styleDropdown input[type="checkbox"]');
         const selected = Array.from(checkboxes)
@@ -666,19 +672,13 @@ while ($row = $supplierResult->fetch_assoc()) {
         // Close the dropdown after selection/deselection
         if (closeAfterSelection) {
             clearTimeout(modalStyleDropdownTimeout);
-            // Close after 3 seconds
             modalStyleDropdownTimeout = setTimeout(() => {
                 dropdown.style.display = 'none';
             }, 3000); 
         }
     }
 
-    /**
-     * Loads product details for the selected styles.
-     */
     function loadProductDetails(selectedStyles) {
-        console.log('Sending styles to PHP:', selectedStyles);
-
         fetch('inquiry/get_product_details.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -703,8 +703,6 @@ while ($row = $supplierResult->fetch_assoc()) {
     }
 
     function renderProductDetails(data) {
-        console.log('Received product data:', data);
-
         const container = document.getElementById('productDetailsContainer');
         container.innerHTML = '';
 
@@ -727,10 +725,9 @@ while ($row = $supplierResult->fetch_assoc()) {
             const section = document.createElement('div');
             section.className = 'product-block';
 
-            // Dynamically create the table headers for suppliers
             const supplierHeaders = rows.map((r, i) => `<th>Supplier ${i + 1}<br>(${r.supplier_name || '-'})</th>`).join('');
+            const supplierDataCells = rows.map(r => `<td>${r.supplier_name || '-'}</td>`).join('');
             
-            // Dynamically create input fields for supplier prices
             const priceInputs = rows.map(r => `
                 <td>
                     <input type="text" class="supplier-price"
@@ -740,41 +737,42 @@ while ($row = $supplierResult->fetch_assoc()) {
                 </td>
             `).join('');
 
+            const standardColumns = 5;
+            let priceRowPlaceholders = '<td></td>'.repeat(standardColumns - 1); 
 
             section.innerHTML = `
                 <h3>Style: ${style} - Buyer: ${base.buyer}</h3>
-                <table class="product-table">
-                    <thead>
-                        <tr>
-                            <th>Description</th>
-                            <th>Department</th>
-                            <th>Size Range</th>
-                            <th>QTY</th>
-                            <th>Target</th>
-                            ${supplierHeaders}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>${base.description || '-'}</td>
-                            <td>${base.department || '-'}</td>
-                            <td>${base.size_range || '-'}</td>
-                            <td>${base.qty || '-'}</td>
-                            <td>${base.currency || ''} ${base.target || '-'}</td>
-                            ${rows.map(r => `<td>${r.supplier_name || '-'}</td>`).join('')}
-                        </tr>
-                        <tr>
-                            <td><strong>Enter Supplier Prices:</strong></td> 
-                            
-                            <td></td> 
-                            <td></td> 
-                            <td></td> 
-                            <td></td> 
-                            
-                            ${priceInputs}
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="product-table-container">
+                    <table class="product-table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Department</th>
+                                <th>Size Range</th>
+                                <th>QTY</th>
+                                <th>Target</th>
+                                ${supplierHeaders}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>${base.description || '-'}</td>
+                                <td>${base.department || '-'}</td>
+                                <td>${base.size_range || '-'}</td>
+                                <td>${base.qty || '-'}</td>
+                                <td>${base.currency || ''} ${base.target || '-'}</td>
+                                ${supplierDataCells}
+                            </tr>
+                            <tr>
+                                <td><strong>Enter Supplier Prices:</strong></td> 
+                                
+                                ${priceRowPlaceholders} 
+                                
+                                ${priceInputs}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             `;
 
             container.appendChild(section);
