@@ -254,7 +254,9 @@ while ($row = $supplierResult->fetch_assoc()) {
             max-height: 95vh; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             position: relative;
-            overflow: hidden; 
+            
+            /* FIX 1: Enable vertical scrolling for the modal content */
+            overflow-y: auto; 
         }
 
         .close {
@@ -269,12 +271,12 @@ while ($row = $supplierResult->fetch_assoc()) {
             z-index: 10;
         }
         
-        /* FIX: Dropdown container needed relative positioning for children to anchor */
+        /* --- Dropdown Styles --- */
         .multi-select-wrapper {
             position: relative;
-            display: inline-block; /* Allows the box to shrink-wrap its content */
+            display: inline-block;
             min-width: 150px;
-            z-index: 99; /* Ensure it stays above the table */
+            z-index: 99; 
         }
 
         .multi-select-toggle {
@@ -289,7 +291,6 @@ while ($row = $supplierResult->fetch_assoc()) {
         }
 
         .multi-select-dropdown label {
-            /* Crucial: Ensure each checkbox/style name appears on its own line */
             display: block; 
             white-space: nowrap;
             padding: 4px 8px;
@@ -299,12 +300,12 @@ while ($row = $supplierResult->fetch_assoc()) {
             position: absolute;
             top: 100%;
             left: 0;
-            width: 100%; /* Important: Takes the width of the parent .multi-select-wrapper */
+            width: 100%;
             max-height: 200px;
             overflow-y: auto;
             border: 1px solid #ccc;
             background-color: #fff;
-            z-index: 100; /* Higher Z-index to ensure visibility */
+            z-index: 100; 
             border-radius: 6px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             box-sizing: border-box; 
@@ -523,8 +524,10 @@ while ($row = $supplierResult->fetch_assoc()) {
     let activeDropdown = null;
     let activeArrow = null;
     let hideTimeout = null;
+    let modalStyleDropdownTimeout = null; // New timeout for the modal dropdown
 
     function toggleSection(id, arrowId) {
+        // Function for top navigation dropdowns (unchanged)
         const group = document.getElementById(id);
         const arrow = document.getElementById(arrowId);
         const isOpen = group.classList.contains('show');
@@ -539,6 +542,7 @@ while ($row = $supplierResult->fetch_assoc()) {
             activeDropdown = group;
             activeArrow = arrow;
 
+            // Timer to automatically close the top nav dropdown after 5 seconds
             hideTimeout = setTimeout(() => {
                 group.classList.remove('show');
                 arrow.classList.remove('rotate');
@@ -554,6 +558,7 @@ while ($row = $supplierResult->fetch_assoc()) {
     }
 
     function handleOutsideClick(event) {
+        // Function for top navigation outside clicks (unchanged)
         const isNavItem = event.target.closest('.nav-item');
         const isBtnGroup = event.target.closest('.btn-group');
 
@@ -566,8 +571,24 @@ while ($row = $supplierResult->fetch_assoc()) {
         }
     }
 
+    // New function to handle outside clicks for the modal style dropdown
+    function handleModalOutsideClick(event) {
+        const styleSelectBox = document.getElementById('styleSelectBox');
+        const styleDropdown = document.getElementById('styleDropdown');
+        
+        // If the click is outside the dropdown box, close the dropdown
+        if (styleDropdown.style.display === 'block' && !styleSelectBox.contains(event.target)) {
+            styleDropdown.style.display = 'none';
+        }
+    }
+
     document.addEventListener('click', handleOutsideClick);
     document.addEventListener('touchstart', handleOutsideClick);
+
+    // Add event listeners for the modal outside click logic
+    document.addEventListener('click', handleModalOutsideClick);
+    document.addEventListener('touchstart', handleModalOutsideClick);
+
 
     function showStylePanel() {
         document.getElementById('styleModal').style.display = 'block';
@@ -576,12 +597,18 @@ while ($row = $supplierResult->fetch_assoc()) {
 
     function closeStyleModal() {
         document.getElementById('styleModal').style.display = 'none';
+        // Ensure the style dropdown is hidden when closing the modal
+        document.getElementById('styleDropdown').style.display = 'none';
     }
 
     function toggleDropdown() {
         const dropdown = document.getElementById('styleDropdown');
-        // This is where the magic happens: block = show, none = hide
         dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        
+        // Clear any previous auto-close timer when the dropdown is manually toggled open
+        if (dropdown.style.display === 'block') {
+             clearTimeout(modalStyleDropdownTimeout);
+        }
     }
 
     /**
@@ -606,7 +633,7 @@ while ($row = $supplierResult->fetch_assoc()) {
                 styles.forEach(style => {
                     const label = document.createElement('label');
                     label.innerHTML = `
-                        <input type="checkbox" value="${style}" onchange="updateSelectedStyles()" />
+                        <input type="checkbox" value="${style}" onchange="updateSelectedStyles(true)" />
                         ${style}
                     `;
                     dropdown.appendChild(label);
@@ -618,7 +645,8 @@ while ($row = $supplierResult->fetch_assoc()) {
             });
     }
 
-    function updateSelectedStyles() {
+    // Updated updateSelectedStyles function to handle auto-closing
+    function updateSelectedStyles(closeAfterSelection = false) {
         const checkboxes = document.querySelectorAll('#styleDropdown input[type="checkbox"]');
         const selected = Array.from(checkboxes)
             .filter(cb => cb.checked)
@@ -631,6 +659,17 @@ while ($row = $supplierResult->fetch_assoc()) {
             loadProductDetails(selected);
         } else {
             document.getElementById('productDetailsContainer').innerHTML = '';
+        }
+
+        const dropdown = document.getElementById('styleDropdown');
+        
+        // FIX 2: Close the dropdown after selection/deselection
+        if (closeAfterSelection) {
+            clearTimeout(modalStyleDropdownTimeout);
+            // Close after 3 seconds
+            modalStyleDropdownTimeout = setTimeout(() => {
+                dropdown.style.display = 'none';
+            }, 3000); 
         }
     }
 
