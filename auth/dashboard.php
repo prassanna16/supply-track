@@ -252,7 +252,7 @@ while ($row = $supplierResult->fetch_assoc()) {
             border-radius: 12px;
             width: 95%; 
             max-width: 1400px; 
-            max-height: 95vh; 
+            max-height: 600vh; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             position: relative;
             
