@@ -505,6 +505,7 @@ while ($row = $supplierResult->fetch_assoc()) {
                     <th>Suppliers</th>
                     <th>Image</th>
                     <th>PDF</th>
+                    <th>Action/Edit</th>
                 </tr>
                 <?php $sno = 1; while($row = $result->fetch_assoc()): ?>
                     <tr>
