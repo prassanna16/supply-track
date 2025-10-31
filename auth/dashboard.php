@@ -502,6 +502,7 @@ while ($row = $supplierResult->fetch_assoc()) {
                     <th>Image</th>
                     <th>PDF</th>
                 </tr>
+
                 <?php $sno = 1; while($row = $result->fetch_assoc()): ?>
                     <tr>
                         <td><?php echo $sno++; ?></td>
@@ -531,19 +532,19 @@ while ($row = $supplierResult->fetch_assoc()) {
                                 }
                             ?>
                         </td>
-                        <td>
-                            <?php
-                                $pdfFile = $row['pdf_path'];
-                                $pdfPath = "inquiry/doc/" . $pdfFile;
-                                if (!empty($pdfFile) && file_exists(__DIR__ . "/inquiry/doc/" . $pdfFile)) {
-                                    echo "<a href='$pdfPath' download title='Download PDF'>
-                                                <img src='../assets/image/pdf_icon.png' alt='Download PDF' style='width:24px;height:auto;'>
-                                            </a>";
-                                } else {
-                                    echo 'No PDF';
-                                }
-                            ?>
-                        </td>
+                      <td>
+    <?php
+        $pdfFile = $row['pdf_path'];
+        $pdfPath = "inquiry/doc/" . $pdfFile;
+        if (!empty($pdfFile) && file_exists(__DIR__ . "/inquiry/doc/" . $pdfFile)) {
+            echo "<a href='$pdfPath' download title='Download PDF'>
+                      <img src='../assets/image/pdf_icon.png' alt='Download PDF' style='width:24px;height:auto;'>
+                  </a>";
+        } else {
+            echo 'No PDF';
+        }
+    ?>
+</td>
                     </tr>
                 <?php endwhile; ?>
             </table>
