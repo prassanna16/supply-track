@@ -532,7 +532,7 @@ while ($row = $supplierResult->fetch_assoc()) {
                                 }
                             ?>
                         </td>
-                       <td style="display: flex; align-items: center; gap: 8px;">
+                      <td>
     <?php
         $pdfFile = $row['pdf_path'];
         $pdfPath = "inquiry/doc/" . $pdfFile;
@@ -543,14 +543,6 @@ while ($row = $supplierResult->fetch_assoc()) {
         } else {
             echo 'No PDF';
         }
-
-        // Add Edit icon next to PDF
-        $editLink = "inquiry/inquiries_new.html?id=" . urlencode($row['id']);
-        echo "<a href='$editLink' title='Edit Inquiry'>
-                  <svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='#007bff' viewBox='0 0 24 24'>
-                      <path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.42l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z'/>
-                  </svg>
-              </a>";
     ?>
 </td>
                     </tr>
