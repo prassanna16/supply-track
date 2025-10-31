@@ -322,90 +322,89 @@ while ($row = $supplierResult->fetch_assoc()) {
             box-sizing: border-box; 
         }
 
-        /* ------------------------------------------------------------------ */
-        /* MODAL PRODUCT TABLE STYLES (.product-table) */
-        /* ------------------------------------------------------------------ */
-        
-        /* Horizontal Scroll Fix: The container handles the scrollbar */
-        .product-table-container {
-            width: 100%;
-            overflow-x: auto;
-            margin-top: 10px;
-        }
-        
-        .product-table {
-            /* Crucial for allowing the table to expand beyond container width */
-            width: max-content; 
-            min-width: 100%; 
-            border-collapse: collapse;
-        }
+        //* MODAL PRODUCT TABLE STYLES (.product-table) */
+/* ------------------------------------------------------------------ */
 
-        /* Revert table elements to their default display for proper column alignment */
-        .product-table thead, .product-table tbody, .product-table tr {
-            display: table-row-group; 
-            width: auto;
-            table-layout: auto; 
-        }
-        
-        /* Min-Widths for core data columns (CRITICAL ADJUSTMENT for Alignment) */
-        .product-table th:nth-child(1), .product-table td:nth-child(1) { min-width: 150px; } /* Description */
-        .product-table th:nth-child(2), .product-table td:nth-child(2) { min-width: 100px; } /* Department */
-        .product-table th:nth-child(3), .product-table td:nth-child(3) { min-width: 100px; } /* Size Range */
-        .product-table th:nth-child(4), .product-table td:nth-child(4) { min-width: 80px; } /* QTY */
-        .product-table th:nth-child(5), .product-table td:nth-child(5) { min-width: 100px; } /* Target */
-        
-        /* Min-Width for Supplier/Price columns (from 6th column onwards) */
-        .product-table th:nth-child(n+6), .product-table td:nth-child(n+6) {
-             min-width: 150px; /* Increased to accommodate supplier name and number */
-        }
+/* Horizontal Scroll Container */
+.product-table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 10px;
+}
 
-        /* Styles for all header cells */
-        .product-table thead th {
-             /* CRITICAL: Prevent wrapping and force consistent height/width calculation */
-             white-space: nowrap; 
-             padding: 10px 4px;
-             /* Ensure header text is centered */
-             text-align: center;
-        }
+/* Expandable Table with Dynamic Supplier Columns */
+.product-table {
+    table-layout: auto;        /* Allows columns to size based on content */
+    width: max-content;        /* Expands beyond container if needed */
+    min-width: 100%;           /* Fills container when few columns */
+    border-collapse: collapse;
+}
 
-        /* Styles for all cells (General Alignment Fix) */
-        .product-table th, .product-table td {
-            border: 1px solid #ccc;
-            padding: 6px 4px; 
-            text-align: center;
-            font-size: 0.85em; 
-            box-sizing: border-box;
-            white-space: normal;
-            vertical-align: middle; 
-        }
+/* Core Data Columns (Fixed Widths for Alignment) */
+.product-table th:nth-child(1), .product-table td:nth-child(1) { min-width: 150px; } /* Description */
+.product-table th:nth-child(2), .product-table td:nth-child(2) { min-width: 100px; } /* Department */
+.product-table th:nth-child(3), .product-table td:nth-child(3) { min-width: 100px; } /* Size Range */
+.product-table th:nth-child(4), .product-table td:nth-child(4) { min-width: 80px; }  /* QTY */
+.product-table th:nth-child(5), .product-table td:nth-child(5) { min-width: 100px; } /* Target */
 
-        .product-table tbody tr:last-child td:first-child {
-            text-align: right;
-            font-weight: bold;
-        }
+/* Supplier Columns (Expandable but Consistent) */
+.product-table th:nth-child(n+6), .product-table td:nth-child(n+6) {
+    min-width: 150px;
+    max-width: 150px;           /* Prevent collapse or overflow */
+    white-space: nowrap;        /* Prevent header wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-        .product-table tbody tr:last-child td {
-             background-color: #f2f2f2; 
-        }
-        
-        .supplier-price {
-            width: 100%; 
-            padding: 4px;
-            box-sizing: border-box;
-            text-align: center;
-            border-radius: 4px;
-            border: 1px solid #B22222;
-        }
-        
-        /* Save Button Width Fix (CSS applied to the button via the parent div's style) */
-        .modal-content > div:last-child > .btn {
-            display: inline-block;
-            float: right; 
-            margin-top: 5px; 
-            width: auto; 
-            padding: 10px 20px; 
-            text-align: center;
-        }
+/* Header Cell Styling */
+.product-table thead th {
+    white-space: nowrap;
+    padding: 10px 4px;
+    text-align: center;
+}
+
+/* General Cell Styling */
+.product-table th, .product-table td {
+    border: 1px solid #ccc;
+    padding: 6px 4px;
+    text-align: center;
+    font-size: 0.85em;
+    box-sizing: border-box;
+    white-space: normal;
+    vertical-align: middle;
+}
+
+/* Last Row Label Styling */
+.product-table tbody tr:last-child td:first-child {
+    text-align: right;
+    font-weight: bold;
+}
+
+/* Last Row Background */
+.product-table tbody tr:last-child td {
+    background-color: #f2f2f2;
+}
+
+/* Supplier Price Input Field */
+.supplier-price {
+    width: 100%;
+    max-width: 140px;           /* Prevent input overflow */
+    padding: 4px;
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 4px;
+    border: 1px solid #B22222;
+}
+
+/* Save Button Styling */
+.modal-content > div:last-child > .btn {
+    display: inline-block;
+    float: right;
+    margin-top: 5px;
+    width: auto;
+    padding: 10px 20px;
+    text-align: center;
+}
         
     </style>
 </head>
