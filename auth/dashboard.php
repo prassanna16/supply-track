@@ -549,6 +549,11 @@ while ($row = $supplierResult->fetch_assoc()) {
                                 }
                             ?>
                         </td>
+                        <td>
+  <button class="edit-btn" onclick="editProduct('<?php echo $product['id']; ?>')">
+    ✏️
+  </button>
+</td>
                     </tr>
                 <?php endwhile; ?>
             </table>
